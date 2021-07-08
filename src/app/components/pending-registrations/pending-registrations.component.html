@@ -1,0 +1,42 @@
+<body>
+  <app-nav-bar></app-nav-bar>
+  <br>
+  <div class="container" style="position: absolute;left: 250px;">
+      <h1 class="h3 mb-3"> &nbsp;&nbsp; PENDING REGISTRATIONS
+          </h1>
+        <div class="col-xl-10">
+
+              <table class="table table-striped" style="width:100%; font-family:sans-serif;" >
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Confirm</th>
+                    <th>Reject</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let pendingUser of pendingCompanyList" style="background-color:rgb(128, 169, 245);" >
+                    <td style="color:black;">{{pendingUser.type | uppercase}}</td>
+                    <td style="color:black;" >{{pendingUser.name}}</td>
+                    <td style="color:black;">{{pendingUser.username}}</td>
+                    <td style="color:black;">{{pendingUser.email}}</td>
+                    <td><span class="btn badge bg-success" (click)="confirmRegistration(pendingUser.id, pendingUser.type)" style="color: white;">Confirm</span></td>
+                    <td><span class="btn badge bg-danger"(click)="rejectRegistration(pendingUser.id, pendingUser.type)" style="color: white;">Reject</span></td>
+                  </tr>
+                    <tr *ngFor="let pendingUser of pendingAffittuariList" style="background-color:lightsalmon;">
+                      <td style="color:black;">{{pendingUser.type | uppercase}}</td>
+                      <td style="color:black;" >{{pendingUser.name}}</td>
+                      <td style="color:black;">{{pendingUser.username}}</td>
+                      <td style="color:black;">{{pendingUser.email}}</td>
+                      <td><span class="btn badge bg-success" (click)="confirmRegistration(pendingUser.id, pendingUser.type)" style="color: white;">Confirm</span></td>
+                      <td><span class="btn badge bg-danger" (click)="rejectRegistration(pendingUser.id, pendingUser.type)" style="color: white;">Reject</span></td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+  </div>
+
+  </body>

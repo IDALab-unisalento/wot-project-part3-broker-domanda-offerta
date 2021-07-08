@@ -3,21 +3,56 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
 <nav class="navbar navbar-icon-top navbar-expand-lg  navbar-dark bg-primary ">
 
 
-  <button type="button" class="btn btn-primary" (click)="sidebar = !sidebar;"><i class="fas fa-bars" style=" color: white;"
-    ></i>
-
-  </button>
-
-  <a class="navbar-brand" href="#" routerLink="/admin"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    Admin Home</a>
+  <a class="navbar-brand" routerLink="/home">
+    <i class="fas fa-home"></i>
+    &nbsp;
+ Home</a>
 </nav>
 
-<app-side-bar *ngIf="sidebar"></app-side-bar>
+<div class="left">
+  <mat-divider></mat-divider>
+
+  <div class="item " onmouseover="" style="cursor: pointer;" routerLink="/home"
+  >
+    <i class="fas fa fa-home"  onmouseover="" style="cursor: pointer;"
+    ></i> Home
+  </div>
+  <mat-divider></mat-divider>
+
+  <div *ngIf="userType == 'admin'" class="item " onmouseover="" style="cursor: pointer;" (click)="goToPendingListPage()"
+  >
+    <i class="fas fa fa-user-plus"  onmouseover="" style="cursor: pointer;" (click)="goToPendingListPage()"
+    ></i> Authorize sign up
+  </div>
+
+  <mat-divider></mat-divider>
+
+
+
+
+  <div class="item" onmouseover="" (click)="logOut()" style="cursor: pointer;"
+  >
+    <i class=" fas bi bi-door-open-fill" onmouseover="" style="cursor: pointer;"(click)="logOut()"
+    ></i>Log-out
+  </div>
+
+  <mat-divider></mat-divider>
+
+
+
+</div>
 
 
 
 
 
+ 

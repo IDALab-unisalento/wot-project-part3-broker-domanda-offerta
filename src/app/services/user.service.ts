@@ -39,7 +39,6 @@ export class UserService {
       .pipe(
         catchError(
          (error:HttpErrorResponse)=>{
-          if(error.status==404)this.router.navigateByUrl("/errors")
           return throwError("User Not Found Exception Verified");
          }
         )
