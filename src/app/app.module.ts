@@ -1,5 +1,5 @@
 import { PendingRegistrationComponent } from './components/pending-registrations/pending-registrations.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -18,7 +18,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalComponent } from './components/modal/modal.component';
@@ -27,6 +27,15 @@ import { AffittuarioService } from './services/affittuario.service';
 import { AdminService } from './services/admin.service';
 import { ModalBlankComponent } from './components/modal-blank/modal-blank.component';
 import { ModalWaitComponent } from './components/modal-wait/modal-wait.component';
+import { CompanyVectorService } from './services/company-vector.service';
+import { VectorService } from './services/vector.service';
+import { RouteService } from './services/route.service';
+import { ViaggioRouteService } from './services/viaggio-route.service';
+import { DatePipe } from '@angular/common';
+import { ScheduleComponent } from './components/schedule/schedule.component';
+import { IgxGeographicMapModule } from 'igniteui-angular-maps';
+import { IgxDataChartInteractivityModule } from 'igniteui-angular-charts';
+import { ViaggioService } from './services/viaggio.service';
 
 
 @NgModule({
@@ -41,7 +50,8 @@ import { ModalWaitComponent } from './components/modal-wait/modal-wait.component
     PendingRegistrationComponent,
     ModalComponent,
     ModalBlankComponent,
-    ModalWaitComponent
+    ModalWaitComponent,
+    ScheduleComponent
   ],
   imports: [
     BrowserModule,
@@ -56,6 +66,8 @@ import { ModalWaitComponent } from './components/modal-wait/modal-wait.component
     BrowserAnimationsModule,
     MatListModule,
     MatDialogModule,
+    IgxGeographicMapModule,
+    IgxDataChartInteractivityModule
   ],
   providers: [
             {
@@ -66,6 +78,12 @@ import { ModalWaitComponent } from './components/modal-wait/modal-wait.component
               CompanyService,
               AffittuarioService,
               AdminService,
+              CompanyVectorService,
+              VectorService,
+              RouteService,
+              ViaggioRouteService,
+              DatePipe,
+              ViaggioService
 
                           ],
   bootstrap: [AppComponent]

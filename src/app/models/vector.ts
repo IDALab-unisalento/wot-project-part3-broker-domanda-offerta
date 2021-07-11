@@ -4,5 +4,6 @@ export interface Vector {
   name : string;
   brand : string;
   capacity : number;
+  licensePlate : string;
 
 }

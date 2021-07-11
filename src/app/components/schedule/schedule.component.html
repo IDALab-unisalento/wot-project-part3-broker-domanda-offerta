@@ -1,0 +1,53 @@
+
+  <button  mat-button style="position: absolute;right: 280px; top :50px;"
+
+  (click)="closeModal();">X</button>
+
+<div class="container py-7 ">
+        <h2 class="text-uppercase text-letter-spacing-xs my-0 text-primary font-weight-bold">
+          Trip Scheduling
+        </h2>
+        <p class="text-sm text-dark mt-0 mb-5">There's time and place for everything.</p>
+        <!-- Days -->
+        <div class="col">
+          <div className="sampleRoot" style="position: absolute; right: 0px;" >
+            <igx-geographic-map #map
+                width="500px"
+                height="500px"
+                [zoomable] = true
+                >
+            </igx-geographic-map>
+        </div>
+          <div *ngFor="let day of days; let myIndex = index" style="position: relative; left: 0px;">
+
+            <h4 class="mt-0 mb-3 text-dark op-8 font-weight-bold "  >
+              {{dates[myIndex] | date : "EEEE, dd MMMM  YYYY"}}
+            </h4>
+            <ul class="list-timeline list-timeline-primary ">
+
+              <div *ngFor="let vectorRoute of vectorRouteList">
+
+                <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column " *ngIf="vectorRoute.day == day && ((vectorRoute.startDateString > nowFormatted && vectorRoute.endDateString > nowFormatted) ||(vectorRoute.startDateString < nowFormatted && vectorRoute.endDateString < nowFormatted))">
+              <ul >
+                <li><p class="my-0 text-dark flex-fw text-sm text-uppercase"><span class="text-inverse op-8"> {{vectorRoute.startDate | date : "HH:mm":"GMT"}} - {{vectorRoute.route.startCity}} </span></p></li>
+                <li><p class="my-0 collapse flex-fw text-uppercase text-xs text-dark op-8 show" id="day-1-item-2">{{vectorRoute.endDate | date : "HH:mm":"GMT"}} - {{vectorRoute.route.endCity}}</p></li>
+              </ul>
+                <p class="my-0 collapse flex-fw text-uppercase text-xs text-dark op-8" id="day-1-item-4"> </p>
+              </li>
+
+              <li class="list-timeline-item show p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column" data-toggle="collapse" data-target="#day-1-item-2" *ngIf="vectorRoute.startDateString < nowFormatted && vectorRoute.endDateString > nowFormatted">
+                <p class="my-0 text-dark flex-fw text-sm text-uppercase"><span class="text-primary font-weight-bold op-8 infinite animated flash" data-animate="flash" data-animate-infinite="1" data-animate-duration="3.5" style="animation-duration: 3.5s;">Now</span></p>
+                <ul>
+                  <li><p class="my-0 text-dark flex-fw text-sm text-uppercase"><span class="text-inverse op-8"> {{vectorRoute.startDate | date : "HH:mm":"GMT"}} - {{vectorRoute.route.startCity}} </span></p></li>
+                  <li><p class="my-0 collapse flex-fw text-uppercase text-xs text-dark op-8 show" id="day-1-item-2">{{vectorRoute.endDate | date : "HH:mm":"GMT"}} - {{vectorRoute.route.endCity}}</p></li>
+                </ul>
+              </li>
+            </div>
+
+            </ul>
+        </div>
+
+      </div>
+
+
+

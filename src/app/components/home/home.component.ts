@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.me = JSON.parse(String(localStorage.getItem("admin")));
+    this.me = JSON.parse(String(localStorage.getItem("loggedUser")));
     this.type = JSON.parse(String(localStorage.getItem("userType")));
 
   }
