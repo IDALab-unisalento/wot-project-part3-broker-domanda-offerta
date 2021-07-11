@@ -52,8 +52,8 @@ export class ViaggioRouteService {
     return this.http.get<ViaggioRoute>(this.getByVectorIdAndRouteIdEndPoint+'/'+vectorId+'/'+routeId);
   }
 
-  getByVectorId(vectorId : number) : Observable<ViaggioRoute[]>{
-    return this.http.get<ViaggioRoute[]>(this.getByVectorIdEndPoint+'/'+vectorId);
+  getByViaggioId(viaggioId : number) : Observable<ViaggioRoute[]>{
+    return this.http.get<ViaggioRoute[]>(this.getByVectorIdEndPoint+'/'+viaggioId);
   }
 
 

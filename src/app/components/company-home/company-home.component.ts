@@ -1,3 +1,5 @@
+import { ViaggioService } from './../../services/viaggio.service';
+import { Viaggio } from './../../models/viaggio';
 import { Vector } from './../../models/vector';
 import { CompanyVector } from './../../models/company-vector';
 import { User } from './../../models/user';
@@ -22,9 +24,10 @@ export class CompanyHomeComponent implements OnInit {
               private companyVectorService : CompanyVectorService,
               private vectorService : VectorService,
               private routeService : RouteService,
-              private vectorRouteService : ViaggioRouteService,
+              private viaggioRouteService : ViaggioRouteService,
               private datepipe: DatePipe,
-              private matDialog : MatDialog
+              private matDialog : MatDialog,
+              private viaggioService : ViaggioService
   ) { }
 
   loggedUser : User = {} as User;
@@ -66,84 +69,95 @@ export class CompanyHomeComponent implements OnInit {
           this.totalDistance = 0;
 
 
-          var offer : Offer = {} as Offer;
-
-          offer.vectorId = vector.id;
-          offer.vectorBrand = vector.brand;
-          offer.vectorType = vector.name;
-          offer.licensePlate = vector.licensePlate;
-          offer.occupiedCapacity = (vector.capacity - element.initialFreeCapacity) / vector.capacity *100 ;
-          offer.occupiedCapacity =  Number(offer.occupiedCapacity.toFixed(1));
 
 
-          //rotte per vettore
-          this.vectorRouteService.getByVectorId(vector.id).subscribe(data => {
+          //trovo i viaggi per vettore
+          this.viaggioService.getByVectorId(vector.id).subscribe(viaggiList =>{
 
-            offer.startingDate = data[0].startDate;
-            offer.endingDate = data[data.length-1].endDate;
-
-            var now : Date = new Date();
-            var tomorrow = new Date()
-            tomorrow.setDate(tomorrow.getDate() + 1)
-            var date =this.datepipe.transform(now, 'yyyy-MM-dd hh:mm');
-            var tomorrowDate =this.datepipe.transform(tomorrow, 'yyyy-MM-dd hh:mm');
+            viaggiList.forEach(viaggio => {
 
 
-            //se l'offerta è scaduta mostro il badge rosso "expired"
-            if(String(date) > String(offer.endingDate)){
-              offer.available = false;
-              offer.lastDay = false;
-            }
-            else{
-              offer.available = true;
-              // se l'offerta è di domani, mostro il badge giallo "hurry up"
-              if(String(tomorrowDate) > String(offer.startingDate)){
-                offer.lastDay = true;
+              var offer : Offer = {} as Offer;
+
+            this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(viaggi => {
+
+              offer.vectorId = vector.id;
+              offer.vectorBrand = vector.brand;
+              offer.vectorType = vector.name;
+              offer.licensePlate = vector.licensePlate;
+
+              offer.viaggioId = viaggio.id;
+              setTimeout(()=>{ offer.occupiedCapacity = (vector.capacity - viaggio.initialFreeCapacity) / vector.capacity *100 ;
+                offer.occupiedCapacity =  Number(offer.occupiedCapacity.toFixed(1));});
+
+              offer.startingDate = viaggi[0].startDate;
+              offer.endingDate = viaggi[viaggi.length-1].endDate;
+
+              var now : Date = new Date();
+              var tomorrow = new Date()
+              tomorrow.setDate(tomorrow.getDate() + 1)
+              var date =this.datepipe.transform(now, 'yyyy-MM-dd hh:mm');
+              var tomorrowDate =this.datepipe.transform(tomorrow, 'yyyy-MM-dd hh:mm');
+
+
+              //se l'offerta è scaduta mostro il badge rosso "expired"
+              if(String(date) > String(offer.endingDate)){
+                offer.available = false;
+                offer.lastDay = false;
               }
-            }
+              else{
+                offer.available = true;
+                // se l'offerta è di domani, mostro il badge giallo "hurry up"
+                if(String(tomorrowDate) > String(offer.startingDate)){
+                  offer.lastDay = true;
+                }
+              }
 
-            this.routeService.getById(data[0].id).subscribe(route =>{
-              offer.startingCity = route.startCity;
-            });
-
-            this.routeService.getById(data[data.length - 1 ].id).subscribe(route =>{
-              offer.endingCity = route.endCity;
-            });
-
-            //aggiungo tutte le sottorotte di una MEGAROTTA
-
-            offer.routes = [];
-
-            for (const vectorRoute of data) {
-              // somma =           storico    +         capacità del vettore - carico libero alla fine della tratta
-              this.availableSum = this.availableSum + vector.capacity - vectorRoute.availableCapacity;
-              this.routeService.getById(vectorRoute.id).subscribe(route =>{
-                offer.routes.push(route);
-
+              this.routeService.getById(viaggi[0].routeId).subscribe(route =>{
+                offer.startingCity = route.startCity;
               });
-            }
-            setTimeout(()=>{
-              for (const route of offer.routes) {
 
-              this.totalDistance = this.totalDistance + route.distanceKm;
-              offer.length = this.totalDistance;
+              this.routeService.getById(viaggi[viaggi.length - 1 ].routeId).subscribe(route =>{
+                offer.endingCity = route.endCity;
+              });
 
-            }              this.totalDistance = 0;
-            },80);
+              //aggiungo tutte le sottorotte di una MEGAROTTA
+
+              offer.routes = [];
+
+              for (const vectorRoute of viaggi) {
+                // somma =           storico    +         capacità del vettore - carico libero alla fine della tratta
+                this.availableSum = this.availableSum + vector.capacity - vectorRoute.availableCapacity;
+                this.routeService.getById(vectorRoute.routeId).subscribe(route =>{
+                  offer.routes.push(route);
+
+                });
+              }
+              setTimeout(()=>{
+                for (const route of offer.routes) {
+
+                this.totalDistance = this.totalDistance + route.distanceKm;
+                offer.length = this.totalDistance;
+
+              }              this.totalDistance = 0;
+              },80);
 
 
 
-               //aggiorno la percentuale di carico occupata
-               offer.occupiedCapacity = (vector.capacity - element.initialFreeCapacity + this.availableSum) / (vector.capacity *(data.length+1)) *100 ;
-               offer.occupiedCapacity =  Number(offer.occupiedCapacity.toFixed(1));
+                //aggiorno la percentuale di carico occupata
+                offer.occupiedCapacity = (vector.capacity - element.initialFreeCapacity + this.availableSum) / (vector.capacity *(viaggi.length+1)) *100 ;
+                offer.occupiedCapacity =  Number(offer.occupiedCapacity.toFixed(1));
 
-               this.availableSum = 0;
+                this.availableSum = 0;
 
-          })
+            });
+            this.offers.push(offer);
 
-          this.offers.push(offer);
+          });
 
-        })
+
+        });
+      });
 
     });
 
@@ -154,7 +168,7 @@ export class CompanyHomeComponent implements OnInit {
 
 
 openModal(id : number) {
-  localStorage.setItem('vettore', JSON.stringify(id));
+  localStorage.setItem('viaggio', JSON.stringify(id));
   const dialogConfig = new MatDialogConfig();
   // The user can't close the dialog by clicking outside its body
   dialogConfig.disableClose = true;

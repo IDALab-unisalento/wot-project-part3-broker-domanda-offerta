@@ -2,6 +2,7 @@ import { Route } from './route';
 export interface Offer {
 
   vectorId : number;
+  viaggioId : number;
   vectorType : string;
   vectorBrand : string;
   licensePlate : string;
