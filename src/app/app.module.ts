@@ -1,9 +1,9 @@
 import { PendingRegistrationComponent } from './components/pending-registrations/pending-registrations.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -17,9 +17,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalComponent } from './components/modal/modal.component';
 import { CompanyService } from './services/company.service';
@@ -36,6 +39,12 @@ import { ScheduleComponent } from './components/schedule/schedule.component';
 import { IgxGeographicMapModule } from 'igniteui-angular-maps';
 import { IgxDataChartInteractivityModule } from 'igniteui-angular-charts';
 import { ViaggioService } from './services/viaggio.service';
+import { MyVectorsComponent } from './components/my-vectors/my-vectors.component';
+import { ModalErrorVectorComponent } from './components/modal-error-vector/modal-error-vector.component';
+import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 
 @NgModule({
@@ -51,12 +60,16 @@ import { ViaggioService } from './services/viaggio.service';
     ModalComponent,
     ModalBlankComponent,
     ModalWaitComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    MyVectorsComponent,
+    ModalErrorVectorComponent,
+    SearchFilterPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MatToolbarModule,
     MatSidenavModule,
@@ -65,10 +78,16 @@ import { ViaggioService } from './services/viaggio.service';
     MatDividerModule,
     BrowserAnimationsModule,
     MatListModule,
+    MatInputModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatDatepickerModule,
     IgxGeographicMapModule,
-    IgxDataChartInteractivityModule
-  ],
+    IgxDataChartInteractivityModule,
+    MatNativeDateModule,
+    NgxMaterialTimepickerModule
+    ],
   providers: [
             {
               provide: MatDialogRef,

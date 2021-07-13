@@ -19,7 +19,8 @@ export class VectorService {
 
   getAllEndPoint = 'http://localhost:8080/vector/getAll'
   vectorByIdEndPoint = 'http://localhost:8080/vector/get'
-
+  saveEndPoint = 'http://localhost:8080/vector/save'
+  getByTargaEndPoint = 'http://localhost:8080/vector/getByLicensePlate'
 
   getAll(): Observable<Vector[]>{
     return this.http.get<Vector[]>(this.getAllEndPoint);
@@ -28,6 +29,19 @@ export class VectorService {
 getById(id : number): Observable<Vector>{
 
   return this.http.get<Vector>(`${this.vectorByIdEndPoint}/${id}`);
+}
+
+
+
+save(vector : Vector) : Observable<Vector>{
+
+  return this.http.post<Vector>(this.saveEndPoint, vector, httpOptions);
+
+}
+
+getByTarga(targa : string) : Observable<Vector>{
+  return this.http.get<Vector>(`${this.getByTargaEndPoint}/${targa}`);
+
 }
 
 

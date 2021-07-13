@@ -1,6 +1,5 @@
+import { Vector } from 'src/app/models/vector';
 import { ViaggioService } from './../../services/viaggio.service';
-import { Viaggio } from './../../models/viaggio';
-import { Vector } from './../../models/vector';
 import { CompanyVector } from './../../models/company-vector';
 import { User } from './../../models/user';
 import { Component, OnInit } from '@angular/core';
@@ -37,6 +36,13 @@ export class CompanyHomeComponent implements OnInit {
   availableSum : number = 0;
   //devo tenere traccia della distanza totale
   totalDistance : number = 0;
+  addMenu : boolean = false;
+
+  newOffer : Offer = {} as Offer;
+  cities : string[] = [] as string[];
+  query : string = "";
+  myVectors : Vector[]= [] as Vector[];
+  selectedVector : Vector = {} as Vector;
 
   ngOnInit(): void {
 
@@ -44,6 +50,7 @@ export class CompanyHomeComponent implements OnInit {
 
     this.getAllVectors(); // faccio la getAll perchè tanto so che nel sistema saranno relativamente pochi
     this.getCompanyVectors();
+    this.getAllCities();
 
 
   }
@@ -67,8 +74,7 @@ export class CompanyHomeComponent implements OnInit {
         //singolo vettore
         this.vectorService.getById(element.vectorId).subscribe(vector =>{
           this.totalDistance = 0;
-
-
+          this.myVectors.push(vector);
 
 
           //trovo i viaggi per vettore
@@ -158,7 +164,6 @@ export class CompanyHomeComponent implements OnInit {
 
         });
       });
-
     });
 
   });
@@ -178,5 +183,26 @@ openModal(id : number) {
   // https://material.angular.io/components/dialog/overview
   const modalDialog = this.matDialog.open(ScheduleComponent, dialogConfig);
 }
+
+getAllCities(){
+  this.routeService.getAll().subscribe( routes => {
+    routes.forEach(route => {
+
+      this.cities.push(route.startCity);
+      this.cities.push(route.endCity);
+    });
+    //elimino i doppioni
+    this.cities = this.cities.filter(function(elem, index, self) {
+      return index === self.indexOf(elem);
+    });
+  })
+}
+
+
+getItems(ev : any) {
+  this.query = ev.target.value;
+}
+
+addNewOffer(){}
 
 }

@@ -12,8 +12,8 @@
 <nav class="navbar navbar-icon-top navbar-expand-lg  navbar-dark bg-primary ">
 
 
-  <a class="navbar-brand" routerLink="/home">
-    <i class="fas fa-home"></i>
+  <a class="navbar-brand" routerLink="/home" style="color: white;">
+    <i class="fas fa-home" ></i>
     &nbsp;
  Home</a>
 </nav>
@@ -36,6 +36,14 @@
 
   <mat-divider></mat-divider>
 
+  <div *ngIf="userType == 'company'" class="item " onmouseover="" style="cursor: pointer;" routerLink="/myVectors/{{me.id}}"
+  >
+    <i class="fas fa-bus"  onmouseover="" style="cursor: pointer;"
+    > </i>
+   My Vectors
+  </div>
+
+  <mat-divider></mat-divider>
 
 
 

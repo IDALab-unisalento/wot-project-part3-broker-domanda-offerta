@@ -31,7 +31,7 @@ userType  : string = "";
   ngOnInit(): void {
     this.getAllUsers();
 
-    this.me = JSON.parse(String(localStorage.getItem("admin")));
+    this.me = JSON.parse(String(localStorage.getItem("loggedUser")));
     this.logout=JSON.parse(String(localStorage.getItem("logout")))
     this.userType = JSON.parse(String(localStorage.getItem("userType")));
 
