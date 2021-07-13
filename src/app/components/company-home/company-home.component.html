@@ -18,6 +18,7 @@
                                 <th class="text-center"><span>Start Warehouse</span></th>
                                 <th class="text-center"><span>End Warehouse</span></th>
                                 <th class="text-center"><span>Trip Lenght</span></th>
+                                <th class="text-center"><span>$/Km</span></th>
                                 <th class="text-center"><span>Start</span></th>
                                 <th class="text-center"><span>End</span></th>
                                 <th class="text-center"><span>Info</span></th>
@@ -50,7 +51,7 @@
                                   <td class="text-center">{{offer.startingCity}}</td>
                                   <td class="text-center">{{offer.endingCity}}</td>
                                   <td class="text-center">{{offer.length}} Km</td>
-
+                                  <td class="text-center">{{offer.costoPerKm}} $</td>
                                   <td class="text-center">{{offer.startingDate | date : "dd/MM/YYYY HH:mm":"GMT"}}</td>
                                   <td class="text-center">{{offer.endingDate | date : "dd/MM/YYYY HH:mm":"GMT"}}</td>
 
@@ -98,7 +99,7 @@
   <br>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="container">
+<div class="container" style="width: 2000px;">
 <div class="row flex-lg-nowrap">
   <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
 
@@ -111,6 +112,7 @@
             <div class="e-profile">
 
               <div class="widget-header bordered-top bordered-sky" style="background-color:#044459" >
+                <!--     1 TRIP INFO   -->
                 <span class="widget-caption" style="color: white;"> 1. Trip info</span>
             </div>
               <div class="tab-content pt-3">
@@ -121,10 +123,12 @@
                         <div class="row">
                           <div class="col">
                             <div class="form-group">
+                                              <!--     STARTING CITY   -->
+
                               <label style="color: #044459">Starting City: <label style="color:red">*</label></label>
                               <span class="input-icon">
 
-                                <input class="form-control" required [matAutocomplete]="start" (input)="getItems($event)" type="text" name="name" placeholder="Vehicle starting city"
+                                <input class="form-control" required [matAutocomplete]="start" (input)="getItems($event)" type="text" name="name" placeholder="Vehicle starting city" style="width: 250px;"
                                 #startingCity = 'ngModel'
                                 name="startingCity"
                                 [ngClass]="{'is-invalid': !startingCity.valid && startingCity.touched}"
@@ -155,20 +159,31 @@
                           </div>
                           <div class="col">
 
+                                            <!--     start city time   -->
+
                             <div class="row">
                               <div class="col">
                                 <div class="form-group" >
                                   <label style="color: #044459">Start Time: <label style="color:red">* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></label>
+                                  <div *ngIf="newOffer.startDate != undefined">
+                                  </div>
 
                                   <mat-form-field appearance="fill" style="width: 150px;">
                                     <mat-label style="font-size: 12px;">Choose date</mat-label>
-                                    <input  matInput required  [matDatepicker]="picker">
+                                    <input  matInput required  [matDatepicker]="picker"
+                                    #startDate="ngModel"
+                                    name="startDate"
+                                    [(ngModel)]="newOffer.startDate">
+
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
                                   </mat-form-field>
 
                                   &nbsp;&nbsp;&nbsp;
-                                    <input style="width: 60px;" placeholder="hh:mm" aria-label="24hr format" [ngxTimepicker]="fullTime" [format]="24"  readonly>
+                                    <input style="width: 60px;" required placeholder="hh:mm" aria-label="24hr format" [ngxTimepicker]="fullTime" [format]="24"
+                                    #startTime="ngModel"
+                                    name="startTime"
+                                    [(ngModel)]="newOffer.startTime">
                                     <ngx-material-timepicker #fullTime></ngx-material-timepicker>
                                 </div>
                               </div>
@@ -176,22 +191,137 @@
                           </div>
                         </div>
 
+
+
+                        <!-- TREATS -->
+
+
+
+                        <div class="card " style="background-color:  rgb(236, 238, 250);">
+
+                         <ul *ngIf="treatsCity.length > 0">
+
+                          <li *ngFor="let city of treatsCity; let myIndex = index" >
+
+                          <div class="card" style="background-color: rgb(236, 238, 250);">
+
+                          <div class="row">
+                            <i class="fas fa-minus-circle" style="color: red; font-size: 25px;cursor: pointer; position: relative; left: -5px;"(click)="removeTreats(myIndex)" ></i>
+
+
+                            <div class="col">
+
+                          <div class="form-group" >
+
+                          <label style="color: #044459">Treats City {{myIndex + 1}}:</label>
+                          <span class="input-icon">
+
+                            <input class="form-control"  [matAutocomplete]="treats10" (input)="getItems($event)" type="text" placeholder="City" style="width: 205px;"
+                            name="treatsCity{{treatsCity[myIndex]}}"
+                            [(ngModel)]="treatsCity[myIndex]"
+                            >
+                            <i class="fa fa-search success circular"></i>
+                            <mat-autocomplete #treats10="matAutocomplete">
+                              <mat-option *ngFor="let city of cities  | searchFilter :query" [value]="city">
+                                {{city}}
+                              </mat-option>
+
+                            </mat-autocomplete>
+
+                          </span>
+
+
+                        </div>
+
+
+                        <div class="form-group">
+                        <label  style="color: #044459;" >Weight of the load to be delivered:  &nbsp;</label>
+                        <br>
+                        <input required placeholder="0"
+                          style="width : 50px"
+                          pattern="^[0-9]*$"
+                          name="partialLoads[myIndex]"
+                          [(ngModel)]="partialLoads[myIndex]"
+                        > Kg
+                      </div>
+                    </div> <!--fine colonna-->
+
+
+                      <div class="col">
+                          <div class="form-group" >
+                            <label style="color: #044459"><strong>{{myIndex != 0 ?  treatsCity[myIndex - 1] : newOffer.startingCity }}</strong> Start Time:</label>
+                            <br>
+                            <mat-form-field appearance="fill" style="width: 150px;">
+                              <mat-label style="font-size: 12px;">Choose date</mat-label>
+                              <input  matInput required  [matDatepicker]="pickerDate"
+                              name="startDates[myIndex]"
+                              [(ngModel)]="startDates[myIndex]">
+                              <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
+                              <mat-datepicker #pickerDate></mat-datepicker>
+                            </mat-form-field>
+
+                            &nbsp;
+                              <input style="width: 60px;" placeholder="hh:mm" aria-label="24hr format" [ngxTimepicker]="fullTime3" [format]="24"
+
+                              name="startTimes[myIndex]"
+                              [(ngModel)]="startTimes[myIndex]">
+                              <ngx-material-timepicker #fullTime3></ngx-material-timepicker>
+                          </div>
+                          <div class="form-group" >
+                            <label style="color: #044459"><strong >{{treatsCity[myIndex]}}</strong> Arrival Time:</label>
+                            <br>
+                            <mat-form-field appearance="fill" style="width: 150px;">
+                              <mat-label style="font-size: 12px;">Choose date</mat-label>
+                              <input  matInput required  [matDatepicker]="picker4"
+                              name="endDates[myIndex]"
+                              [(ngModel)]="endDates[myIndex]">
+                              <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                              <mat-datepicker #picker4></mat-datepicker>
+                            </mat-form-field>
+
+                            &nbsp;
+                              <input style="width: 60px;" placeholder="hh:mm" aria-label="24hr format" [ngxTimepicker]="fullTime4" [format]="24"
+                              name="endTimes[myIndex]"
+                              [(ngModel)]="endTimes[myIndex]">
+                              <ngx-material-timepicker #fullTime4></ngx-material-timepicker>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                    </li>
+
+                      </ul>
+                    </div>
+
+
+                    <br>
+                      <i class="fas fa-plus-circle" style="color: #00d844; font-size: 40px;cursor: pointer;"(click)="addTreats()" ></i> &nbsp;&nbsp; <label style="color: #044459; font-size: 18px; font-weight: bold; position: relative; top: -10px;">Add a treats</label>
+
+                                              <!-- end TREATS -->
+
+
                         <div class="row">
                           <div class="col">
                             <div class="form-group">
                               <label style="color: #044459">Final City: <label style="color:red">*</label></label>
                               <span class="input-icon ">
-                                <input class="form-control" required [matAutocomplete]="end"  (input)="getItems($event)" type="text" name="username" placeholder="City of the warehouse where the vector is left"
+                                <input class="form-control" required [matAutocomplete]="end"  (input)="getItems($event)" type="text" name="username" placeholder="City where the vector is left" style="width: 250px;"
                                 #endingCity = 'ngModel'
                                 name="endingCity"
+                                appForbiddenName='Ruffano'
                                 [ngClass]="{'is-invalid': !endingCity.valid && endingCity.touched}"
                                 [ngClass]="{'is-valid': endingCity.valid}"
                                 [(ngModel)]="newOffer.endingCity">
                                 <i class="fa fa-search success circular"></i>
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback" [hidden]="!endingCity.errors?.required">
                                   <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
 
                                   End city is required
+                                </div>
+                                <div class="invalid-feedback" [hidden]="!endingCity.errors?.appForbiddenName">
+                                  <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+
+                                  End city cannot be the same of start
                                 </div>
                                 <div class="valid-feedback">
                                   <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
@@ -214,14 +344,20 @@
                               <label  style="color: #044459">End Time: <label style="color:red">*  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></label>
 
                               <mat-form-field appearance="fill" style="width: 150px;">
-                                <mat-label>Choose a date</mat-label>
-                                <input  matInput required  [matDatepicker]="picker2">
+                                <mat-label  style="font-size: 12px;">Choose date</mat-label>
+                                <input  matInput required  [matDatepicker]="picker2"
+                                #endDate="ngModel"
+                                name="endDate"
+                                [(ngModel)]="newOffer.endDate">
                                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                 <mat-datepicker #picker2></mat-datepicker>
                               </mat-form-field>
 
                               &nbsp;&nbsp;&nbsp;
-                              <input style="width: 60px;" placeholder="hh:mm" aria-label="24hr format" [ngxTimepicker]="fullTime2" [format]="24"  readonly>
+                              <input style="width: 60px;" required placeholder="hh:mm" aria-label="24hr format" [ngxTimepicker]="fullTime2" [format]="24"
+                              #endTime="ngModel"
+                              name="endTime"
+                              [(ngModel)]="newOffer.endTime">
                               <ngx-material-timepicker #fullTime2></ngx-material-timepicker>
 
 
@@ -229,6 +365,19 @@
                           </div>
                         </div>
 
+                        <div class="form-group">
+                          <label  style="color: #044459">Weight of the initial load: <label style="color:red">*  &nbsp;</label></label>
+                          <input type="text" required placeholder="0"
+                            #initialLoad="ngModel"
+                            name="initialLoad"
+                            style="width : 50px"
+                            pattern="^[0-9]*$"
+                            [ngClass]="{'is-invalid': (!initialLoad.valid && initialLoad.touched)}"
+                            [ngClass]="{'is-valid': initialLoad.valid}"
+                            [(ngModel)]="newOffer.initialLoad"
+                            >
+                             Kg
+                        </div>
 
                         <div class="widget-header bordered-top bordered-sky" style="background-color:#044459" >
                           <span class="widget-caption" style="color: white;"> 2. Vector</span>
@@ -237,19 +386,22 @@
 
                         <div class="row">
                           <div class="col mb-3">
-
-
                             <div class="form-group">
-                              <label  style="color: #044459">Vector Name: <label style="color:red">*  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></label>
+                              <label  style="color: #044459">Select from your vectors: <label style="color:red">* </label></label>
+
                               <div class="col-sm-10">
-                                <select class="form-control">
+                                <select  class="form-control" required (ngModelChange)="onChange($event)"
+                                #vector="ngModel"
+                                name="name"
+                                [(ngModel)]="selectedVector">
                                   <option selected="">Select from your vectors</option>
-                                  <option *ngFor="let vector of vectors"
-                                  #vector="ngModel"
-                                  name="vectorType"
-                                  [(ngModel)]="newOffer.vectorType"
-                                   >{{vector.name}}</option>
+                                  <option *ngFor="let vector of myVectors" >{{vector.name}} {{vector.licensePlate}}</option>
                                 </select>
+                                <br>
+                                <label style="position: relative;left: 10px;" class="newVectorLink"
+                                  style="cursor: pointer;color: #4374e0;"
+                                  routerLink="/myVectors/{{loggedUser.id}}"
+                                > or add a new one</label>
                               </div>
                             </div>
 
@@ -259,13 +411,18 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-12 col-sm-6 mb-3">
-                        <div class="mb-2"><b>Vector Info</b></div>
+                      <div class="col-12 col-sm-6 mb-3" *ngIf="newOffer.vector != null">
+                        <div class="mb-2"><b>Vector Info</b>
+                          <button  *ngIf="newOffer.vector != null"
+                          (click)="removeVector()"
+                            style="position: absolute;right: 17px; font-size: 10px;" class="btn btn-outline-danger"
+                            type="button">Remove selected vector &nbsp;<i class="far fa-times-circle"></i>
+                          </button></div>
                         <div class="row">
                           <div class="col">
                             <div class="form-group">
                               <label>Brand</label>
-                              <input class="form-control" type="text">
+                              <input class="form-control" disabled type="text" value="{{newOffer.vector.brand}}">
                             </div>
                           </div>
                         </div>
@@ -273,7 +430,7 @@
                           <div class="col">
                             <div class="form-group">
                               <label>License Plate</label>
-                              <input class="form-control" type="text">
+                              <input class="form-control" disabled type="text" value="{{newOffer.vector.licensePlate}}">
                             </div>
                           </div>
                         </div>
@@ -281,38 +438,57 @@
                           <div class="col">
                             <div class="form-group">
                               <label> <span class="d-none d-xl-inline">Capacity</span></label>
-                              <input class="form-control" type="text"></div>
+                              <input class="form-control" disabled type="text" value="{{newOffer.vector.capacity}}"></div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-12 col-sm-5 offset-sm-1 mb-3">
-                        <div class="mb-2"><b>Keeping in Touch</b></div>
-                        <div class="row">
-                          <div class="col">
-                            <label>Email Notifications</label>
-                            <div class="custom-controls-stacked px-2">
-                              <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="notifications-blog" checked="">
-                                <label class="custom-control-label" for="notifications-blog">Blog posts</label>
-                              </div>
-                              <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="notifications-news" checked="">
-                                <label class="custom-control-label" for="notifications-news">Newsletter</label>
-                              </div>
-                              <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="notifications-offers" checked="">
-                                <label class="custom-control-label" for="notifications-offers">Personal Offers</label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <label style="color: rgb(99, 99, 99);" > <label style="color:red">*</label> : Mandatory Fields</label>
 
+                    </div>
+
+                    <!-- PREZZO -->
+                    <div class="widget-header bordered-top bordered-sky" style="background-color:#044459" >
+                      <span class="widget-caption" style="color: white;"> 3. Price  $ / Km</span>
+                  </div>
+
+
+                    <br>
+
+                    <label  style="color: #044459">Enter the cost of the trip ($/km): <label style="color:red">* </label></label>
+                    <div class="form-group" style="width: 200px;">
+                      <div class="input-group input-group-xl">
+                          <span class="input-group-addon">$ / km</span>
+                          <input type="text" required class="form-control" name="costoPerKm" placeholder="0.10"
+                          #costoPerKm = 'ngModel'
+                          name="costoPerKm"
+                          pattern="^[0-9,.]*$"
+                          [ngClass]="{'is-invalid': !costoPerKm.valid && costoPerKm.touched}"
+                          [ngClass]="{'is-valid': costoPerKm.valid}"
+                          [(ngModel)]="newOffer.costoPerKm"
+                          >
+                          <div class="invalid-feedback" [hidden]="!costoPerKm.errors?.required">
+                            <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+                            Price is required
+                          </div>
+                          <div class="invalid-feedback" [hidden]="!costoPerKm.errors?.pattern">
+                            <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+                            Only number accepted
+                          </div>
+                          <div class="valid-feedback">
+                            <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
+                            Ok!
+                          </div>
+
+                      </div>
+                  </div>
+
+
+                  <!-- FINE PREZZO-->
+                    <br><br>
+                    <label style="color: rgb(99, 99, 99);" > <label style="color:red">*</label> : Mandatory Fields</label>
                     <div class="row">
                       <div class="col d-flex justify-content-end">
-                        <button class="btn btn-primary" type="submit" [disabled]="!offerForm.form.valid"(click)="addNewOffer()">Add Offer</button>
+                        <button class="btn btn-dark" (click)="addMenu = false">Cancel</button> &nbsp;
+                        <button class="btn btn-primary" type="submit" [disabled]="!offerForm.form.valid">Add Offer</button>
                       </div>
                     </div>
                   </form>

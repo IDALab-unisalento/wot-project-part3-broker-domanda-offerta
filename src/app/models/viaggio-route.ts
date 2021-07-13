@@ -5,8 +5,8 @@ export interface ViaggioRoute {
   availableCapacity : number;
   startDate : Date;
   endDate : Date;
-  vectorId : number;
   routeId : number;
+  viaggioId : number;
   route : Route;
   day : number;
   startDateString : string;

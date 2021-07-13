@@ -1,8 +1,8 @@
+import { Viaggio } from 'src/app/models/viaggio';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Viaggio } from '../models/viaggio';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -21,6 +21,7 @@ export class ViaggioService {
   getAllEndPoint = 'http://localhost:8080/viaggio/getAll'
   routeByIdEndPoint = 'http://localhost:8080/viaggio/get'
   getByVectorIdEndPoint = 'http://localhost:8080/viaggio/getByVector'
+  saveEndPoint = 'http://localhost:8080/viaggio/save'
 
   getAll(): Observable<Viaggio[]>{
     return this.http.get<Viaggio[]>(this.getAllEndPoint);
@@ -34,6 +35,13 @@ getById(id : number): Observable<Viaggio>{
 getByVectorId(id : number): Observable<Viaggio[]>{
 
   return this.http.get<Viaggio[]>(`${this.getByVectorIdEndPoint}/${id}`);
+}
+
+
+save(viaggio : Viaggio) : Observable<Viaggio>{
+
+  return this.http.post<Viaggio>(this.saveEndPoint, viaggio, httpOptions);
+
 }
 
 }

@@ -1,6 +1,6 @@
+import { ViaggioRoute } from './../models/viaggio-route';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { ViaggioRoute } from '../models/viaggio-route';
 import { Vector } from '../models/vector';
 import { Route } from '../models/route';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
@@ -35,12 +35,9 @@ export class ViaggioRouteService {
   }
 
 
-  save(vectorId : number, routeId : number) : Observable<ViaggioRoute>{
+  save(viaggioRoute : ViaggioRoute) : Observable<ViaggioRoute>{
 
-    this.viaggioRoute.vectorId = vectorId;
-    this.viaggioRoute.routeId = routeId;
-
-    return this.http.post<ViaggioRoute>(this.saveEndPoint, this.viaggioRoute, httpOptions);
+    return this.http.post<ViaggioRoute>(this.saveEndPoint, viaggioRoute, httpOptions);
 
   }
 

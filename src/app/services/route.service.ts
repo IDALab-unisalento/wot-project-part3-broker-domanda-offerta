@@ -20,7 +20,8 @@ export class RouteService {
 
   getAllEndPoint = 'http://localhost:8080/route/getAll'
   routeByIdEndPoint = 'http://localhost:8080/route/get'
-
+  getByCitiesEndPoint = 'http://localhost:8080/route/getByStartCityAndEndCity'
+  saveEndPoint = 'http://localhost:8080/route/save'
 
   getAll(): Observable<Route[]>{
     return this.http.get<Route[]>(this.getAllEndPoint);
@@ -29,6 +30,18 @@ export class RouteService {
 getById(id : number): Observable<Route>{
 
   return this.http.get<Route>(`${this.routeByIdEndPoint}/${id}`);
+}
+
+
+save(route : Route) : Observable<Route>{
+
+  return this.http.post<Route>(this.saveEndPoint, route, httpOptions);
+
+}
+
+getByCities(startCity : string, endCity : string): Observable<Route>{
+
+  return this.http.get<Route>(`${this.getByCitiesEndPoint}/${startCity}/${endCity}`);
 }
 
 }
