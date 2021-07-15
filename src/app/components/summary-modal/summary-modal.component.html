@@ -1,0 +1,233 @@
+<div class="container bootstrap snippets bootdey">
+  <div class="panel-body inf-content">
+      <div class="row">
+
+          <div class="col-md-6">
+              <br><br><strong style="display: flex; justify-content: center;">Summary</strong><br><br><br>
+              <div class="table-responsive">
+              <table class="table table-user-information"*ngIf="type=='company'">
+                  <tbody>
+                      <tr>
+                          <td>
+                              <strong>
+                                <mat-icon>home</mat-icon>
+
+                                  Company Name
+                              </strong>
+                          </td>
+                          <td class="text-primary">
+                              {{company.name}}
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <strong>
+                                <mat-icon>account_circle</mat-icon>
+                                  Username
+                              </strong>
+                          </td>
+                          <td class="text-primary">
+                              {{company.username}}
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <strong>
+                                <mat-icon>alternate_email</mat-icon>
+                                Email
+                              </strong>
+                          </td>
+                          <td class="text-primary">
+                              {{company.email}}
+                          </td>
+                      </tr>
+
+                      <tr>
+                          <td>
+                              <strong>
+                                <mat-icon>sort</mat-icon>
+                                Type
+                              </strong>
+                          </td>
+                          <td class="text-primary">
+                              Company
+                          </td>
+                      </tr>
+
+
+                      <tr>
+                          <td>
+                              <strong>
+                                <mat-icon>link</mat-icon>
+                                Web site
+                              </strong>
+                          </td>
+                          <td class="text-primary">
+                              {{company.webSite}}
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <strong>
+                                <mat-icon> phone</mat-icon>
+                                Phone Number
+                              </strong>
+                          </td>
+                          <td class="text-primary">
+                              {{company.phoneNumber}}
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <strong>
+                                <mat-icon>location_city</mat-icon>
+                                Head quarter
+                              </strong>
+                          </td>
+                          <td class="text-primary">
+                              {{company.headquarters}}
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <strong>
+                                <mat-icon>event_note</mat-icon>
+                                Legal Form
+                              </strong>
+                          </td>
+                          <td class="text-primary">
+                               {{company.legalForm}}
+                          </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                            <strong>
+                              <mat-icon>event_note</mat-icon>
+                              IVA
+                            </strong>
+                        </td>
+                        <td class="text-primary">
+                             {{company.iva}}
+                        </td>
+                    </tr>
+                  </tbody>
+              </table>
+
+              <!--affittuario-->
+
+
+              <table class="table table-user-information"*ngIf="type=='affittuario'">
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong>
+                              <mat-icon>account_circle</mat-icon>
+
+                                Name
+                            </strong>
+                        </td>
+                        <td class="text-primary">
+                            {{affittuario.name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>
+                              <mat-icon>account_circle</mat-icon>
+                                Surname
+                            </strong>
+                        </td>
+                        <td class="text-primary">
+                            {{affittuario.surname}}
+                        </td>
+                    </tr>
+                    <tr>
+                      <td>
+                          <strong>
+                            <mat-icon>account_circle</mat-icon>
+                              Username
+                          </strong>
+                      </td>
+                      <td class="text-primary">
+                          {{affittuario.username}}
+                      </td>
+                  </tr>
+                    <tr>
+                        <td>
+                            <strong>
+                              <mat-icon>alternate_email</mat-icon>
+                              Email
+                            </strong>
+                        </td>
+                        <td class="text-primary">
+                            {{affittuario.email}}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <strong>
+                              <mat-icon>sort</mat-icon>
+                              Type
+                            </strong>
+                        </td>
+                        <td class="text-primary">
+                            User
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <strong>
+                              <mat-icon>gps_fixed</mat-icon>
+                              Nation
+                            </strong>
+                        </td>
+                        <td class="text-primary">
+                            {{affittuario.nation}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>
+                              <mat-icon> phone</mat-icon>
+                              Phone Number
+                            </strong>
+                        </td>
+                        <td class="text-primary">
+                            {{affittuario.phoneNumber}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>
+                              <mat-icon>calendar_today</mat-icon>
+                              Born date
+                            </strong>
+                        </td>
+                        <td class="text-primary">
+                            {{affittuario.bornDate | date :'dd/MM/YYYY'}}
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+
+  <br><br>
+
+  <h3 style="display: flex; justify-content: center;">
+    Wait until the administrator validates your registration, thanks for waiting and for registering
+  </h3>
+  <footer id="modal-footer"  style="display: flex;justify-content: center;">
+      <button mat-raised-button class="btn btn-danger" id="modal-cancel-button" (click)="closeModal()">OK
+      </button>
+  </footer>
+
+

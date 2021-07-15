@@ -53,7 +53,7 @@
             }'
             >
             <div class="invalid-feedback" [hidden]="!psw.errors?.required">
-              Password richiesto
+              Password required
           </div>
 					</div>
 					<br>
@@ -62,8 +62,12 @@
 					</div>
 				</form>
 			</div>
-
-		</div>
+      <br>
+      <div style="color: white;display: flex;justify-content: center; font-weight: bold; font-size: 20px;" > Or</div>
+      <div style="display: flex; justify-content: center;">
+        <input  type="submit" class="btnRegister bg-danger" value="Sign Up" routerLink="/signup"/>
+    </div>
+    </div>
 	</div>
 </div>
 

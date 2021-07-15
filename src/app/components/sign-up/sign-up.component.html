@@ -1,0 +1,448 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<div class="register">
+<div class="container " >
+                <div class="row">
+                    <div class="col-md-3 register-left">
+                        <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+                        <h3>Welcome</h3>
+                        <p>You are 30 seconds away from earning your own account!</p>
+                    </div>
+                    <div class="col-md-9 register-right">
+                        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link "
+                                [ngClass]="{'active': companyVersion}"
+
+                                style="cursor: pointer;" (click)="companyMode()">Company</a>
+                            </li>
+                            <li class="nav-item"  >
+                                <a class="nav-link"
+                                [ngClass]="{'active': userVersion}"
+                                style="cursor: pointer;"(click)="userMode()">User</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent" >
+
+                          <!-- company -->
+                            <form #companyForm="ngForm" (ngSubmit)="register()" class="form"  class="tab-pane fade show"
+                            [ngClass]="{'active': companyVersion}"
+                            id="home" role="tabpanel" aria-labelledby="home-tab" *ngIf="companyVersion">
+                                <h1 class="register-heading">Sign up as a Company
+                                  <h5 style="display: flex;justify-content: center;text-align: center;">You can rent your vectors </h5>
+                                </h1>
+                                <div class="row register-form">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" required placeholder="Company Name *" value=""
+                                            #name = 'ngModel'
+                                            name="name"
+                                            [ngClass]="{'is-invalid': !name.valid && name.touched}"
+                                            [ngClass]="{'is-valid': name.valid}"
+                                            [(ngModel)]="newCompany.name"/>
+                                            <div class="invalid-feedback" >
+                                              <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                              Company Name is required
+                                            </div>
+                                            <div class="valid-feedback">
+                                              <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                              Ok!
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" required placeholder="Username *" value=""
+                                            #username = 'ngModel'
+                                            name="username"
+                                            [ngClass]="{'is-invalid': (!username.valid && username.touched )|| checkUsername()} "
+                                            [ngClass]="{'is-valid': username.valid}"
+                                            [(ngModel)]="newCompany.username"/>
+                                            <div class="invalid-feedback" [hidden]="!username.errors?.required">
+                                              <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                               Username is required
+                                            </div>
+                                            <div class="invalid-feedback" *ngIf="checkUsername()" style="color: rgb(210, 6, 6);">
+                                              <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                               Username already existing
+                                            </div>
+                                            <div class="valid-feedback" [hidden]="checkUsername()">
+                                              <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                              Ok!
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" required placeholder="Password *" value=""
+                                            #password = 'ngModel'
+                                            name="password"
+                                            [ngClass]="{'is-invalid': !password.valid && password.touched}"
+                                            [ngClass]="{'is-valid': password.valid}"
+                                            [(ngModel)]="newCompany.password"/>
+                                            <div class="invalid-feedback" >
+                                              <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                               Password is required
+                                            </div>
+                                            <div class="valid-feedback">
+                                              <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                              Ok!
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" required placeholder="Confirm Password *" value=""
+                                            #confirmPassword = 'ngModel'
+                                            name="confirmPassword"
+                                            [ngClass]="{'is-invalid': (!confirmPassword.valid && confirmPassword.touched) || !match()}"
+                                            [ngClass]="{'is-valid': confirmPassword.valid && match()}"
+                                            [(ngModel)]="newCompany.confirmPassword"/>
+                                            <div class="invalid-feedback" [hidden]="!confirmPassword.errors?.required">
+                                              <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                               Password Confirmation is required
+                                            </div>
+                                            <div class="invalid-feedback" [hidden]="match()" style="color: rgb(210, 6, 6);">
+                                              <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                               Password doesn't match
+                                            </div>
+                                            <div class="valid-feedback"[hidden]="!match()">
+                                              <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                              Ok!
+                                            </div>
+                                           </div>
+
+                                        <div class="form-group">
+                                          <input type="email" class="form-control" required placeholder="Email *" value=""
+                                          #email = 'ngModel'
+                                          name="email"
+                                          pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+                                          [ngClass]="{'is-invalid': (!email.valid && email.touched) || checkEmail() }"
+                                          [ngClass]="{'is-valid': email.valid && !checkEmail()}"
+                                          [(ngModel)]="newCompany.email"/>
+                                          <div class="invalid-feedback" [hidden]="!email.errors?.pattern">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+
+                                            Wrong email format
+                                          </div>
+                                          <div class="invalid-feedback" *ngIf="checkEmail()" style="color: rgb(210, 6, 6);">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                             Email already existing
+                                          </div>
+                                          <div class="invalid-feedback" [hidden]="!email.errors?.required">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                             Email is required
+                                          </div>
+                                          <div class="valid-feedback" [hidden]="checkUsername()">
+                                            <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                            Ok!
+                                          </div>
+                                      </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" required placeholder="Web site *" value=""
+                                        #webSite = 'ngModel'
+                                          name="webSite"
+                                          [ngClass]="{'is-invalid': !webSite.valid && webSite.touched}"
+                                          [ngClass]="{'is-valid': webSite.valid}"
+                                          [(ngModel)]="newCompany.webSite"/>
+
+                                          <div class="invalid-feedback"[hidden]="!webSite.errors?.required" >
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                            webSite is required
+                                          </div>
+                                          <div class="valid-feedback">
+                                            <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                            Ok!
+                                          </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <input type="text" minlength="10" maxlength="10" required name="txtEmpPhone" class="form-control" placeholder="Phone *" value=""
+                                      #phoneNumber = 'ngModel'
+                                          name="phoneNumber"
+                                          pattern="^[0-9]*$"
+
+                                          [ngClass]="{'is-invalid': !phoneNumber.valid && phoneNumber.touched}"
+                                          [ngClass]="{'is-valid': phoneNumber.valid}"
+                                          [(ngModel)]="newCompany.phoneNumber"/>
+                                          <div class="invalid-feedback" [hidden]="!phoneNumber.errors?.required">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                            phone Number is required
+                                          </div>
+                                          <div class="invalid-feedback"  [hidden]="!phoneNumber.errors?.minlength">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                            min length = 10
+                                          </div>
+                                          <div class="invalid-feedback"  [hidden]="!phoneNumber.errors?.pattern">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                           Only digit accepted
+                                          </div>
+
+                                          <div class="valid-feedback">
+                                            <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                            Ok!
+                                          </div>
+                                  </div>
+
+                                    <div class="form-group">
+                                      <input type="text" class="form-control"  required placeholder="Head quarter *" value=""
+                                      #headquarters = 'ngModel'
+                                      name="headquarters"
+                                      [ngClass]="{'is-invalid': !headquarters.valid && headquarters.touched}"
+                                      [ngClass]="{'is-valid': headquarters.valid}"
+                                      [(ngModel)]="newCompany.headquarters"/>
+                                      <div class="invalid-feedback" >
+                                        <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                        headquarters is required
+                                      </div>
+                                      <div class="valid-feedback">
+                                        <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                        Ok!
+                                      </div>
+                                  </div>
+
+
+                                        <div class="form-group">
+                                          <input type="text" class="form-control" required placeholder="Iva *" value=""
+                                          #iva = 'ngModel'
+                                      name="iva"
+                                      maxlength="11"
+                                      [ngClass]="{'is-invalid': !iva.valid && iva.touched}"
+                                      [ngClass]="{'is-valid': iva.valid}"
+                                      [(ngModel)]="newCompany.iva"/>
+                                      <div class="invalid-feedback" [hidden]="!iva.errors?.required" >
+                                        <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                        IVA is required
+                                      </div>
+                                      <div class="invalid-feedback" [hidden]="!iva.errors?.maxlength" >
+                                        <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                        IVA cannot overcome 11 characters.
+                                      </div>
+                                      <div class="valid-feedback">
+                                        <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                        Ok!
+                                      </div>
+                                      </div>
+
+
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" required placeholder="Legal Form *" value=""
+                                        #legalForm = 'ngModel'
+                                        name="legalForm"
+                                        [ngClass]="{'is-invalid': !legalForm.valid && legalForm.touched}"
+                                        [ngClass]="{'is-valid': legalForm.valid}"
+                                        [(ngModel)]="newCompany.legalForm"/>
+                                        <div class="invalid-feedback" >
+                                          <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                          Legal Form is required
+                                        </div>
+                                        <div class="valid-feedback">
+                                          <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                          Ok!
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-primary btnRegister" type="submit" [disabled]="!companyForm.form.valid || !match() ">Register</button>
+                                  </div>
+                                </div>
+                            </form>
+                                                      <!-- fine company -->
+
+                          <!-- user -->
+
+                            <form #companyForm="ngForm" (ngSubmit)="register()" class="form"  class="tab-pane fade show"
+                            [ngClass]="{'active': userVersion}"
+                            id="profile" role="tabpanel" aria-labelledby="profile-tab" *ngIf="userMode">
+                            <h1 class="register-heading">Sign up as User
+                              <h5 style="display: flex;justify-content: center;text-align: center;">You can rent a treats of a vector </h5>
+                            </h1>
+                              <div class="row register-form">
+                                    <div class="col-md-6">
+
+
+                                      <div class="form-group">
+                                        <input type="text" class="form-control"  required placeholder="Your Name *" value=""
+                                        #UserName = 'ngModel'
+                                        name="name"
+                                        [ngClass]="{'is-invalid': !UserName.valid && UserName.touched}"
+                                        [ngClass]="{'is-valid': UserName.valid}"
+                                        [(ngModel)]="newAffittuario.name"/>
+                                        <div class="invalid-feedback" >
+                                          <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                           Name is required
+                                        </div>
+                                        <div class="valid-feedback">
+                                          <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                          Ok!
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                      <input type="text" class="form-control" required placeholder="Your Surname *" value=""
+                                      #UserSurname = 'ngModel'
+                                      name="surname"
+                                      [ngClass]="{'is-invalid': !UserSurname.valid && UserSurname.touched}"
+                                      [ngClass]="{'is-valid': UserSurname.valid}"
+                                      [(ngModel)]="newAffittuario.surname"/>
+                                      <div class="invalid-feedback" >
+                                        <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                         Surname is required
+                                      </div>
+                                      <div class="valid-feedback">
+                                        <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                        Ok!
+                                      </div>
+                                  </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" required placeholder="Username *" value=""
+                                        #UserUsername = 'ngModel'
+                                        name="username"
+                                        [ngClass]="{'is-invalid': (!UserUsername.valid && UserUsername.touched )|| checkUsername()} "
+                                        [ngClass]="{'is-valid': UserUsername.valid}"
+                                        [(ngModel)]="newAffittuario.username"/>
+                                        <div class="invalid-feedback" [hidden]="!UserUsername.errors?.required">
+                                          <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                           Username is required
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="checkUsername()" style="color: rgb(210, 6, 6);">
+                                          <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                           Username already existing
+                                        </div>
+                                        <div class="valid-feedback" [hidden]="checkUsername()">
+                                          <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                          Ok!
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" required placeholder="Password *" value=""
+                                        #Userpassword = 'ngModel'
+                                        name="password"
+                                        [ngClass]="{'is-invalid': !Userpassword.valid && Userpassword.touched}"
+                                        [ngClass]="{'is-valid': Userpassword.valid}"
+                                        [(ngModel)]="newAffittuario.password"/>
+                                        <div class="invalid-feedback" >
+                                          <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                           Password is required
+                                        </div>
+                                        <div class="valid-feedback">
+                                          <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                          Ok!
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" required placeholder="Confirm Password *" value=""
+                                        #UserconfirmPassword = 'ngModel'
+                                        name="confirmPassword"
+                                        [ngClass]="{'is-invalid': (!UserconfirmPassword.valid && UserconfirmPassword.touched) || !match()}"
+                                        [ngClass]="{'is-valid': UserconfirmPassword.valid && match()}"
+                                        [(ngModel)]="newAffittuario.confirmPassword"/>
+                                        <div class="invalid-feedback" [hidden]="!UserconfirmPassword.errors?.required">
+                                          <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                           Password Confirmation is required
+                                        </div>
+                                        <div class="invalid-feedback" [hidden]="match()" style="color: rgb(210, 6, 6);">
+                                          <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                           Password doesn't match
+                                        </div>
+                                        <div class="valid-feedback"[hidden]="!match()">
+                                          <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                          Ok!
+                                        </div>
+                                    </div>
+
+
+
+
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <input type="email" class="form-control" required placeholder="Email *" value=""
+                                        #UserEmail = 'ngModel'
+                                          name="email"
+                                          pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+                                          [ngClass]="{'is-invalid': (!UserEmail.valid && UserEmail.touched) || checkEmail() }"
+                                          [ngClass]="{'is-valid': UserEmail.valid && !checkEmail()}"
+                                          [(ngModel)]="newAffittuario.email"/>
+                                          <div class="invalid-feedback" [hidden]="!UserEmail.errors?.pattern">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+
+                                            Wrong email format
+                                          </div>
+                                          <div class="invalid-feedback" *ngIf="checkEmail()" style="color: rgb(210, 6, 6);">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                             Email already existing
+                                          </div>
+                                          <div class="invalid-feedback" [hidden]="!UserEmail.errors?.required">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                             Email is required
+                                          </div>
+                                          <div class="valid-feedback" [hidden]="checkUsername()">
+                                            <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                            Ok!
+                                          </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <input type="text" class="form-control" required placeholder="Your Nation *" value=""
+                                      #nation = 'ngModel'
+                                      name="nation"
+                                      [ngClass]="{'is-invalid': !nation.valid && nation.touched}"
+                                      [ngClass]="{'is-valid': nation.valid}"
+                                      [(ngModel)]="newAffittuario.nation"/>
+                                      <div class="invalid-feedback" >
+                                        <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                        Nation is required
+                                      </div>
+                                      <div class="valid-feedback">
+                                        <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                        Ok!
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <input type="text" minlength="10" maxlength="10" class="form-control" required placeholder="Your Phone Number *" value=""
+                                    #UserPhoneNumber = 'ngModel'
+                                          name="phoneNumber"
+                                          pattern="^[0-9]*$"
+
+                                          [ngClass]="{'is-invalid': !UserPhoneNumber.valid && UserPhoneNumber.touched}"
+                                          [ngClass]="{'is-valid': UserPhoneNumber.valid}"
+                                          [(ngModel)]="newAffittuario.phoneNumber"/>
+                                          <div class="invalid-feedback" [hidden]="!UserPhoneNumber.errors?.required">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                            phone Number is required
+                                          </div>
+                                          <div class="invalid-feedback"  [hidden]="!UserPhoneNumber.errors?.minlength">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                            min length = 10
+                                          </div>
+                                          <div class="invalid-feedback"  [hidden]="!UserPhoneNumber.errors?.pattern">
+                                            <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
+                                           Only digit accepted
+                                          </div>
+
+                                          <div class="valid-feedback">
+                                            <mat-icon style="color: rgb(34, 201, 34); font-size: 15px; position: relative; left: 8px;top: 3px;">check_circle</mat-icon>
+                                            Ok!
+                                          </div>
+                                </div>
+                                <div class="form-group">
+
+                                <mat-form-field appearance="fill" style="width: 100%;">
+                                  <mat-label style="font-size: 12px;">Born date</mat-label>
+                                  <input  matInput required  [matDatepicker]="pickerDate"
+                                  [value]=""
+                                  name="bornDate"
+                                  [(ngModel)]="newAffittuario.bornDate">
+                                  <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
+                                  <mat-datepicker #pickerDate></mat-datepicker>
+                                </mat-form-field>
+                              </div>
+                                        <input type="submit" class="btnRegister"  value="Register"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+</div>

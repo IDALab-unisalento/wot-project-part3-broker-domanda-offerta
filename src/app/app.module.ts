@@ -45,6 +45,8 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { SummaryModalComponent } from './components/summary-modal/summary-modal.component';
 
 
 @NgModule({
@@ -63,8 +65,10 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     ScheduleComponent,
     MyVectorsComponent,
     ModalErrorVectorComponent,
-    SearchFilterPipe
-  ],
+    SearchFilterPipe,
+    SignUpComponent,
+    SummaryModalComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

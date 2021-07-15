@@ -123,9 +123,10 @@
                         <div class="row">
                           <div class="col">
                             <div class="form-group">
+
                                               <!--     STARTING CITY   -->
 
-                              <label style="color: #044459">Starting City: <label style="color:red">*</label></label>
+                              <label style="color: #044459"> Starting City: <label style="color:red">*</label></label>
                               <span class="input-icon">
 
                                 <input class="form-control" required [matAutocomplete]="start" (input)="getItems($event)" type="text" name="name" placeholder="Vehicle starting city" style="width: 250px;"
@@ -164,7 +165,7 @@
                             <div class="row">
                               <div class="col">
                                 <div class="form-group" >
-                                  <label style="color: #044459">Start Time: <label style="color:red">* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></label>
+                                  <label style="color: #044459"><strong>{{newOffer.startingCity}}</strong> Start Time: <label style="color:red">* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></label>
                                   <div *ngIf="newOffer.startDate != undefined">
                                   </div>
 
@@ -193,8 +194,8 @@
 
 
 
-                        <!-- TREATS -->
 
+                        <!-- TREATS -->
 
 
                         <div class="card " style="background-color:  rgb(236, 238, 250);">
@@ -203,10 +204,8 @@
 
                           <li *ngFor="let city of treatsCity; let myIndex = index" >
 
-                          <div class="card" style="background-color: rgb(236, 238, 250);">
-
                           <div class="row">
-                            <i class="fas fa-minus-circle" style="color: red; font-size: 25px;cursor: pointer; position: relative; left: -5px;"(click)="removeTreats(myIndex)" ></i>
+                            <i class="fas fa-minus-circle" style="color: rgb(210, 6, 6); font-size: 25px;cursor: pointer; position: relative; left: -5px;"(click)="removeTreats(myIndex)" ></i>
 
 
                             <div class="col">
@@ -248,14 +247,14 @@
 
 
                       <div class="col">
-                          <div class="form-group" >
+                          <div class="form-group" *ngIf="myIndex > 0">
                             <label style="color: #044459"><strong>{{myIndex != 0 ?  treatsCity[myIndex - 1] : newOffer.startingCity }}</strong> Start Time:</label>
                             <br>
                             <mat-form-field appearance="fill" style="width: 150px;">
                               <mat-label style="font-size: 12px;">Choose date</mat-label>
                               <input  matInput required  [matDatepicker]="pickerDate"
-                              name="startDates[myIndex]"
-                              [(ngModel)]="startDates[myIndex]">
+                              name="startDates[myIndex - 1 ]"
+                              [(ngModel)]="startDates[myIndex - 1]">
                               <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
                               <mat-datepicker #pickerDate></mat-datepicker>
                             </mat-form-field>
@@ -263,12 +262,12 @@
                             &nbsp;
                               <input style="width: 60px;" placeholder="hh:mm" aria-label="24hr format" [ngxTimepicker]="fullTime3" [format]="24"
 
-                              name="startTimes[myIndex]"
-                              [(ngModel)]="startTimes[myIndex]">
+                              name="startTimes[myIndex - 1]"
+                              [(ngModel)]="startTimes[myIndex - 1]">
                               <ngx-material-timepicker #fullTime3></ngx-material-timepicker>
                           </div>
-                          <div class="form-group" >
-                            <label style="color: #044459"><strong >{{treatsCity[myIndex]}}</strong> Arrival Time:</label>
+                          <div class="form-group">
+                            <label style="color: #044459"><strong >{{treatsCity[myIndex]}}</strong> Delivery Time:</label>
                             <br>
                             <mat-form-field appearance="fill" style="width: 150px;">
                               <mat-label style="font-size: 12px;">Choose date</mat-label>
@@ -287,7 +286,6 @@
                           </div>
                       </div>
                     </div>
-                  </div>
                     </li>
 
                       </ul>
@@ -295,7 +293,7 @@
 
 
                     <br>
-                      <i class="fas fa-plus-circle" style="color: #00d844; font-size: 40px;cursor: pointer;"(click)="addTreats()" ></i> &nbsp;&nbsp; <label style="color: #044459; font-size: 18px; font-weight: bold; position: relative; top: -10px;">Add a treats</label>
+                      <i class="fas fa-plus-circle" style="color: #044459; font-size: 40px;cursor: pointer;"(click)="addTreats()" ></i> &nbsp;&nbsp; <label style="color: #044459; font-size: 18px; font-weight: bold; position: relative; top: -10px;">Add a treats</label>
 
                                               <!-- end TREATS -->
 
@@ -305,11 +303,11 @@
                             <div class="form-group">
                               <label style="color: #044459">Final City: <label style="color:red">*</label></label>
                               <span class="input-icon ">
+
                                 <input class="form-control" required [matAutocomplete]="end"  (input)="getItems($event)" type="text" name="username" placeholder="City where the vector is left" style="width: 250px;"
                                 #endingCity = 'ngModel'
                                 name="endingCity"
-                                appForbiddenName='Ruffano'
-                                [ngClass]="{'is-invalid': !endingCity.valid && endingCity.touched}"
+                                [ngClass]="{'is-invalid': !endingCity.valid && (endingCity.touched)}"
                                 [ngClass]="{'is-valid': endingCity.valid}"
                                 [(ngModel)]="newOffer.endingCity">
                                 <i class="fa fa-search success circular"></i>
@@ -318,12 +316,12 @@
 
                                   End city is required
                                 </div>
-                                <div class="invalid-feedback" [hidden]="!endingCity.errors?.appForbiddenName">
+                                <div class="valid-feedback" *ngIf="newOffer.startingCity == newOffer.endingCity" style="color: rgb(210, 6, 6);">
                                   <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
 
                                   End city cannot be the same of start
                                 </div>
-                                <div class="valid-feedback">
+                                <div class="valid-feedback" [hidden]="newOffer.startingCity == newOffer.endingCity">
                                   <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
 
                                   Ok!
@@ -340,8 +338,27 @@
                             </div>
 
                           <div class="col">
+                            <div class="form-group" *ngIf="treatsCity.length > 0">
+                              <label style="color: #044459"><strong >{{treatsCity[treatsCity.length - 1]}}</strong> Starting Time:</label>
+                              <br>
+                              <mat-form-field appearance="fill" style="width: 150px;">
+                                <mat-label style="font-size: 12px;">Choose date</mat-label>
+                                <input  matInput required  [matDatepicker]="picker6"
+                                name="startDates[treatsCity.length - 1]"
+                                [(ngModel)]="startDates[treatsCity.length - 1]">
+                                <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                                <mat-datepicker #picker6></mat-datepicker>
+                              </mat-form-field>
+
+                              &nbsp;
+                                <input style="width: 60px;" placeholder="hh:mm" aria-label="24hr format" [ngxTimepicker]="fullTime6" [format]="24"
+                                name="startTimes[myIndex]"
+                                [(ngModel)]="startTimes[treatsCity.length - 1]">
+                                <ngx-material-timepicker #fullTime6></ngx-material-timepicker>
+                            </div>
+
                             <div class="form-group" >
-                              <label  style="color: #044459">End Time: <label style="color:red">*  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></label>
+                              <label  style="color: #044459"><strong>{{newOffer.endingCity}}</strong> Delivery Time: <label style="color:red">*  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></label>
 
                               <mat-form-field appearance="fill" style="width: 150px;">
                                 <mat-label  style="font-size: 12px;">Choose date</mat-label>
@@ -366,7 +383,7 @@
                         </div>
 
                         <div class="form-group">
-                          <label  style="color: #044459">Weight of the initial load: <label style="color:red">*  &nbsp;</label></label>
+                          <label  style="color: #044459">Weight of the initial load: <label style="color:red;">*  &nbsp;</label></label>
                           <input type="text" required placeholder="0"
                             #initialLoad="ngModel"
                             name="initialLoad"
@@ -377,7 +394,14 @@
                             [(ngModel)]="newOffer.initialLoad"
                             >
                              Kg
+                             <label *ngIf="newOffer.vector != undefined" style="color: rgb(210, 6, 6); font-size: 10px;">
+                               <div *ngIf="newOffer.initialLoad > newOffer.vector.capacity">
+                                &nbsp; &nbsp;  <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+                              Initial Load is greater than vector's capacity
+                            </div>
+                            </label>
                         </div>
+
 
                         <div class="widget-header bordered-top bordered-sky" style="background-color:#044459" >
                           <span class="widget-caption" style="color: white;"> 2. Vector</span>
@@ -460,7 +484,7 @@
                           <input type="text" required class="form-control" name="costoPerKm" placeholder="0.10"
                           #costoPerKm = 'ngModel'
                           name="costoPerKm"
-                          pattern="^[0-9,.]*$"
+                          pattern="^[0-9.]*$"
                           [ngClass]="{'is-invalid': !costoPerKm.valid && costoPerKm.touched}"
                           [ngClass]="{'is-valid': costoPerKm.valid}"
                           [(ngModel)]="newOffer.costoPerKm"
@@ -488,7 +512,8 @@
                     <div class="row">
                       <div class="col d-flex justify-content-end">
                         <button class="btn btn-dark" (click)="addMenu = false">Cancel</button> &nbsp;
-                        <button class="btn btn-primary" type="submit" [disabled]="!offerForm.form.valid">Add Offer</button>
+                        <button class="btn btn-primary" type="submit" [disabled]="!offerForm.form.valid || isInvalid() ">Add Offer</button>
+
                       </div>
                     </div>
                   </form>
@@ -508,4 +533,6 @@
   </div>
 </div>
 </div>
+<button class="btn btn-primary" (click)="log()">Stampa</button>
+
 </div>

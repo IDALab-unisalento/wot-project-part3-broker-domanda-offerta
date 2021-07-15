@@ -10,7 +10,7 @@ import { VectorService } from 'src/app/services/vector.service';
 import { Offer } from 'src/app/models/offer';
 import { ViaggioRouteService } from 'src/app/services/viaggio-route.service';
 import { RouteService } from 'src/app/services/route.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Time } from '@angular/common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ScheduleComponent } from '../schedule/schedule.component';
 import { Viaggio } from 'src/app/models/viaggio';
@@ -48,10 +48,10 @@ export class CompanyHomeComponent implements OnInit {
   myVectors : Vector[]= [] as Vector[];
   selectedVector : Vector = {} as Vector;
 
-  startDates : string[] = [] as string[];
-  endDates : string[] = [] as string[];
-  startTimes : string[] = [] as string[];
-  endTimes : string[] = [] as string[];
+  startDates : Date[] = [] as Date[];
+  endDates : Date[] = [] as Date[];
+  startTimes : Time[] = [] as Time[];
+  endTimes : Time[] = [] as Time[];
 
   partialLoads : number[] = [] as number[];
 
@@ -245,140 +245,466 @@ removeTreats(id : number){
 
 addNewOffer(){
 
-  if(this.newOffer.vector.capacity < this.newOffer.initialLoad){
-    alert('The load('+this.newOffer.initialLoad+' Kg) is greater than allowed('+ this.newOffer.vector.capacity+' Kg), please correct your offer');
-  }
-  else{
-  var route : Route = {} as Route;
-    route.startCity = this.newOffer.startingCity;
-    route.endCity = this.newOffer.endingCity;
-
-  this.routeService.getByCities(this.newOffer.startingCity, this.newOffer.endingCity).subscribe(route =>{
-
-
+    //aggiungo il viaggio
     var viaggio : Viaggio = {} as Viaggio;
     viaggio.vectorId = this.newOffer.vector.id;
     viaggio.initialFreeCapacity = this.newOffer.vector.capacity - this.newOffer.initialLoad;
     viaggio.costoPerKm = this.newOffer.costoPerKm;
     this.viaggioService.save(viaggio).subscribe(viaggioSaved =>{
 
-      var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
-      viaggioRoute.availableCapacity = viaggio.initialFreeCapacity;
 
-      //start date
-      var dateStart : Date = new Date();
+      this.newOffer.routes = [];
+      //  VIAGGIO DIRETTO
+    if(this.treatsCity.length == 0){ // viaggio diretto
+      var route : Route = {} as Route;
 
-      this.newOffer.startDate.setHours(Number(String(this.newOffer.startTime).substring(0,2)));
-      this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
+      route.startCity = this.newOffer.startingCity;
+      route.endCity = this.newOffer.endingCity;
 
-      dateStart.setDate(this.newOffer.startDate.getDate());
-      dateStart.setMonth(this.newOffer.startDate.getMonth());
-      dateStart.setFullYear(this.newOffer.startDate.getFullYear());
-      dateStart.setHours(this.newOffer.startDate.getHours());
-      dateStart.setMinutes(this.newOffer.startDate.getMinutes());
+      this.newOffer.routes.push(route);
 
-      let dateStartString =  this.datepipe.transform(dateStart,'yyyy-MM-dd hh:mm');
-      dateStart = new Date(String(dateStartString));
+      this.routeService.getByCities(route.startCity, route.endCity).subscribe(route =>{
 
-      viaggioRoute.startDate = dateStart ;
+        var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
 
+        //gestione del carico libero
+        //prima lo setto alla capacità iniziale
+        viaggioRoute.availableCapacity = viaggio.initialFreeCapacity;
 
-      //end date
-      var dateEnd : Date = new Date();
+        var dateStart : Date = new Date();
 
-      this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
-      this.newOffer.endDate.setMinutes(Number(String(this.newOffer.endTime).substring(3,5)));
+          this.newOffer.startDate.setHours(Number(String(this.newOffer.startTime).substring(0,2)));
+          this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
 
-      dateEnd.setDate(this.newOffer.endDate.getDate());
-      dateEnd.setMonth(this.newOffer.endDate.getMonth());
-      dateEnd.setFullYear(this.newOffer.endDate.getFullYear());
-      dateEnd.setHours(this.newOffer.endDate.getHours());
-      dateEnd.setMinutes(this.newOffer.endDate.getMinutes());
+          dateStart.setDate(this.newOffer.startDate.getDate());
+          dateStart.setMonth(this.newOffer.startDate.getMonth());
+          dateStart.setFullYear(this.newOffer.startDate.getFullYear());
+          dateStart.setHours(this.newOffer.startDate.getHours());
+          dateStart.setMinutes(this.newOffer.startDate.getMinutes());
 
-      let dateEndString =  this.datepipe.transform(dateEnd,'yyyy-MM-ddThh:mm');
-      dateEnd = new Date(String(dateEndString));
+          let dateStartString =  this.datepipe.transform(dateStart,'yyyy-MM-dd hh:mm');
+          dateStart = new Date(String(dateStartString));
 
-       viaggioRoute.endDate = dateEnd ;
+          viaggioRoute.startDate = dateStart ;
 
-       viaggioRoute.routeId = route.id;
-       viaggioRoute.viaggioId = viaggioSaved.id;
+           //end date
+           var dateEnd : Date = new Date();
+           this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
+           this.newOffer.endDate.setMinutes(Number(String(this.newOffer.endTime).substring(3,5)));
 
-      this.viaggioRouteService.save(viaggioRoute).subscribe(savedViaggioRoute =>{
-      })
-    });
+           dateEnd.setDate(this.newOffer.endDate.getDate());
+           dateEnd.setMonth(this.newOffer.endDate.getMonth());
+           dateEnd.setFullYear(this.newOffer.endDate.getFullYear());
+           dateEnd.setHours(this.newOffer.endDate.getHours());
+           dateEnd.setMinutes(this.newOffer.endDate.getMinutes());
 
+           let dateEndString =  this.datepipe.transform(dateEnd,'yyyy-MM-ddThh:mm');
+           dateEnd = new Date(String(dateEndString));
 
+           viaggioRoute.endDate = dateEnd ;
 
+           viaggioRoute.routeId = route.id;
+           viaggioRoute.viaggioId = viaggioSaved.id;
 
-  },
-  err =>{
-    //non esiste ancora questa route nel DB, la aggiungiamo
+           this.viaggioRouteService.save(viaggioRoute).subscribe(savedViaggioRoute =>{
+           });
+      },
+      err =>{
+      //non esiste ancora questa route nel DB, la aggiungiamo
 
-      var viaggio : Viaggio = {} as Viaggio;
-      viaggio.vectorId = this.newOffer.vector.id;
-      viaggio.initialFreeCapacity = this.newOffer.vector.capacity - this.newOffer.initialLoad;
-      viaggio.costoPerKm = this.newOffer.costoPerKm;
-      this.viaggioService.save(viaggio).subscribe(viaggioSaved =>{
+        //qui andrebbe messo tutto il sistema delle API di google
 
+      this.routeService.save(route).subscribe(route=>{
 
+        var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
 
-    var newRoute : Route = {} as Route;
-      newRoute.startCity = this.newOffer.startingCity;
-      newRoute.endCity = this.newOffer.endingCity;
+        //gestione del carico libero
+        //prima lo setto alla capacità iniziale
+        viaggioRoute.availableCapacity = viaggio.initialFreeCapacity;
 
-      //qui andrebbe messo tutto il sistema delle API di google
+        var dateStart : Date = new Date();
 
-    this.routeService.save(newRoute).subscribe(route=>{
-      console.log('nuova route', route);
-      var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
-      viaggioRoute.availableCapacity = viaggio.initialFreeCapacity;
+          this.newOffer.startDate.setHours(Number(String(this.newOffer.startTime).substring(0,2)));
+          this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
 
-      //start date
-      var dateStart : Date = new Date();
-      console.log(dateStart)
+          dateStart.setDate(this.newOffer.startDate.getDate());
+          dateStart.setMonth(this.newOffer.startDate.getMonth());
+          dateStart.setFullYear(this.newOffer.startDate.getFullYear());
+          dateStart.setHours(this.newOffer.startDate.getHours());
+          dateStart.setMinutes(this.newOffer.startDate.getMinutes());
 
-      this.newOffer.startDate.setHours(Number(String(this.newOffer.startTime).substring(0,2)));
-      this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
+          let dateStartString =  this.datepipe.transform(dateStart,'yyyy-MM-dd hh:mm');
+          dateStart = new Date(String(dateStartString));
 
-      dateStart.setDate(this.newOffer.startDate.getDate());
-      dateStart.setMonth(this.newOffer.startDate.getMonth());
-      dateStart.setFullYear(this.newOffer.startDate.getFullYear());
-      dateStart.setHours(this.newOffer.startDate.getHours());
-      dateStart.setMinutes(this.newOffer.startDate.getMinutes());
+          viaggioRoute.startDate = dateStart ;
 
-      let dateStartString =  this.datepipe.transform(dateStart,'yyyy-MM-dd hh:mm');
-      dateStart = new Date(String(dateStartString));
+           //end date
+           var dateEnd : Date = new Date();
+           this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
+           this.newOffer.endDate.setMinutes(Number(String(this.newOffer.endTime).substring(3,5)));
 
-      viaggioRoute.startDate = dateStart ;
+           dateEnd.setDate(this.newOffer.endDate.getDate());
+           dateEnd.setMonth(this.newOffer.endDate.getMonth());
+           dateEnd.setFullYear(this.newOffer.endDate.getFullYear());
+           dateEnd.setHours(this.newOffer.endDate.getHours());
+           dateEnd.setMinutes(this.newOffer.endDate.getMinutes());
 
+           let dateEndString =  this.datepipe.transform(dateEnd,'yyyy-MM-ddThh:mm');
+           dateEnd = new Date(String(dateEndString));
 
-      //end date
-      var dateEnd : Date = new Date();
+           viaggioRoute.endDate = dateEnd ;
 
-      this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
-      this.newOffer.endDate.setMinutes(Number(String(this.newOffer.endTime).substring(3,5)));
+           viaggioRoute.routeId = route.id;
+           viaggioRoute.viaggioId = viaggioSaved.id;
 
-      dateEnd.setDate(this.newOffer.endDate.getDate());
-      dateEnd.setMonth(this.newOffer.endDate.getMonth());
-      dateEnd.setFullYear(this.newOffer.endDate.getFullYear());
-      dateEnd.setHours(this.newOffer.endDate.getHours());
-      dateEnd.setMinutes(this.newOffer.endDate.getMinutes());
+           this.viaggioRouteService.save(viaggioRoute).subscribe(savedViaggioRoute =>{
+           });
 
-      let dateEndString =  this.datepipe.transform(dateEnd,'yyyy-MM-ddThh:mm');
-      dateEnd = new Date(String(dateEndString));
-
-       viaggioRoute.endDate = dateEnd ;
-
-       viaggioRoute.routeId = route.id;
-       viaggioRoute.viaggioId = viaggioSaved.id;
-
-      this.viaggioRouteService.save(viaggioRoute).subscribe(savedViaggioRoute =>{
+        });
       });
-    });//fine aggiunta route
-  });//fine aggiunta viaggio
-});
-  }
+
+    }
+
+    else{  //viaggio NON DIRETTO
+
+      for(var i = 0; i <= this.treatsCity.length ; i++){
+      //creo una rotta con start "i" ed end "i + 1"    ROMA BOLOGNA Milano Torino
+      var route : Route = {} as Route;
+
+
+        if(i == 0){
+          route.startCity = this.newOffer.startingCity;
+        }
+        else
+          route.startCity = this.treatsCity[i - 1];
+
+        if(i == this.treatsCity.length){
+          route.endCity = this.newOffer.endingCity;
+        }else
+          route.endCity = this.treatsCity[i];
+
+
+      this.newOffer.routes.push(route);
+
+      var  h = i;
+
+      this.routeService.getByCities(route.startCity, route.endCity).subscribe(route =>{
+
+        var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
+
+        //gestione del carico libero
+        //prima lo setto alla capacità iniziale
+        viaggioRoute.availableCapacity = viaggio.initialFreeCapacity;
+        //poi "aggiungo" al carico libero il carico che deve essere consegnato in quella tratta
+        for(var j = 0; j< h; j ++){
+            viaggioRoute.availableCapacity = viaggioRoute.availableCapacity + this.partialLoads[j];
+        }
+
+        console.log(h)
+        //prima rotta,abbiamo l'informazione della starting Date
+      if(h == 0){
+        console.log(h, ' dentro' )
+        //start date
+        var dateStart : Date = new Date();
+
+        this.newOffer.startDate.setHours(Number(String(this.newOffer.startTime).substring(0,2)));
+        this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
+
+        dateStart.setDate(this.newOffer.startDate.getDate());
+        dateStart.setMonth(this.newOffer.startDate.getMonth());
+        dateStart.setFullYear(this.newOffer.startDate.getFullYear());
+        dateStart.setHours(this.newOffer.startDate.getHours());
+        dateStart.setMinutes(this.newOffer.startDate.getMinutes());
+
+        let dateStartString =  this.datepipe.transform(dateStart,'yyyy-MM-dd hh:mm');
+        dateStart = new Date(String(dateStartString));
+
+        viaggioRoute.startDate = dateStart ;
+            //end date
+
+          var dateEnd : Date = new Date();
+          this.endDates[0].setHours(Number(String(this.endTimes[0]).substring(0,2)));
+          this.endDates[0].setMinutes(Number(String(this.endTimes[0]).substring(3,5)));
+
+          dateEnd.setDate(this.endDates[0].getDate());
+          dateEnd.setMonth(this.endDates[0].getMonth());
+          dateEnd.setFullYear(this.endDates[0].getFullYear());
+          dateEnd.setHours(this.endDates[0].getHours());
+          dateEnd.setMinutes(this.endDates[0].getMinutes());
+
+          let dateEndString =  this.datepipe.transform(dateEnd,'yyyy-MM-ddThh:mm');
+          dateEnd = new Date(String(dateEndString));
+
+          viaggioRoute.endDate = dateEnd ;
+
+          viaggioRoute.routeId = route.id;
+          viaggioRoute.viaggioId = viaggioSaved.id;
+
+          this.viaggioRouteService.save(viaggioRoute).subscribe(savedViaggioRoute =>{
+          })
+
+      }//fine if tappa 0
+
+
+      //rotta qualsiasi
+      else{
+
+        if(h > 0){
+
+
+        this.startDates[h - 1].setHours(Number(String(this.startTimes[h - 1]).substring(0,2)));
+        this.startDates[h - 1].setMinutes(Number(String(this.startTimes[h - 1]).substring(3,5)));
+
+        var dateStart : Date = new Date();
+
+        dateStart.setDate(this.startDates[h - 1].getDate());
+        dateStart.setMonth(this.startDates[h - 1].getMonth());
+        dateStart.setFullYear(this.startDates[h - 1].getFullYear());
+        dateStart.setHours(this.startDates[h - 1].getHours());
+        dateStart.setMinutes(this.startDates[h - 1].getMinutes());
+
+        let dateStartString =  this.datepipe.transform(dateStart,'yyyy-MM-dd hh:mm');
+        dateStart = new Date(String(dateStartString));
+
+        viaggioRoute.startDate = dateStart ;
+
+        if(h != this.treatsCity.length){
+          //end date
+          var dateEnd : Date = new Date();
+          this.endDates[h].setHours(Number(String(this.endTimes[h]).substring(0,2)));
+          this.endDates[h].setMinutes(Number(String(this.endTimes[h]).substring(3,5)));
+
+          dateEnd.setDate(this.endDates[h].getDate());
+          dateEnd.setMonth(this.endDates[h].getMonth());
+          dateEnd.setFullYear(this.endDates[h].getFullYear());
+          dateEnd.setHours(this.endDates[h].getHours());
+          dateEnd.setMinutes(this.endDates[h].getMinutes());
+
+          let dateEndString =  this.datepipe.transform(dateEnd,'yyyy-MM-ddThh:mm');
+          dateEnd = new Date(String(dateEndString));
+
+          viaggioRoute.endDate = dateEnd ;
+
+          viaggioRoute.routeId = route.id;
+          viaggioRoute.viaggioId = viaggioSaved.id;
+          console.log(viaggioRoute);
+
+          this.viaggioRouteService.save(viaggioRoute).subscribe(savedViaggioRoute =>{
+          })
+        }
+        else{
+
+          var endDate : Date = new Date();
+
+        this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
+        this.newOffer.endDate.setMinutes(Number(String(this.newOffer.endTime).substring(3,5)));
+
+        endDate.setDate(this.newOffer.endDate.getDate());
+        endDate.setMonth(this.newOffer.endDate.getMonth());
+        endDate.setFullYear(this.newOffer.endDate.getFullYear());
+        endDate.setHours(this.newOffer.endDate.getHours());
+        endDate.setMinutes(this.newOffer.endDate.getMinutes());
+
+        let dateEndString =  this.datepipe.transform(endDate,'yyyy-MM-dd hh:mm');
+        endDate = new Date(String(dateEndString));
+
+        viaggioRoute.endDate = endDate ;
+
+        viaggioRoute.routeId = route.id;
+        viaggioRoute.viaggioId = viaggioSaved.id;
+
+        this.viaggioRouteService.save(viaggioRoute).subscribe(savedViaggioRoute =>{
+        })
+
+
+        }
+      }
+        }
+
+      },
+      err =>{
+      //non esiste ancora questa route nel DB, la aggiungiamo
+
+        //qui andrebbe messo tutto il sistema delle API di google
+
+      this.routeService.save(route).subscribe(route=>{
+
+        var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
+
+        //gestione del carico libero
+        //prima lo setto alla capacità iniziale
+        viaggioRoute.availableCapacity = viaggio.initialFreeCapacity;
+        //poi "aggiungo" al carico libero il carico che deve essere consegnato in quella tratta
+        for(var j = 0; j< h; j ++){
+
+            viaggioRoute.availableCapacity = viaggioRoute.availableCapacity + this.partialLoads[j];
+        }
+
+
+        //prima rotta,abbiamo l'informazione della starting Date
+      if(h == 0){
+
+        //start date
+        var dateStart : Date = new Date();
+
+        this.newOffer.startDate.setHours(Number(String(this.newOffer.startTime).substring(0,2)));
+        this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
+
+        dateStart.setDate(this.newOffer.startDate.getDate());
+        dateStart.setMonth(this.newOffer.startDate.getMonth());
+        dateStart.setFullYear(this.newOffer.startDate.getFullYear());
+        dateStart.setHours(this.newOffer.startDate.getHours());
+        dateStart.setMinutes(this.newOffer.startDate.getMinutes());
+
+        let dateStartString =  this.datepipe.transform(dateStart,'yyyy-MM-dd hh:mm');
+        dateStart = new Date(String(dateStartString));
+
+        viaggioRoute.startDate = dateStart ;
+
+        //end date
+        var dateEnd : Date = new Date();
+        this.endDates[0].setHours(Number(String(this.endTimes[0]).substring(0,2)));
+        this.endDates[0].setMinutes(Number(String(this.endTimes[0]).substring(3,5)));
+
+        dateEnd.setDate(this.endDates[0].getDate());
+        dateEnd.setMonth(this.endDates[0].getMonth());
+        dateEnd.setFullYear(this.endDates[0].getFullYear());
+        dateEnd.setHours(this.endDates[0].getHours());
+        dateEnd.setMinutes(this.endDates[0].getMinutes());
+
+        let dateEndString =  this.datepipe.transform(dateEnd,'yyyy-MM-ddThh:mm');
+        dateEnd = new Date(String(dateEndString));
+
+        viaggioRoute.endDate = dateEnd ;
+
+        viaggioRoute.routeId = route.id;
+        viaggioRoute.viaggioId = viaggioSaved.id;
+
+        this.viaggioRouteService.save(viaggioRoute).subscribe(savedViaggioRoute =>{
+        });
+
+      }//fine if tappa 0
+
+
+      //rotta qualsiasi
+      else{
+
+        if(h> 0){
+
+        this.startDates[h - 1].setHours(Number(String(this.startTimes[h - 1]).substring(0,2)));
+        this.startDates[h - 1].setMinutes(Number(String(this.startTimes[h - 1]).substring(3,5)));
+
+        var dateStart : Date = new Date();
+
+        dateStart.setDate(this.startDates[h - 1].getDate());
+        dateStart.setMonth(this.startDates[h - 1].getMonth());
+        dateStart.setFullYear(this.startDates[h - 1].getFullYear());
+        dateStart.setHours(this.startDates[h - 1].getHours());
+        dateStart.setMinutes(this.startDates[h - 1].getMinutes());
+
+        let dateStartString =  this.datepipe.transform(dateStart,'yyyy-MM-dd hh:mm');
+        dateStart = new Date(String(dateStartString));
+
+        viaggioRoute.startDate = dateStart ;
+
+        if(h != this.treatsCity.length){
+          //end date
+          var dateEnd : Date = new Date();
+          this.endDates[h].setHours(Number(String(this.endTimes[h]).substring(0,2)));
+          this.endDates[h].setMinutes(Number(String(this.endTimes[h]).substring(3,5)));
+
+          dateEnd.setDate(this.endDates[h].getDate());
+          dateEnd.setMonth(this.endDates[h].getMonth());
+          dateEnd.setFullYear(this.endDates[h].getFullYear());
+          dateEnd.setHours(this.endDates[h].getHours());
+          dateEnd.setMinutes(this.endDates[h].getMinutes());
+
+          let dateEndString =  this.datepipe.transform(dateEnd,'yyyy-MM-ddThh:mm');
+          dateEnd = new Date(String(dateEndString));
+
+          viaggioRoute.endDate = dateEnd ;
+
+          viaggioRoute.routeId = route.id;
+          viaggioRoute.viaggioId = viaggioSaved.id;
+
+          this.viaggioRouteService.save(viaggioRoute).subscribe(savedViaggioRoute =>{
+          })
+        }
+        else{
+
+          var endDate : Date = new Date();
+
+        this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
+        this.newOffer.endDate.setMinutes(Number(String(this.newOffer.endTime).substring(3,5)));
+
+        endDate.setDate(this.newOffer.endDate.getDate());
+        endDate.setMonth(this.newOffer.endDate.getMonth());
+        endDate.setFullYear(this.newOffer.endDate.getFullYear());
+        endDate.setHours(this.newOffer.endDate.getHours());
+        endDate.setMinutes(this.newOffer.endDate.getMinutes());
+
+        let dateEndString =  this.datepipe.transform(endDate,'yyyy-MM-dd hh:mm');
+        endDate = new Date(String(dateEndString));
+
+        viaggioRoute.endDate = endDate ;
+
+        viaggioRoute.routeId = route.id;
+        viaggioRoute.viaggioId = viaggioSaved.id;
+
+        this.viaggioRouteService.save(viaggioRoute).subscribe(savedViaggioRoute =>{
+        })
+
+                 }
+               }
+             }
+          });
+        });
+      }
+    }
+  });
+
+
 
   }
 
+
+
+  isInvalid() : boolean{
+
+
+    for(var i = 0; i<=this.treatsCity.length; i++){
+
+      if(i == 0){
+        if(this.newOffer.startingCity == this.treatsCity[i])
+          return true;
+      }
+      else{
+        if(i == this.treatsCity.length){
+          if(this.newOffer.endingCity == this.treatsCity[i])
+            return true;
+        }
+        else{
+          if(this.treatsCity[i] == this.treatsCity[i -1])
+            return true;
+        }
+      }
+    }
+
+    if(this.newOffer.startingCity == this.newOffer.endingCity || this.newOffer.initialLoad > this.newOffer.vector.capacity)
+      return true;
+
+    else
+      return false;
+
+    }
+
+    log(){
+      console.log(this.newOffer);
+      console.log(this.treatsCity);
+      console.log(this.startDates);
+      console.log(this.startTimes);
+      console.log(this.endDates);
+      console.log(this.endTimes);
+
+    }
 }

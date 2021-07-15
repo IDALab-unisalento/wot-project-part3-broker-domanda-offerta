@@ -5,6 +5,8 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { MyVectorsComponent } from './components/my-vectors/my-vectors.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { SummaryModalComponent } from './components/summary-modal/summary-modal.component';
 
 const routes: Routes = [
   {path: '',component:LoginComponent},
@@ -13,7 +15,10 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'admin/pendingRegistration', component : PendingRegistrationComponent},
   {path: 'modal', component : ModalComponent},
-  {path: 'myVectors/:id', component : MyVectorsComponent}
+  {path: 'myVectors/:id', component : MyVectorsComponent},
+  {path :'signup', component: SignUpComponent},
+  {path: 'summary', component: SummaryModalComponent}
+
 
 
 

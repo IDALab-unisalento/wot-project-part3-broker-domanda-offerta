@@ -19,6 +19,7 @@ export class AffittuarioService {
   getDisabledEndPoint = 'http://localhost:8080/affittuario/getDisabled'
   getByIdEndPoint = 'http://localhost:8080/affittuario/get'
   getAllEndPoint = 'http://localhost:8080/affittuario/getAll'
+  saveURL='http://localhost:8080/affittuario/save';
 
 
   getById(id : number) : Observable<Affittuario>{
@@ -37,6 +38,10 @@ export class AffittuarioService {
     return this.http.get<Affittuario[]>(this.getAllEndPoint);
 }
 
+
+save(affittuario: Affittuario): Observable<Affittuario>{
+  return this.http.post<Affittuario>(this.saveURL,affittuario,httpOptions);
+}
 
 }
 
