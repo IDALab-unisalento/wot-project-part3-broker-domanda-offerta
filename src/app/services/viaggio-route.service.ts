@@ -26,9 +26,14 @@ export class ViaggioRouteService {
   getAllEndPoint = 'http://localhost:8080/viaggioRoute/getAll'
   saveEndPoint = 'http://localhost:8080/viaggioRoute/save'
   deleteEndPoint = 'http://localhost:8080/viaggioRoute/remove'
-  getByVectorIdAndRouteIdEndPoint = 'http://localhost:8080/viaggioRoute/getByViaggioIdAndRouteId'
-  getByVectorIdEndPoint = 'http://localhost:8080/viaggioRoute/getByViaggioId'
+  getByViaggioIdAndRouteIdEndPoint = 'http://localhost:8080/viaggioRoute/getByViaggioIdAndRouteId'
+  getByViaggioIdEndPoint = 'http://localhost:8080/viaggioRoute/getByViaggioId'
+  getByRouteIdEndPoint="http://localhost:8080/viaggioRoute/getByRouteId"
 
+
+  getByRouteId(routeId:number): Observable<ViaggioRoute>{
+    return this.http.get<ViaggioRoute>(this.getByRouteIdEndPoint+"/"+routeId);
+  }
 
   getAll(): Observable<ViaggioRoute[]>{
     return this.http.get<ViaggioRoute[]>(this.getAllEndPoint);
@@ -46,11 +51,11 @@ export class ViaggioRouteService {
   }
 
   getByVectorIdAndRouteId(vectorId : number, routeId : number) : Observable<ViaggioRoute>{
-    return this.http.get<ViaggioRoute>(this.getByVectorIdAndRouteIdEndPoint+'/'+vectorId+'/'+routeId);
+    return this.http.get<ViaggioRoute>(this.getByViaggioIdAndRouteIdEndPoint+'/'+vectorId+'/'+routeId);
   }
 
   getByViaggioId(viaggioId : number) : Observable<ViaggioRoute[]>{
-    return this.http.get<ViaggioRoute[]>(this.getByVectorIdEndPoint+'/'+viaggioId);
+    return this.http.get<ViaggioRoute[]>(this.getByViaggioIdEndPoint+'/'+viaggioId);
   }
 
 

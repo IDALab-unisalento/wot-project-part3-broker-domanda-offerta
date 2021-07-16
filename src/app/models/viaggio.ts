@@ -5,4 +5,5 @@ export interface Viaggio {
   vectorId : number;
   initialFreeCapacity : number;
   costoPerKm : number;
+  companyId: number;
 }
