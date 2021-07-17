@@ -12,6 +12,9 @@ import { ViaggioInfo } from 'src/app/models/viaggio-info';
 import { ViaggioRouteService } from 'src/app/services/viaggio-route.service';
 import { Company } from '../../models/company';
 import { CompanyService } from 'src/app/services/company.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { BookingModalComponent } from '../booking-modal/booking-modal.component';
+import { ScheduleComponent } from '../schedule/schedule.component';
 
 @Component({
   selector: 'app-affittuario-home',
@@ -22,16 +25,9 @@ export class AffittuarioHomeComponent implements OnInit {
 
   allViaggioInfo: ViaggioInfo[]=[];
 
-  constructor(
-      private viaggioService: ViaggioService,
-     private routeService: RouteService,
-     private viaggioRouteService: ViaggioRouteService,
-     private companyService: CompanyService,
-     private vectorService: VectorService
-     ) {
-
-
-  }
+  constructor( private viaggioService: ViaggioService, private routeService: RouteService,private viaggioRouteService: ViaggioRouteService,
+     private companyService: CompanyService,private matDialog : MatDialog,
+     private vectorService: VectorService) {}
 
    ngOnInit(): void {
      this.viaggioService.getAll().toPromise().then(
@@ -74,7 +70,7 @@ export class AffittuarioHomeComponent implements OnInit {
                   viaggioInfo.vectorOwnerViaggio=vector;
                 }
               )
-              this.companyService.getById(travels[i].id).toPromise().then(
+              this.companyService.getById(travels[i].companyId).toPromise().then(
                 company=>{
                   viaggioInfo.companyOwnerViaggio=company;
                 }
@@ -104,6 +100,18 @@ export class AffittuarioHomeComponent implements OnInit {
 
   }
 
+  openModal(travelInfo : ViaggioInfo, route: Route) {
+
+  localStorage.setItem('routeSelected', JSON.stringify(route));
+   localStorage.setItem('viaggioSelected', JSON.stringify(travelInfo));
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.disableClose = true;
+    dialogConfig.height = "500px";
+    dialogConfig.width = "600px";
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(BookingModalComponent, dialogConfig);
+  }
 
 
 }

@@ -29,7 +29,12 @@ export class ViaggioRouteService {
   getByViaggioIdAndRouteIdEndPoint = 'http://localhost:8080/viaggioRoute/getByViaggioIdAndRouteId'
   getByViaggioIdEndPoint = 'http://localhost:8080/viaggioRoute/getByViaggioId'
   getByRouteIdEndPoint="http://localhost:8080/viaggioRoute/getByRouteId"
+  updateCapacityViaggioRouteEndPoint="http://localhost:8080/viaggioRoute/update"
 
+
+  updateCapacity(newCapacity: number, viaggioRouteId: number): Observable<number>{
+    return this.http.get<any>(this.updateCapacityViaggioRouteEndPoint+"/"+newCapacity+"/"+viaggioRouteId);
+  }
 
   getByRouteId(routeId:number): Observable<ViaggioRoute>{
     return this.http.get<ViaggioRoute>(this.getByRouteIdEndPoint+"/"+routeId);

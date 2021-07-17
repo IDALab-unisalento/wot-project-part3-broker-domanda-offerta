@@ -1,8 +1,25 @@
+
+.sfondo{
+  background-image: url('https://cdn3.vectorstock.com/i/1000x1000/42/97/logistic-sea-freight-background-vector-12304297.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh !important;
+  font-family: 'Numans', sans-serif;
+
+}
+
+
 .timeline {
     list-style: none;
     padding: 20px 0 20px;
     position: relative;
 }
+
+.center {
+  margin-top:50px;
+}
+
 
 .timeline:before {
   top: 0;
@@ -146,7 +163,8 @@
   margin-top: 5px;
 }
 
-@media (max-width: 767px) {
+/*
+@media (max-width: fitContent) {
   ul.timeline:before {
     left: 40px;
   }
@@ -181,3 +199,5 @@
     right: auto;
   }
 }
+
+*/
