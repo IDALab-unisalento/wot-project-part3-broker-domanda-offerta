@@ -1,8 +1,10 @@
+import { environment } from './../../environments/environment';
 import { Observable } from 'rxjs';
 import { Route } from './../models/route';
 import { Router } from '@angular/router';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -44,4 +46,13 @@ getByCities(startCity : string, endCity : string): Observable<Route>{
   return this.http.get<Route>(`${this.getByCitiesEndPoint}/${startCity}/${endCity}`);
 }
 
+getCoordinates(cityName : string){
+  return this.http.get("https://api.mapbox.com/geocoding/v5/mapbox.places/"+cityName+".json?access_token="+environment.mapboxKey);
+
+}
+
+getPath(lat1 : number, lon1 : number, lat2 : number, lon2 : number ){
+  return this.http.get("https://api.mapbox.com/directions/v5/mapbox/cycling/"+lat1+ ',' + lon1 + ';' + lat2 + ',' + lon2 + "?access_token="+environment.mapboxKey);
+
+}
 }

@@ -47,7 +47,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { SummaryModalComponent } from './components/summary-modal/summary-modal.component';
-
+import { ModalErrorComponent } from './components/modal-error/modal-error.component';
+import { ModalTimeErrorComponent } from './components/modal-time-error/modal-time-error.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,9 @@ import { SummaryModalComponent } from './components/summary-modal/summary-modal.
     ModalErrorVectorComponent,
     SearchFilterPipe,
     SignUpComponent,
-    SummaryModalComponent
+    SummaryModalComponent,
+    ModalErrorComponent,
+    ModalTimeErrorComponent
     ],
   imports: [
     BrowserModule,

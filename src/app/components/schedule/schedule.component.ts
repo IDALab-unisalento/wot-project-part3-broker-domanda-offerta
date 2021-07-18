@@ -10,6 +10,11 @@ import { DatePipe } from '@angular/common';
 import { IgxGeographicMapComponent } from 'igniteui-angular-maps';
 import { Vector } from 'src/app/models/vector';
 import { Viaggio } from 'src/app/models/viaggio';
+import * as Mapbloxgl from 'mapbox-gl';
+import * as turf from '@turf/turf';
+import { environment } from 'src/environments/environment';
+import * as mapboxgl from 'mapbox-gl';
+import * as polyline from "@mapbox/polyline"
 
 @Component({
   selector: 'app-schedule',
@@ -19,7 +24,7 @@ import { Viaggio } from 'src/app/models/viaggio';
 })
 
 
-export class ScheduleComponent implements OnInit,AfterViewInit {
+export class ScheduleComponent implements OnInit {
 
   viaggioId : number = 0;
   viaggioRouteList : ViaggioRoute[] = [] as ViaggioRoute[];
@@ -31,9 +36,11 @@ export class ScheduleComponent implements OnInit,AfterViewInit {
   vector : Vector = {} as Vector;
   viaggio : Viaggio = {} as Viaggio;
   occupiedCapacity : number[] = [] as number[];
+  map : Mapbloxgl.Map = {} as Mapbloxgl.Map;
+  coordinates : any[] =  [];
+  totalDistance : number = 0;
+  cities : string[] = [] as string[];
 
-  @ViewChild("map")
-public map : IgxGeographicMapComponent  = {} as IgxGeographicMapComponent;
 
   constructor(public dialogRef: MatDialogRef<ScheduleComponent>,
               private viaggioRouteService : ViaggioRouteService,
@@ -45,15 +52,40 @@ public map : IgxGeographicMapComponent  = {} as IgxGeographicMapComponent;
   ngOnInit(): void {
 
      this.now2 = new Date();
-    this.nowFormatted =String(this.datepipe.transform(this.now2, 'yyyy-MM-dd hh:mm a'));
+    this.nowFormatted =String(this.datepipe.transform(this.now2, 'yyyy-MM-dd HH:mm'));
 
     this.viaggioId = JSON.parse(String(localStorage.getItem("viaggio")));
     this.getRoutesOfAVector();
     this.getDays();
 
+
+
   }
 
-  getRoutesOfAVector(){
+  createMarker(lng : number, lat : number, color : string, city : string, i : number){
+
+    if(i == 0)
+      city = '1) Starting city : '+city;
+    if(i == this.cities.length - 1)
+      city = String(i+1)+') Ending city: '+city;
+    if(i != 0 && i != this.cities.length -1 )
+      city = String(i+1)+'. '+city
+
+    var popup = new mapboxgl.Popup({ offset: 25 }).setText(
+      city
+      )
+
+    const marker = new Mapbloxgl.Marker({
+      color : color,
+      scale : 0.7
+
+    }).setLngLat([lng,lat])
+      .addTo(this.map)
+      .setPopup(popup);
+
+  }
+
+  async getRoutesOfAVector(){
     this.viaggioService.getById(this.viaggioId).subscribe(viaggio=>{
       this.viaggio = viaggio;
         //mi serve per acquisire la capacità del veicolo
@@ -63,24 +95,161 @@ public map : IgxGeographicMapComponent  = {} as IgxGeographicMapComponent;
     });
 
 
+    await new Promise<void> ((resolve, reject) => {
 
-    this.viaggioRouteService.getByViaggioId(this.viaggioId).subscribe(lista=>{
+    this.viaggioRouteService.getByViaggioId(this.viaggioId).subscribe(async lista=>{
       this.viaggioRouteList = lista;
+      resolve();
+
+
+      await new Promise<void> (async (resolve, reject) => {
 
       for (const viaggioRoute of this.viaggioRouteList) {
 
         viaggioRoute.route = {} as Route;
-        viaggioRoute.startDateString =String(this.datepipe.transform(viaggioRoute.startDate, 'yyyy-MM-dd hh:mm',"GMT" ));
-        viaggioRoute.endDateString  =String(this.datepipe.transform(viaggioRoute.endDate, 'yyyy-MM-dd hh:mm',"GMT"));
-        viaggioRoute.day =  (Number(String(viaggioRoute.startDate).substring(8,10)));
+        viaggioRoute.startDateString =String(this.datepipe.transform(viaggioRoute.startDate, 'yyyy-MM-dd hh:mm' ));
+        viaggioRoute.endDateString  =String(this.datepipe.transform(viaggioRoute.endDate, 'yyyy-MM-dd hh:mm'));
+        viaggioRoute.dayStart =  (Number(String(viaggioRoute.startDate).substring(8,10)));
+        viaggioRoute.dayEnd =  (Number(String(viaggioRoute.endDate).substring(8,10)));
+
         //problema del pm /am nelle 2 stringhe che non si risolve, non riconosce le ore del PM per il confronto di > (le tratta come se fossero semplici AM)
 
-        this.routeService.getById(viaggioRoute.routeId).subscribe( route =>{
+        await new Promise<void> ((resolve, reject) => {
+
+        this.routeService.getById(viaggioRoute.routeId).subscribe( async route =>{
           viaggioRoute.route = route;
+          viaggioRoute.distance = route.distanceKm;
+          this.totalDistance = this.totalDistance + route.distanceKm;
+
+          await new Promise<void> ((resolve, reject) => {
+
+            this.routeService.getCoordinates(viaggioRoute.route.startCity).subscribe(async (data : any) =>{
+              this.cities.push(viaggioRoute.route.startCity)
+              this.coordinates.push( data.features[0].center );
+              resolve();
+            });
+          });
+
+          if(viaggioRoute == this.viaggioRouteList[this.viaggioRouteList.length - 1]){
+            await new Promise<void> ((resolve, reject) => {
+
+              this.routeService.getCoordinates(viaggioRoute.route.endCity).subscribe(async (data : any) =>{
+                this.cities.push(viaggioRoute.route.endCity)
+                this.coordinates.push( data.features[0].center );
+                resolve();
+              });
+            });
+
+
+
+          }
+          resolve();
+
+
         });
+      });
+      }
+      resolve();
+    });
+  });
+
+    setTimeout(async ()=>{
+
+
+      var zoom : number = 4;
+
+      if(this.totalDistance < 100){
+        zoom = 9;
+      }
+      if(this.totalDistance< 500 && this.totalDistance >= 100)
+      zoom = 6.5;
+
+      if(this.totalDistance< 800 && this.totalDistance >= 500)
+          zoom = 5.5;
+      if(this.totalDistance< 1000 && this.totalDistance >= 800)
+          zoom = 5;
+
+      (Mapbloxgl as any).accessToken = environment.mapboxKey;
+      this.map = new Mapbloxgl.Map({
+        container:'mapa-mapbox',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [(this.coordinates[0][0] + this.coordinates[this.coordinates.length - 1][0])/2
+                , (this.coordinates[0][1] + this.coordinates[this.coordinates.length -1][1])/2],
+        zoom : zoom
+
+      });
+
+      const nav = new mapboxgl.NavigationControl();
+      this.map.addControl(nav);
+
+      for(var i = 0; i<this.coordinates.length; i++){
+
+        if(i == 0 )
+        this.createMarker(this.coordinates[i][0], this.coordinates[i][1],'red',this.cities[i],i);
+        if(i == this.coordinates.length -1)
+        this.createMarker(this.coordinates[i][0], this.coordinates[i][1],'red',this.cities[i],i);
+      if(i != 0 && i != this.coordinates.length - 1 )
+      this.createMarker(this.coordinates[i][0], this.coordinates[i][1],'',this.cities[i],i);
       }
 
-    })
+
+      for(var i = 0; i < this.coordinates.length - 1; i++){
+
+        await new Promise<void> ((resolve, reject) => {
+
+      this.routeService.getPath(this.coordinates[i][0], this.coordinates[i][1],
+                                this.coordinates[i + 1][0], this.coordinates[i + 1][1])
+                                .subscribe((data : any) =>{
+                                  var coords = polyline.decode(data.routes[0].geometry); // Get the geometry of the request  and convert it from a Google string to coordinates
+                                  coords.forEach(coordinate => {
+                                    [coordinate[0], coordinate[1]] = [coordinate[1], coordinate[0]];
+
+                                  });
+                                  var path = turf.lineString(coords);
+
+                                  this.map.addLayer({
+                                    "id": "path"+String(i),
+                                    "type": "line",
+                                    "source": {
+                                        "type": "geojson",
+                                        "data": path
+                                    },
+
+                                    })
+
+                                    var color : string;
+                                    color = 'rgb(24, 0, 255)';
+                                    if(i == this.coordinates.length - 2) // questo qui andrebbe fatto solo per i tratti di EMPTY RETURN, adesso invece sta fatto a prescindere per l'ultima tratta
+                                      color = 'rgb(255, 0, 0)';
+                                    this.map.setPaintProperty('path'+String(i), 'line-color', color );
+                                    this.map.setPaintProperty('path'+String(i), 'line-width', 2.5);
+
+                                    resolve();
+                                  });
+
+                        });
+
+                      }
+
+  /*      var popupStart = new mapboxgl.Popup({ offset: [0, -35] })
+  .setLngLat(this.coordinates[0])
+  .setHTML(
+    '<div class"card" style="color : blue">'+'<h1>' + 'Start'+ '</h1> </div>'
+           )
+  .addTo(this.map);
+
+  var popupEnd = new mapboxgl.Popup({ offset: [0, -35] })
+  .setLngLat(this.coordinates[this.coordinates.length -1])
+  .setHTML(
+    '<div class"card" style="color : blue">'+'<h3>' + 'End '+ '</h3> </div>'
+           )
+  .addTo(this.map);
+  */
+
+
+    },200);
+    });
+
   }
 
   getDays(){
@@ -95,7 +264,11 @@ public map : IgxGeographicMapComponent  = {} as IgxGeographicMapComponent;
       for (const viaggioRoute of lista) {
 
         this.days.push(Number(String(viaggioRoute.startDate).substring(8,10)));
+        this.days.push(Number(String(viaggioRoute.endDate).substring(8,10)));
+
         this.dates.push(viaggioRoute.startDate);
+        this.dates.push(viaggioRoute.endDate);
+
         var somma : number = ((vector.capacity - viaggioRoute.availableCapacity) / vector.capacity )*100;
         this.occupiedCapacity.push(Number(somma.toFixed(1)));
       }
@@ -122,8 +295,5 @@ public map : IgxGeographicMapComponent  = {} as IgxGeographicMapComponent;
     this.dialogRef.close();
   }
 
-  public ngAfterViewInit(): void {
-    this.map.windowRect = { left: 0.2, top: 0.1, width: 0.7, height: 0.7 };
-}
 
 }

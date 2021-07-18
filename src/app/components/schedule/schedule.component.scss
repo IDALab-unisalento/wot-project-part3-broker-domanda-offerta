@@ -358,3 +358,43 @@ border-color: #2ECC71
 .andrea{
   padding-left: 100px;
 }
+
+
+#mapa-mapbox{
+
+  width: 500px;
+  height: 500px;
+}
+.card {
+  display: inline-block;
+  font-size: small;
+  border-bottom: solid #D3D3D3 2px;
+  margin-bottom: 6px;
+  width: 100%;
+}
+
+.card-header {
+  font-weight: bold;
+  padding: 6px;
+  font-weight: bold;
+}
+
+.no-route {
+  background-color: #D3D3D3;
+  color: #ff0000;
+
+}
+
+.obstacle-found {
+  background-color: #D3D3D3;
+  color: #FFFFFF;
+}
+
+.route-found {
+  background-color: #33A532;
+  color: #FFFFFF;
+}
+
+.card-details {
+  padding: 3px 6px;
+}

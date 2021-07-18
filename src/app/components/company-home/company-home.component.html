@@ -1,4 +1,9 @@
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+
+
 <hr>
 <div class="container bootstrap snippets bootdey">
     <div class="row">
@@ -52,8 +57,8 @@
                                   <td class="text-center">{{offer.endingCity}}</td>
                                   <td class="text-center">{{offer.length}} Km</td>
                                   <td class="text-center">{{offer.costoPerKm}} $</td>
-                                  <td class="text-center">{{offer.startingDate | date : "dd/MM/YYYY HH:mm":"GMT"}}</td>
-                                  <td class="text-center">{{offer.endingDate | date : "dd/MM/YYYY HH:mm":"GMT"}}</td>
+                                  <td class="text-center">{{offer.startingDate | date : "dd/MM/YYYY HH:mm"}}</td>
+                                  <td class="text-center">{{offer.endingDate | date : "dd/MM/YYYY HH:mm"}}</td>
 
                                     <td  class="text-center" style="width: 20%">
                                         <a onmouseover="" style="cursor: pointer;" class="table-link text-warning" (click)="this.openModal(offer.viaggioId); ">
@@ -137,12 +142,18 @@
                                 [(ngModel)]="newOffer.startingCity"
                                 >
                                 <i class="fa fa-search success circular"></i>
+                                <div class="valid-feedback" *ngIf="treatsCity[0] == newOffer.startingCity" style="color: rgb(210, 6, 6);">
+                                  <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+
+                                  City conflict
+                                </div>
+
                                 <div class="invalid-feedback">
                                   <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
 
                                   Start city is required
                                 </div>
-                                <div class="valid-feedback">
+                                <div class="valid-feedback" [hidden]="treatsCity[0] == newOffer.startingCity">
                                   <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
 
                                   Ok!
@@ -185,6 +196,7 @@
                                     #startTime="ngModel"
                                     name="startTime"
                                     [(ngModel)]="newOffer.startTime">
+
                                     <ngx-material-timepicker #fullTime></ngx-material-timepicker>
                                 </div>
                               </div>
@@ -217,8 +229,15 @@
 
                             <input class="form-control"  [matAutocomplete]="treats10" (input)="getItems($event)" type="text" placeholder="City" style="width: 205px;"
                             name="treatsCity{{treatsCity[myIndex]}}"
+                            [ngClass]="{'is-valid': treatsCity[myIndex] == treatsCity[myIndex - 1]}"
                             [(ngModel)]="treatsCity[myIndex]"
                             >
+
+                            <div class="valid-feedback" *ngIf="treatsCity[myIndex] == treatsCity[myIndex - 1]" style="color: rgb(210, 6, 6);">
+                              <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+
+                              City conflict
+                            </div>
                             <i class="fa fa-search success circular"></i>
                             <mat-autocomplete #treats10="matAutocomplete">
                               <mat-option *ngFor="let city of cities  | searchFilter :query" [value]="city">
@@ -321,7 +340,13 @@
 
                                   End city cannot be the same of start
                                 </div>
-                                <div class="valid-feedback" [hidden]="newOffer.startingCity == newOffer.endingCity">
+                                <div class="valid-feedback" *ngIf="treatsCity[treatsCity.length-1] == newOffer.endingCity" style="color: rgb(210, 6, 6);">
+                                  <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+
+                                  City conflict : same city for the start and the end of a treats
+
+                                </div>
+                                <div class="valid-feedback" [hidden]="newOffer.startingCity == newOffer.endingCity || treatsCity[treatsCity.length-1] == newOffer.endingCity">
                                   <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
 
                                   Ok!
@@ -533,6 +558,4 @@
   </div>
 </div>
 </div>
-<button class="btn btn-primary" (click)="log()">Stampa</button>
-
 </div>

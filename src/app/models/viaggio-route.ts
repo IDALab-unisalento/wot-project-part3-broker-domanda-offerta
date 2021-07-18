@@ -8,8 +8,10 @@ export interface ViaggioRoute {
   routeId : number;
   viaggioId : number;
   route : Route;
-  day : number;
+  dayStart : number;
+  dayEnd : number;
   startDateString : string;
   endDateString : string;
+  distance : number;
 
 }

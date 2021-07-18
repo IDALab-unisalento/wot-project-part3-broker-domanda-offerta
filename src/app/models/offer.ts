@@ -12,7 +12,7 @@ export interface Offer {
   occupiedCapacity : number;
   startingCity : string;
   endingCity : string;
-  startingDate ?: Date;
+  startingDate : Date;
   endingDate : Date;
   routes : Route[];
   vector : Vector;
