@@ -1,0 +1,69 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<div>
+
+  <button  mat-button style="margin-left: 88%"  (click)="closeModal();">X</button>
+      <h2 style="text-align: left;">Route booking summary	</h2>
+            <!-- content goes here -->
+			<form >
+        <div class="form-group">
+        	<div class="input-group" >
+            <span class="input-group-addon"><i class="fas fa-shipping-fast" aria-hidden="true"></i></span>
+          <input type="text" class="form-control" style="margin-right: 20%"  placeholder=" Shipping from {{travelSelected.routes[0].startCity}} to {{travelSelected.routes[travelSelected.routes.length-1].endCity}}" readonly  />
+        </div>
+        <!-- stat city   end-city route selected -->
+        <div class="input-group" style="padding-top: 3%;">
+          <span class="input-group-addon"><i class="bi bi-flag" aria-hidden="true"></i></span>
+        <input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{routeSelected.startCity}}" readonly  />
+        </div>
+        <!-- end city -->
+        <div class="input-group" style="padding-top: 3%;">
+          <span class="input-group-addon"><i class="bi bi-flag-fill" aria-hidden="true"></i></span>
+        <input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{routeSelected.endCity}}" readonly  />
+        </div>
+
+    <!--  vehicle name  -->
+    <div class="input-group" style="padding-top: 3%;">
+      <span class="input-group-addon">
+        <i class="fas fa-truck"  *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'fiorino'"></i>
+        <i class="fa fa-bus-alt" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'bus'"></i>
+        <i class="fa fa-train" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'treno' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'train'"></i>
+           <i class="fa fa-car" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'car' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'auto' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'automobile' "></i>
+        <i class="fa fa-plane" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'plane' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'aereo' ||  travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'aereoplano'  "></i>
+      <i class="fa fa-truck-moving" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'truck' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'camion'"></i>
+
+      </span>
+    <input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{travelSelected.vectorOwnerViaggio.name}}" readonly  />
+  </div>
+  <!-- compnay name -->
+  <div class="input-group" style="padding-top: 3%;">
+    <span class="input-group-addon"><i class="bi bi-building" aria-hidden="true"></i></span>
+  <input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{travelSelected.companyOwnerViaggio.name}}" readonly  />
+</div>
+<!-- avaible capaicty to select -->
+<div class="input-group" style="padding-top: 3%; " >
+  <span class="input-group-addon"><i class="fas fa-dolly" aria-hidden="true"></i></span>
+<input type="number" [(ngModel)]="requiredCapacity" name="requiredCapacity" #x='ngModel'  class="form-control"
+[ngClass]='{
+  "is-invalid":x.errors && x.touched,
+  "is-valid":!x.errors && x.touched
+}'
+ required=true; placeholder="Insert capacity to book" />
+</div>
+
+</div>
+
+</form>
+		<footer>
+			<div class="btn-group btn-group-justified" role="group" aria-label="group button">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default"  (click)="closeModal()" role="button">Close</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default btn-hover-green"  (click)="book()" role="button">Save</button>
+				</div>
+			</div>
+		</footer>
+
+</div>

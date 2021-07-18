@@ -1,1 +1,92 @@
-<p>affittuario-home works!</p>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container" >
+    <div class="page-header text-center">
+        <h1 id="timeline" *ngIf="allViaggioInfo.length!=0" style="font-size:30px" >Latest Shipping</h1>
+        <h1 id="timeline"*ngIf="allViaggioInfo.length==0" style="font-size:30px"  >No Shipping avaible </h1>
+    </div>
+
+    <ul class="timeline" *ngIf="allViaggioInfo.length!=0">
+      <li *ngFor="let travelInfo of allViaggioInfo; let travelIndex=index "
+      [ngClass]="{
+        'timeline-inverted': 0 === (travelIndex+1)%2
+      }" >
+      <div class=" timeline-badge info ">
+            <i class="fas fa-truck"  *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'fiorino'"></i>
+            <i class="fa fa-bus-alt" *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'bus'"></i>
+            <i class="fa fa-train" *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'treno' || travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'train'"></i>
+               <i class="fa fa-car" *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'car' || travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'auto' || travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'automobile' "></i>
+            <i class="fa fa-plane" *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'plane' || travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'aereo' ||  travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'aereoplano'  "></i>
+          <i class="fa fa-truck-moving" *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'truck' || travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'camion'"></i>
+          </div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h1 style="text-align: center; padding-top:5%" class="timeline-title">Shipping from {{travelInfo.routes[0].startCity}} to {{travelInfo.routes[travelInfo.routes.length-1].endCity}} </h1>
+              <p class="text-muted" >
+                <i style="margin-left:2%"class="glyphicon glyphicon-time" ></i> Start date {{travelInfo.startDateViaggio|date: 'dd/MM/yyyy hh:mm'}}
+                <i style="margin-left:21%" class="glyphicon glyphicon-time"></i>  End date {{travelInfo.endDateViaggio|date: 'dd/MM/yyyy hh:mm'}}
+              </p>
+            </div>
+            <div class="r">
+
+              <strong style="margin-left:30%;margin-bottom:2%"> All's shipping routes </strong>
+              <ul style="padding-top:2%; ">
+                <li *ngFor="let route of  travelInfo.routes">
+               <strong>
+                 {{route.startCity}}  -  {{route.endCity}}
+               </strong>
+                <strong class="text-muted" style="padding-left:2%;">
+                      Avaible Capacity {{getAvaibleCapacity(travelInfo,route.id)}} Kg </strong>
+
+                      <i class="fa fa-tag" (click)="openModal(travelInfo,route)" style="padding-left: 0.5%;"></i>
+
+
+
+                      </li>
+                    </ul>
+<br>
+
+
+
+              <strong style="margin-left:30%;  margin-top:8%"> Company owner shipping info </strong>
+<ul style="padding-top: 2%;">
+  <li>
+   Company Name:  <strong style="color:blue">{{travelInfo.companyOwnerViaggio.name}}  {{travelInfo.companyOwnerViaggio.legalForm}}</strong>
+
+  </li>
+  <li >
+    Web Site: <strong  style="color:blue">{{travelInfo.companyOwnerViaggio.webSite}}</strong>
+  </li>
+</ul>
+<br>
+<strong style="margin-left:30%;  margin-top:8%"> Vector owner shipping info </strong>
+<ul style="padding-top: 2%;">
+  <li>
+   Vector Name:  <strong style="color:blue">
+     {{travelInfo.vectorOwnerViaggio.name}}
+   </strong>
+  </li>
+  <li>
+   Vector Brand:  <strong style="color:blue"> {{travelInfo.vectorOwnerViaggio.brand}}</strong>
+
+  </li>
+  <li>
+    Vector Overall Capacity:  <strong style="color:blue"> {{travelInfo.vectorOwnerViaggio.capacity}}</strong>
+
+   </li>
+</ul>
+            </div>
+
+            <div class="timeline-footer primary">
+            </div>
+          </div>
+        </li>
+
+
+
+    </ul>
+</div>
+

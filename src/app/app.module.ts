@@ -49,6 +49,8 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { SummaryModalComponent } from './components/summary-modal/summary-modal.component';
 import { ModalErrorComponent } from './components/modal-error/modal-error.component';
 import { ModalTimeErrorComponent } from './components/modal-time-error/modal-time-error.component';
+import { BookingModalComponent } from './components/booking-modal/booking-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -70,7 +72,8 @@ import { ModalTimeErrorComponent } from './components/modal-time-error/modal-tim
     SignUpComponent,
     SummaryModalComponent,
     ModalErrorComponent,
-    ModalTimeErrorComponent
+    ModalTimeErrorComponent,
+    BookingModalComponent
     ],
   imports: [
     BrowserModule,
