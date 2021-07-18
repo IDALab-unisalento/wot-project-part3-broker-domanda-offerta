@@ -24,13 +24,18 @@ import { ScheduleComponent } from '../schedule/schedule.component';
 export class AffittuarioHomeComponent implements OnInit {
 
   allViaggioInfo: ViaggioInfo[]=[];
-
+  ok=false;
   constructor( private viaggioService: ViaggioService, private routeService: RouteService,private viaggioRouteService: ViaggioRouteService,
      private companyService: CompanyService,private matDialog : MatDialog,
      private vectorService: VectorService) {}
 
    ngOnInit(): void {
-     this.viaggioService.getAll().toPromise().then(
+    this.loadViaggioInfo();
+    setTimeout(()=>{this.allViaggioInfo=[]; console.log("puloito")},7000)
+  }
+
+  loadViaggioInfo(){
+    this.viaggioService.getAll().toPromise().then(
       travels=>{
         // for each travels , get :
         // all routes, the company, the vector of that travel
@@ -54,7 +59,7 @@ export class AffittuarioHomeComponent implements OnInit {
               this.routeService.findAllRoutes(travels[i].id).toPromise().then(
                 routes=>{
 
-                  viaggioInfo.routes=routes;
+                  viaggioInfo.routes=routes
 
                 }
               )
@@ -85,10 +90,25 @@ export class AffittuarioHomeComponent implements OnInit {
       }
     )
     console.log(this.allViaggioInfo)
+
   }
 
+
+  openModal(travelInfo : ViaggioInfo,route: Route) {
+
+   localStorage.setItem('viaggioSelected', JSON.stringify(travelInfo));
+   localStorage.setItem('routeSelected', JSON.stringify(route));
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.disableClose = true;
+    dialogConfig.height = "500px";
+    dialogConfig.width = "600px";
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(BookingModalComponent, dialogConfig);
+  }
+
+
   getAvaibleCapacity(travelInfo: ViaggioInfo,routeId: number) {
-    setTimeout(()=>{},800)
     let avaible='Nan';
     for(let i=0; i<travelInfo.viaggioRouteInfo.length;i++){
       if(travelInfo.viaggioRouteInfo[i].routeId==routeId){
@@ -97,20 +117,6 @@ export class AffittuarioHomeComponent implements OnInit {
       }
     }
     return avaible;
-
-  }
-
-  openModal(travelInfo : ViaggioInfo, route: Route) {
-
-  localStorage.setItem('routeSelected', JSON.stringify(route));
-   localStorage.setItem('viaggioSelected', JSON.stringify(travelInfo));
-    const dialogConfig = new MatDialogConfig();
-    // The user can't close the dialog by clicking outside its body
-    dialogConfig.disableClose = true;
-    dialogConfig.height = "500px";
-    dialogConfig.width = "600px";
-    // https://material.angular.io/components/dialog/overview
-    const modalDialog = this.matDialog.open(BookingModalComponent, dialogConfig);
   }
 
 

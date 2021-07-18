@@ -36,12 +36,14 @@ export class BookingModalComponent implements OnInit {
   ngOnInit(): void {
     this.affittuario=JSON.parse(String(localStorage.getItem('loggedUser')));
     this.travelSelected=JSON.parse(String(localStorage.getItem('viaggioSelected')));
-    this.routeSelected=JSON.parse(String(localStorage.getItem('routeSelected')))
+    this.routeSelected=JSON.parse(String(localStorage.getItem('routeSelected')));
   }
 
   closeModal() {
     this.dialogRef.close();
   }
+
+
 
   book(){
     if(this.requiredCapacity > 0 ){
