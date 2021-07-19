@@ -1,6 +1,6 @@
 import { PendingRegistrationComponent } from './components/pending-registrations/pending-registrations.component';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -43,6 +43,7 @@ import { MyVectorsComponent } from './components/my-vectors/my-vectors.component
 import { ModalErrorVectorComponent } from './components/modal-error-vector/modal-error-vector.component';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
@@ -50,6 +51,7 @@ import { SummaryModalComponent } from './components/summary-modal/summary-modal.
 import { ModalErrorComponent } from './components/modal-error/modal-error.component';
 import { ModalTimeErrorComponent } from './components/modal-time-error/modal-time-error.component';
 import { BookingModalComponent } from './components/booking-modal/booking-modal.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -90,13 +92,15 @@ import { BookingModalComponent } from './components/booking-modal/booking-modal.
     MatListModule,
     MatInputModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     MatFormFieldModule,
     MatAutocompleteModule,
     MatDatepickerModule,
     IgxGeographicMapModule,
     IgxDataChartInteractivityModule,
     MatNativeDateModule,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    NgxSpinnerModule
     ],
   providers: [
             {
@@ -115,6 +119,7 @@ import { BookingModalComponent } from './components/booking-modal/booking-modal.
               ViaggioService
 
                           ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
