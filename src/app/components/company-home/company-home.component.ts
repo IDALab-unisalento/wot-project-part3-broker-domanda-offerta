@@ -354,8 +354,8 @@ async addNewOffer(){
             invalidTime = true;
         }
         else{
-          if(i == this.startDates.length){
-            if(this.newOffer.endDate > this.startDates[i])
+          if(i == this.startDates.length-1){
+            if(this.newOffer.endDate < this.startDates[i])
             invalidTime = true;
           }
           else{
@@ -782,7 +782,9 @@ async addNewOffer(){
 
     isInvalid() : boolean{
 
-      if(this.newOffer.startingCity == this.newOffer.endingCity || this.newOffer.initialLoad > this.newOffer.vector.capacity)
+      if(this.newOffer.startingCity == this.newOffer.endingCity ||
+         this.newOffer.initialLoad > this.newOffer.vector.capacity ||
+         this.newOffer.startDate > this.newOffer.endDate)
         return true;
 
       else

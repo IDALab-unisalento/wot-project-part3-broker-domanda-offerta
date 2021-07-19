@@ -300,16 +300,19 @@
 
                               <div class="form-group" >
                                 <label  style="color: #044459"><strong>{{newOffer.endingCity}}</strong> Delivery Time: <label style="color:red">*  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></label>
-
                                 <mat-form-field appearance="fill" style="width: 150px;">
                                   <mat-label  style="font-size: 12px;">Choose date</mat-label>
                                   <input  matInput required  [matDatepicker]="picker2"
                                   #endDate="ngModel"
                                   name="endDate"
+                                  [ngClass]="{'is-invalid': (!endDate.touched && newOffer.endDate < newOffer.startDate)}"
                                   [(ngModel)]="newOffer.endDate">
+
+
                                   <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                   <mat-datepicker #picker2></mat-datepicker>
                                 </mat-form-field>
+
 
                                 &nbsp;&nbsp;&nbsp;
                                 <input style="width: 60px;" required placeholder="hh:mm" aria-label="24hr format" [ngxTimepicker]="fullTime2" [format]="24"
@@ -318,7 +321,12 @@
                                 [(ngModel)]="newOffer.endTime">
                                 <ngx-material-timepicker #fullTime2></ngx-material-timepicker>
 
+                                <div *ngIf="newOffer.endDate < newOffer.startDate" style="color: rgb(210, 6, 6);">
+                                  <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
 
+                                  Initial Date is subsequent to the final one
+
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -452,8 +460,8 @@
                       <label style="color: rgb(99, 99, 99);" > <label style="color:red">*</label> : Mandatory Fields</label>
                       <div class="row">
                         <div class="col d-flex justify-content-end">
-                          <button class="btn btn-dark" (click)="addMenu = false">Cancel</button> &nbsp;
-                          <button class="btn btn-primary" type="submit" [disabled]="!offerForm.form.valid || isInvalid() ">Add Offer</button>
+                          <button class="btn btn-dark" style="border-radius: 1.5rem;" (click)="addMenu = false">Cancel</button> &nbsp;
+                          <button class="btn btn-primary" style="border-radius: 1.5rem;" type="submit" [disabled]="!offerForm.form.valid || isInvalid() ">Add Offer</button>
 
                         </div>
                       </div>
@@ -524,7 +532,7 @@
 
                                   <td class="text-center">{{offer.startingCity}}</td>
                                   <td class="text-center">{{offer.endingCity}}</td>
-                                  <td class="text-center">{{offer.length}} Km</td>
+                                  <td class="text-center">{{offer.length.toFixed(1)}} Km</td>
                                   <td class="text-center">{{offer.costoPerKm}} $</td>
                                   <td class="text-center">{{offer.startingDate | date : "dd/MM/YYYY HH:mm"}}</td>
                                   <td class="text-center">{{offer.endingDate | date : "dd/MM/YYYY HH:mm"}}</td>

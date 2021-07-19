@@ -158,7 +158,7 @@ export class ScheduleComponent implements OnInit {
     setTimeout(async ()=>{
 
 
-      var zoom : number = 4;
+      var zoom : number = 3;
 
       if(this.totalDistance < 100){
         zoom = 9;
@@ -170,6 +170,10 @@ export class ScheduleComponent implements OnInit {
           zoom = 5.5;
       if(this.totalDistance< 1000 && this.totalDistance >= 800)
           zoom = 5;
+      if(this.totalDistance< 2000 && this.totalDistance >= 1000)
+        zoom = 4;
+      if(this.totalDistance< 4000 && this.totalDistance >= 2000)
+        zoom = 3;
 
       (Mapbloxgl as any).accessToken = environment.mapboxKey;
       this.map = new Mapbloxgl.Map({
