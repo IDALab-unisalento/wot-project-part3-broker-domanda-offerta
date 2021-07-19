@@ -25,7 +25,12 @@ export class RouteService {
   getByCitiesEndPoint = 'http://localhost:8080/route/getByStartCityAndEndCity'
   saveEndPoint = 'http://localhost:8080/route/save'
   getAllRoutesOfViaggioIdEndPoint="http://localhost:8080/route/getRoutes"
+  getRoutesByEndCityURL="http://localhost:8080/route/getByEndCity"
 
+
+  getByEndCity(endCity: string):Observable<Route[]>{
+    return this.http.get<Route[]>(this.getRoutesByEndCityURL+'/'+endCity)
+  }
 
   findAllRoutes(viaggioId: Number): Observable<Route[]>{
     return this.http.get<Route[]>(this.getAllRoutesOfViaggioIdEndPoint+"/"+viaggioId)

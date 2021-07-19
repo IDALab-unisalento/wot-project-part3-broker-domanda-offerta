@@ -36,8 +36,8 @@ export class ViaggioRouteService {
     return this.http.get<any>(this.updateCapacityViaggioRouteEndPoint+"/"+newCapacity+"/"+viaggioRouteId);
   }
 
-  getByRouteId(routeId:number): Observable<ViaggioRoute>{
-    return this.http.get<ViaggioRoute>(this.getByRouteIdEndPoint+"/"+routeId);
+  getByRouteId(routeId:number): Observable<ViaggioRoute[]>{
+    return this.http.get<ViaggioRoute[]>(this.getByRouteIdEndPoint+"/"+routeId);
   }
 
   getAll(): Observable<ViaggioRoute[]>{

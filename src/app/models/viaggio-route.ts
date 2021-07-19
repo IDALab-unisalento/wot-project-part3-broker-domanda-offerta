@@ -14,4 +14,6 @@ export interface ViaggioRoute {
   endDateString : string;
   distance : number;
 
+
+
 }

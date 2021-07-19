@@ -249,7 +249,7 @@ export class ScheduleComponent implements OnInit {
   */
 
 
-    },200);
+    },1500);
     });
 
   }
