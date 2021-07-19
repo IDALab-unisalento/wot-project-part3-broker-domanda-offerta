@@ -289,7 +289,7 @@ removeTreats(id : number){
   this.treatsCity.splice(id,1);
 }
 
-    async addNewOffer(){
+async addNewOffer(){
 
       var invalid : boolean = false;
       var invalidTime : boolean = false;
@@ -336,6 +336,7 @@ removeTreats(id : number){
      viaggio.vectorId = this.newOffer.vector.id;
      viaggio.initialFreeCapacity = this.newOffer.vector.capacity - this.newOffer.initialLoad;
      viaggio.costoPerKm = this.newOffer.costoPerKm;
+     viaggio.companyId = this.loggedUser.id;
 
      await new Promise<void> ((resolve, reject) => {
      this.viaggioService.save(viaggio).subscribe(async viaggioSaved =>{
@@ -405,9 +406,19 @@ removeTreats(id : number){
 
         await new Promise<void> ((resolve, reject) => {
 
-        route.distanceKm = Number(turf.distance(this.startCoordinates ,this.endCoordinates,turfOptions).toFixed(1));
-        console.log(route.distanceKm)
-      resolve();
+
+          this.routeService.getPath(this.startCoordinates[0], this.startCoordinates[1],
+            this.endCoordinates[0], this.endCoordinates[1])
+            .subscribe((data : any) =>{
+              route.distanceKm = Number(((data.routes[0].distance)/1000).toFixed(1));
+
+                resolve();
+              });
+
+
+      //   route.distanceKm = Number(turf.distance(this.startCoordinates ,this.endCoordinates,turfOptions).toFixed(1));
+      //   console.log(route.distanceKm)
+      // resolve();
       });
 
 
@@ -590,8 +601,21 @@ removeTreats(id : number){
 
 
         await new Promise<void> (async (resolve, reject) => {
-          route.distanceKm = Number(turf.distance(this.startCoordinates ,this.endCoordinates,turfOptions).toFixed(1));
-          console.log(route.distanceKm)
+
+          await new Promise<void> (async (resolve, reject) => {
+
+          // route.distanceKm = Number(turf.distance(this.startCoordinates ,this.endCoordinates,turfOptions).toFixed(1));
+          // console.log(route.distanceKm)
+          this.routeService.getPath(this.startCoordinates[0], this.startCoordinates[1],
+            this.endCoordinates[0], this.endCoordinates[1])
+            .subscribe((data : any) =>{
+              route.distanceKm = Number(((data.routes[0].distance)/1000).toFixed(1));
+
+                resolve();
+              });
+            });
+
+
 
           await new Promise<void> ((resolve, reject) => {
         this.routeService.save(route).subscribe(async route=>{

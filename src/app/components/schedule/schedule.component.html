@@ -39,8 +39,8 @@
                         style="width: {{occupiedCapacity[idx]}}%" class="progress-bar progress-bar-success"></div>
                     </div>
                     <small style="font-size: 11px;">{{occupiedCapacity[idx]}}% Occupied </small>
-                    <small *ngIf="occupiedCapacity[idx] == 0" style="color: red;">EMPTY RETURN</small>
-                </td>
+                    <button [disabled]="true" *ngIf="occupiedCapacity[idx] == 0" class="btn btnEffect" >EMPTY RETURN</button>
+                  </td>
                 </div>
 
               </ul>
@@ -67,7 +67,7 @@
                           style="width: {{occupiedCapacity[idx]}}%" class="progress-bar progress-bar-success"></div>
                       </div>
                       <small style="font-size: 11px;">{{occupiedCapacity[idx]}}% Occupied </small>
-                      <small *ngIf="occupiedCapacity[idx] == 0" style="color: red;">EMPTY RETURN</small>
+                      <button [disabled]="true" *ngIf="occupiedCapacity[idx] == 0" class="btn btnEffect" >EMPTY RETURN</button>
                   </td>
                   </div>
 
@@ -95,7 +95,7 @@
                           style="width: {{occupiedCapacity[idx]}}%" class="progress-bar progress-bar-success"></div>
                       </div>
                       <small style="font-size: 11px;">{{occupiedCapacity[idx]}}% Occupied </small>
-                      <small *ngIf="occupiedCapacity[idx] == 0" style="color: red;">EMPTY RETURN</small>
+                      <button [disabled]="true" *ngIf="occupiedCapacity[idx] == 0" class="btn btnEffect" >EMPTY RETURN</button>
                   </td>
                   </div>
                 </ul>
@@ -121,7 +121,7 @@
                           style="width: {{occupiedCapacity[idx]}}%" class="progress-bar progress-bar-success"></div>
                       </div>
                       <small style="font-size: 11px;">{{occupiedCapacity[idx]}}% Occupied </small>
-                      <small *ngIf="occupiedCapacity[idx] == 0" style="color: red;">EMPTY RETURN</small>
+                      <button [disabled]="true" *ngIf="occupiedCapacity[idx] == 0" class="btn btnEffect" >EMPTY RETURN</button>
                   </td>
                   </div>
 
