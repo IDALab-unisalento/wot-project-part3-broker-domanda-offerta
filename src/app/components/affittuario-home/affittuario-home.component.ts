@@ -24,6 +24,8 @@ import { ScheduleComponent } from '../schedule/schedule.component';
 export class AffittuarioHomeComponent implements OnInit {
 
   allViaggioInfo: ViaggioInfo[]=[];
+  query : string = "";
+
   ok=false;
   constructor( private viaggioService: ViaggioService, private routeService: RouteService,private viaggioRouteService: ViaggioRouteService,
      private companyService: CompanyService,private matDialog : MatDialog,
@@ -31,7 +33,7 @@ export class AffittuarioHomeComponent implements OnInit {
 
    ngOnInit(): void {
     this.loadViaggioInfo();
-    setTimeout(()=>{this.allViaggioInfo=[]; console.log("puloito")},7000)
+   // setTimeout(()=>{this.allViaggioInfo=[]; console.log("puloito")},7000)
   }
 
   loadViaggioInfo(){
@@ -117,6 +119,10 @@ export class AffittuarioHomeComponent implements OnInit {
       }
     }
     return avaible;
+  }
+
+  getItems(ev : any) {
+    this.query = ev.target.value;
   }
 
 

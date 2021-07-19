@@ -16,7 +16,36 @@
  Home</a>
 </nav>
 
-<div class="left" style="margin-top: 20px; height: 200% !important;">
+<div class="left" style="margin-top: 20px; " *ngIf="userType== 'affittuario'">
+  <mat-divider></mat-divider>
+
+  <div class="item " onmouseover="" style="cursor: pointer;" routerLink="/home"
+  >
+    <i class="fas fa fa-home"  onmouseover="" style="cursor: pointer;"
+    ></i> Home
+  </div>
+  <mat-divider></mat-divider>
+
+
+
+  <mat-divider></mat-divider>
+
+
+
+  <div class="item" onmouseover="" (click)="logOut()" style="cursor: pointer;"
+  >
+    <i class=" fas bi bi-door-open-fill" onmouseover="" style="cursor: pointer;"(click)="logOut()"
+    ></i>Log-out
+  </div>
+
+  <mat-divider></mat-divider>
+
+
+
+</div>
+
+
+<div class="left" style="margin-top: 20px; height:200% !important" *ngIf="userType != 'affittuario' " >
   <mat-divider></mat-divider>
 
   <div class="item " onmouseover="" style="cursor: pointer;" routerLink="/home"
@@ -59,6 +88,7 @@
 
 
 </div>
+
 
 
 
