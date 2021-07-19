@@ -2,7 +2,9 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
-
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-spin-clockwise" [fullScreen] = "false">
+  <p style="color: white; padding-top:10%; font-size:20px" > Loading shipping... </p>
+</ngx-spinner>
 <div class="container" >
     <div class="page-header text-center">
         <h1 id="timeline" *ngIf="allViaggioInfo.length!=0" style="font-size:30px" >Latest Shipping</h1>
@@ -51,7 +53,7 @@
 
 
 
-              <strong style="margin-left:30%;  margin-top:8%"> Company owner shipping info </strong>
+              <strong style="margin-left:28%;  margin-top:8%"> Company owner shipping info </strong>
 <ul style="padding-top: 2%;">
   <li>
    Company Name:  <strong style="color:blue">{{travelInfo.companyOwnerViaggio.name}}  {{travelInfo.companyOwnerViaggio.legalForm}}</strong>
@@ -59,6 +61,9 @@
   </li>
   <li >
     Web Site: <strong  style="color:blue">{{travelInfo.companyOwnerViaggio.webSite}}</strong>
+  </li>
+  <li >
+    Cost per KM: <strong  style="color:blue">{{travelInfo.costoKm}} &euro;</strong>
   </li>
 </ul>
 <br>
@@ -80,8 +85,7 @@
 </ul>
             </div>
 
-            <div class="timeline-footer primary">
-            </div>
+
           </div>
         </li>
 

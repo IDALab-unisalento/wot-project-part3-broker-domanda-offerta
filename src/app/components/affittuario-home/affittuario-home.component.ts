@@ -16,6 +16,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BookingModalComponent } from '../booking-modal/booking-modal.component';
 import { ScheduleComponent } from '../schedule/schedule.component';
 import { ViaggioRoute } from '../../models/viaggio-route';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-affittuario-home',
@@ -30,15 +31,24 @@ export class AffittuarioHomeComponent implements OnInit {
 
   ok=false;
   constructor( private viaggioService: ViaggioService, private routeService: RouteService,
-    private viaggioRouteService: ViaggioRouteService,
+    private viaggioRouteService: ViaggioRouteService,private spinnerService : NgxSpinnerService,
      private companyService: CompanyService,private matDialog : MatDialog,
      private vectorService: VectorService) {}
 
    ngOnInit(): void {
      var filter=JSON.parse(String(localStorage.getItem('filter')));
+      this.spinnerService.show();
+
       this.filterViaggioInfoLoader(filter);
-      setTimeout(()=>{this.loadViaggioInfo(filter);},500)
+      setTimeout(()=>{this.loadViaggioInfo(filter);},1200)
       console.log(this.filterViaggioInfo)
+
+      setTimeout(() => {
+        /** spinner ends after 1500 milliseconds */
+       this.spinnerService.hide()
+      }, 1200);
+
+
    }
 
 
@@ -110,6 +120,35 @@ export class AffittuarioHomeComponent implements OnInit {
     }
     /** <<< possiedo solo la città di arrivo  */
     if(start =='Start City' &&  end!='End City' && capacity=='Capacity Kg'){
+      this.routeService.getByEndCity(end).toPromise().then(
+        routes=>{
+          routes.forEach(route => {
+            this.viaggioRouteService.getByRouteId(route.id).toPromise().then(
+              viaggioRoutes=>{
+
+                viaggioRoutes.forEach(viaggioRoute => {
+                  let d1=new Date(viaggioRoute.startDate);
+                let d2=new Date();
+                if(d1 > d2 ){
+
+                    //ok inserisci tutto in info viaggio
+                    this.viaggioService.getById(viaggioRoute.viaggioId).toPromise().then(
+                      travel=>{
+                        this.filterViaggioInfo.push(travel);
+                      }
+                    )
+
+                }
+                });
+
+              }
+            )
+          });
+        }
+      )
+    }
+    /** <<< possiedo solo start City ed end City  */
+    if(start !='Start City' &&  end!='End City' && capacity=='Capacity Kg'){
       this.routeService.getByEndCity(end).toPromise().then(
         routes=>{
           routes.forEach(route => {
@@ -250,8 +289,6 @@ export class AffittuarioHomeComponent implements OnInit {
       )
     }
 
-
-    console.log(this.allViaggioInfo)
 
   }
 

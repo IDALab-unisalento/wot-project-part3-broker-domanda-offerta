@@ -76,6 +76,7 @@ requiredCapacity: any='Capacity Kg'
   getItems(ev : any) {
 
     this.query = ev.target.value;
+
   }
 
   clear(){

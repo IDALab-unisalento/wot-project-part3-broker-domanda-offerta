@@ -19,12 +19,12 @@
   <div class="form-row" >
 
     <div class="col-4">
-      <input type="text" class="form-control" placeholder="{{requiredStartCity}}"
+      <input type="text" class="form-control" placeholder="{{requiredStartCity}}" (click)="requiredStartCity=''"
         [(ngModel)]="requiredStartCity" name="requiredStartCity"
        [matAutocomplete]="Startcity" (input)="getItems($event)" >
     </div>
     <div class="col-4">
-      <input type="text" class="form-control" placeholder="{{requiredEndCity}}"
+      <input type="text" class="form-control" placeholder="{{requiredEndCity}}" (click)="requiredEndCity=''"
         [(ngModel)]="requiredEndCity" name="requiredEndCity"
        [matAutocomplete]="Endcity" (input)="getItems($event)" >
     </div>
@@ -50,7 +50,7 @@
 </mat-autocomplete>
 </form>
 
-<a class="navbar-brand"  style="color: white; padding-left:22% " (click)="logOut()">
+<a class="navbar-brand" *ngIf="userType=='affittuario'" style="color: white; padding-left:22%; cursor:pointer " (click)="logOut()">
   <i class=" fas bi bi-door-open-fill" onmouseover="" style="cursor: pointer;"
   ></i>Log-out
 </a>

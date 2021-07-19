@@ -257,7 +257,7 @@ openModal(id : number) {
 
 openModalError() {
   const dialogConfig = new MatDialogConfig();
-  // The user can't close the dialog by clicking outside its body
+  // The user can't close the dialog by clicking outside its
   dialogConfig.disableClose = true;
   dialogConfig.id = "modal-component";
   dialogConfig.height = "300px";
@@ -354,8 +354,8 @@ async addNewOffer(){
             invalidTime = true;
         }
         else{
-          if(i == this.startDates.length){
-            if(this.newOffer.endDate > this.startDates[i])
+          if(i == this.startDates.length-1){
+            if(this.newOffer.endDate < this.startDates[i])
             invalidTime = true;
           }
           else{
@@ -763,8 +763,7 @@ async addNewOffer(){
 
     this.spinnerService.hide();
     this.addMenu = false;
-    this.ngOnInit();
-
+window.location.reload();
   }, 1200);
 
 
@@ -777,7 +776,7 @@ async addNewOffer(){
         this.openModalTimeError();
       }
 
-    }
+}
 
 
     isInvalid() : boolean{
