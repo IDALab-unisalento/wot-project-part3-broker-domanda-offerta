@@ -181,7 +181,7 @@ export class CompanyHomeComponent implements OnInit {
                 offer.length = this.totalDistance;
 
               }              this.totalDistance = 0;
-              },80);
+              },150);
 
 
 

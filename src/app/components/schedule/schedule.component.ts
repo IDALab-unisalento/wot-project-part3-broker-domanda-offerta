@@ -62,18 +62,19 @@ export class ScheduleComponent implements OnInit {
 
   }
 
-  createMarker(lng : number, lat : number, color : string, city : string, i : number){
+  async createMarker(lng : number, lat : number, color : string, city : string, i : number){
 
     if(i == 0)
-      city = '1) Starting city : '+city;
+      city = '\n\n'+'1) Starting city : '+city;
     if(i == this.cities.length - 1)
-      city = String(i+1)+') Ending city: '+city;
+      city = '\n\n' + String(i+1)+') Ending city: '+city;
     if(i != 0 && i != this.cities.length -1 )
-      city = String(i+1)+'. '+city
+      city = '\n\n' + String(i+1)+'. '+city
 
     var popup = new mapboxgl.Popup({ offset: 25 }).setText(
       city
       )
+      await new Promise<void> ((resolve, reject) => {
 
     const marker = new Mapbloxgl.Marker({
       color : color,
@@ -82,6 +83,7 @@ export class ScheduleComponent implements OnInit {
     }).setLngLat([lng,lat])
       .addTo(this.map)
       .setPopup(popup);
+  });
 
   }
 
