@@ -24,5 +24,10 @@ export interface Offer {
   endDate : Date ;
   startTime : Time ;
   endTime : Time;
+  treatsCity : string[];
+  startDates : Date[];
+  startTimes : Time[];
+  endDates : Date[];
+  endTimes : Time[];
 
 }

@@ -65,11 +65,11 @@ export class ScheduleComponent implements OnInit {
   async createMarker(lng : number, lat : number, color : string, city : string, i : number){
 
     if(i == 0)
-      city = '\n\n'+'1) Starting city : '+city;
+      city = '1) Starting city : '+city;
     if(i == this.cities.length - 1)
-      city = '\n\n' + String(i+1)+') Ending city: '+city;
+      city = String(i+1)+') Ending city: '+city;
     if(i != 0 && i != this.cities.length -1 )
-      city = '\n\n' + String(i+1)+'. '+city
+      city = String(i+1)+'. '+city
 
     var popup = new mapboxgl.Popup({ offset: 25 }).setText(
       city
@@ -202,6 +202,7 @@ export class ScheduleComponent implements OnInit {
       this.routeService.getPath(this.coordinates[i][0], this.coordinates[i][1],
                                 this.coordinates[i + 1][0], this.coordinates[i + 1][1])
                                 .subscribe((data : any) =>{
+                                  console.log(data)
                                   var coords = polyline.decode(data.routes[0].geometry); // Get the geometry of the request  and convert it from a Google string to coordinates
                                   coords.forEach(coordinate => {
                                     [coordinate[0], coordinate[1]] = [coordinate[1], coordinate[0]];
@@ -221,7 +222,7 @@ export class ScheduleComponent implements OnInit {
 
                                     var color : string;
                                     color = 'rgb(24, 0, 255)';
-                                    if(i == this.coordinates.length - 2) // questo qui andrebbe fatto solo per i tratti di EMPTY RETURN, adesso invece sta fatto a prescindere per l'ultima tratta
+                                    if(i == this.coordinates.length - 2 || i == 0) // questo qui andrebbe fatto solo per i tratti di EMPTY RETURN, adesso invece sta fatto a prescindere per l'ultima tratta
                                       color = 'rgb(255, 0, 0)';
                                     this.map.setPaintProperty('path'+String(i), 'line-color', color );
                                     this.map.setPaintProperty('path'+String(i), 'line-width', 2.5);

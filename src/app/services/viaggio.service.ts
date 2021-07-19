@@ -22,6 +22,7 @@ export class ViaggioService {
   routeByIdEndPoint = 'http://localhost:8080/viaggio/get'
   getByVectorIdEndPoint = 'http://localhost:8080/viaggio/getByVector'
   saveEndPoint = 'http://localhost:8080/viaggio/save'
+  deleteEndPoint = 'http://localhost:8080/viaggio/remove'
 
   getAll(): Observable<Viaggio[]>{
     return this.http.get<Viaggio[]>(this.getAllEndPoint);
@@ -37,6 +38,9 @@ getByVectorId(id : number): Observable<Viaggio[]>{
   return this.http.get<Viaggio[]>(`${this.getByVectorIdEndPoint}/${id}`);
 }
 
+delete(viaggioId : number): Observable<Viaggio>{
+  return this.http.delete<Viaggio>(this.deleteEndPoint + '/' + viaggioId, httpOptions );
+}
 
 save(viaggio : Viaggio) : Observable<Viaggio>{
 

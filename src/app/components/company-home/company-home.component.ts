@@ -21,6 +21,7 @@ import * as turf from '@turf/turf';
 import { Units } from '@turf/turf';
 import { ModalErrorComponent } from '../modal-error/modal-error.component';
 import { ModalTimeErrorComponent } from '../modal-time-error/modal-time-error.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-company-home',
@@ -30,7 +31,7 @@ import { ModalTimeErrorComponent } from '../modal-time-error/modal-time-error.co
 export class CompanyHomeComponent implements OnInit {
 
   constructor(
-
+              private spinnerService : NgxSpinnerService,
               private companyVectorService : CompanyVectorService,
               private vectorService : VectorService,
               private routeService : RouteService,
@@ -65,11 +66,30 @@ export class CompanyHomeComponent implements OnInit {
 
   startCoordinates : any = {};
   endCoordinates : any = {};
+  spinner: boolean = false;
 
 
   ngOnInit(): void {
 
     this.loggedUser = JSON.parse(String(localStorage.getItem("loggedUser")));
+    this.offers = [];
+    this.newOffer = {} as Offer;
+    this.treatsCity = [];
+    this.startDates = [];
+    this.startTimes = [];
+    this.endDates = [];
+    this.endTimes = [];
+    this.treatsCity = [];
+    this.partialLoads = [];
+    this.selectedVector = {} as Vector;
+    this.vectorsOfCompany = [];
+    this.vectors = [];
+    this.availableSum = 0;
+    this.totalDistance = 0;
+    this.cities = [];
+    this.myVectors = [];
+    this.startCoordinates = {};
+    this.endCoordinates = {};
 
     this.getAllVectors(); // faccio la getAll perchè tanto so che nel sistema saranno relativamente pochi
     this.getCompanyVectors();
@@ -78,6 +98,21 @@ export class CompanyHomeComponent implements OnInit {
 
   }
 
+  loadNewOffer(){
+    if(this.addMenu)
+      this.addMenu = false;
+    else{
+    this.spinnerService.show();
+
+    setTimeout(() => {
+      /** spinner ends after 600 milliseconds */
+      this.addMenu = true;
+      this.spinnerService.hide()
+    }, 600);
+
+
+  }
+  }
   getAllVectors(){
 
     this.vectorService.getAll().subscribe(allVectors =>{
@@ -130,11 +165,11 @@ export class CompanyHomeComponent implements OnInit {
 
               //ordinamento
           this.offers.sort((v1,v2) => {
-            if (v1.startingDate < v2.startingDate) {
+            if (v1.endingDate < v2.endingDate) {
                 return 1;
             }
 
-            if (v1.startingDate > v2.startingDate) {
+            if (v1.endingDate > v2.endingDate) {
                 return -1;
             }
 
@@ -289,7 +324,7 @@ removeTreats(id : number){
   this.treatsCity.splice(id,1);
 }
 
-    async addNewOffer(){
+async addNewOffer(){
 
       var invalid : boolean = false;
       var invalidTime : boolean = false;
@@ -336,6 +371,7 @@ removeTreats(id : number){
      viaggio.vectorId = this.newOffer.vector.id;
      viaggio.initialFreeCapacity = this.newOffer.vector.capacity - this.newOffer.initialLoad;
      viaggio.costoPerKm = this.newOffer.costoPerKm;
+     viaggio.companyId = this.loggedUser.id;
 
      await new Promise<void> ((resolve, reject) => {
      this.viaggioService.save(viaggio).subscribe(async viaggioSaved =>{
@@ -405,9 +441,19 @@ removeTreats(id : number){
 
         await new Promise<void> ((resolve, reject) => {
 
-        route.distanceKm = Number(turf.distance(this.startCoordinates ,this.endCoordinates,turfOptions).toFixed(1));
-        console.log(route.distanceKm)
-      resolve();
+
+          this.routeService.getPath(this.startCoordinates[0], this.startCoordinates[1],
+            this.endCoordinates[0], this.endCoordinates[1])
+            .subscribe((data : any) =>{
+              route.distanceKm = Number(((data.routes[0].distance)/1000).toFixed(1));
+
+                resolve();
+              });
+
+
+      //   route.distanceKm = Number(turf.distance(this.startCoordinates ,this.endCoordinates,turfOptions).toFixed(1));
+      //   console.log(route.distanceKm)
+      // resolve();
       });
 
 
@@ -590,8 +636,21 @@ removeTreats(id : number){
 
 
         await new Promise<void> (async (resolve, reject) => {
-          route.distanceKm = Number(turf.distance(this.startCoordinates ,this.endCoordinates,turfOptions).toFixed(1));
-          console.log(route.distanceKm)
+
+          await new Promise<void> (async (resolve, reject) => {
+
+          // route.distanceKm = Number(turf.distance(this.startCoordinates ,this.endCoordinates,turfOptions).toFixed(1));
+          // console.log(route.distanceKm)
+          this.routeService.getPath(this.startCoordinates[0], this.startCoordinates[1],
+            this.endCoordinates[0], this.endCoordinates[1])
+            .subscribe((data : any) =>{
+              route.distanceKm = Number(((data.routes[0].distance)/1000).toFixed(1));
+
+                resolve();
+              });
+            });
+
+
 
           await new Promise<void> ((resolve, reject) => {
         this.routeService.save(route).subscribe(async route=>{
@@ -688,7 +747,28 @@ removeTreats(id : number){
    });
   resolve();
   });
- setTimeout(()=>{window.location.reload();},1500);
+
+  this.spinnerService.show();
+
+  this.newOffer.startDates = this.startDates;
+    this.newOffer.endDates = this.endDates;
+    this.newOffer.startTimes = this.startTimes;
+    this.newOffer.endTimes = this.endTimes;
+    this.newOffer.treatsCity = this.treatsCity;
+
+  setTimeout(() => {
+
+
+    localStorage.setItem('offer', JSON.stringify(this.newOffer));
+
+    this.spinnerService.hide();
+    this.addMenu = false;
+    this.ngOnInit();
+
+  }, 1200);
+
+
+
 }
       else{
         if(invalid)
@@ -709,4 +789,42 @@ removeTreats(id : number){
         return false;
 
       }
+
+async deleteViaggio(offer : Offer){
+
+  var result = confirm('Are you sure you want to delete this trip?');
+  if(result){
+  this.spinnerService.show();
+
+await new Promise<void> ((resolve, reject) => {
+this.viaggioRouteService.getByViaggioId(offer.viaggioId).subscribe(async viaggioRoutes =>{
+
+  await new Promise<void> ((resolve, reject) => {
+  viaggioRoutes.forEach(viaggioRoute => {
+    this.viaggioRouteService.delete(viaggioRoute).subscribe(()=>{
+      resolve();
+        });
+      });
+    });
+
+  resolve();
+    });
+
+  });
+
+
+    await new Promise<void> ((resolve, reject) => {
+    this.viaggioService.delete(offer.viaggioId).subscribe(()=>{
+      resolve();
+      });
+    });
+
+    setTimeout(() => {
+      this.spinnerService.hide();
+      window.location.reload();
+
+    }, 1200);
+
+    }
+  }
 }
