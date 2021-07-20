@@ -2,7 +2,7 @@ import { PendingRegistrationComponent } from './components/pending-registrations
 import { HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormControl } from '@angular/forms';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -53,7 +53,9 @@ import { ModalTimeErrorComponent } from './components/modal-time-error/modal-tim
 import { BookingModalComponent } from './components/booking-modal/booking-modal.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ViaggioRouteProgressBarComponent } from './components/viaggio-route-progress-bar/viaggio-route-progress-bar.component';
-
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -77,9 +79,13 @@ import { ViaggioRouteProgressBarComponent } from './components/viaggio-route-pro
     ModalErrorComponent,
     ModalTimeErrorComponent,
     BookingModalComponent,
-    ViaggioRouteProgressBarComponent
+    ViaggioRouteProgressBarComponent,
+    NotFoundComponent
     ],
   imports: [
+    BsDropdownModule.forRoot(),
+    TooltipModule.forRoot(),
+    ModalModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     FormsModule,

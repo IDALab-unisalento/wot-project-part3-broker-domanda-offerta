@@ -92,6 +92,10 @@
 .project-item .status-desktop .unactive:before, .project-item .status-mobile .unactive:before {
   background: #E9585B;
 }
+
+.project-item .status-desktop .yactive:before, .project-item .status-mobile .yactive:before {
+  background: #e9b458;
+}
 .project-item .status-mobile {
   position: absolute;
   top: -5px;
@@ -169,3 +173,13 @@ height:40px;
   padding: 10px;
   text-decoration: none;
 }
+
+.fa:hover{
+  cursor: pointer;
+
+}
+
+.dropdown-item:hover{
+  cursor: pointer;
+}
+

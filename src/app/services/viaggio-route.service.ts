@@ -1,9 +1,10 @@
+import { catchError } from 'rxjs/operators';
 import { ViaggioRoute } from './../models/viaggio-route';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { Vector } from '../models/vector';
 import { Route } from '../models/route';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 const httpOptions = {
@@ -33,6 +34,19 @@ export class ViaggioRouteService {
 
   updateCapacity(newCapacity: number, viaggioRouteId: number): Observable<number>{
     return this.http.get<any>(this.updateCapacityViaggioRouteEndPoint+"/"+newCapacity+"/"+viaggioRouteId);
+  }
+
+  getById(id : number): Observable<ViaggioRoute>{
+
+    return this.http.get<ViaggioRoute>(`${this.getByIdEndPoint}/${id}`) .pipe(
+      catchError(
+       (error:HttpErrorResponse)=>{
+        if(error.status==404)this.router.navigateByUrl("/notFound")
+        return throwError("User Not Found Exception Verified");
+       }
+      )
+
+    );
   }
 
   getByRouteId(routeId:number): Observable<ViaggioRoute>{

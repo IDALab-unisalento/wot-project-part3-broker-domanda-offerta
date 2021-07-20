@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ViaggioService } from './../../services/viaggio.service';
 import { VectorService } from './../../services/vector.service';
 import { Route } from './../../models/route';
@@ -43,6 +44,7 @@ export class ScheduleComponent implements OnInit {
 
 
   constructor(public dialogRef: MatDialogRef<ScheduleComponent>,
+              private router : Router,
               private viaggioRouteService : ViaggioRouteService,
               private datepipe: DatePipe,
               private routeService : RouteService,
@@ -302,5 +304,10 @@ export class ScheduleComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  goTo(id : number){
+
+    this.router.navigateByUrl('/viaggioRoute/'+id);
+    this.closeModal();
+  }
 
 }

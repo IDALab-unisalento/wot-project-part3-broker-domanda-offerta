@@ -1,7 +1,8 @@
+import { catchError } from 'rxjs/operators';
 import { Viaggio } from 'src/app/models/viaggio';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 const httpOptions = {
@@ -30,7 +31,16 @@ export class ViaggioService {
 
 getById(id : number): Observable<Viaggio>{
 
-  return this.http.get<Viaggio>(`${this.routeByIdEndPoint}/${id}`);
+  return this.http.get<Viaggio>(`${this.routeByIdEndPoint}/${id}`)
+  .pipe(
+    catchError(
+     (error:HttpErrorResponse)=>{
+      if(error.status==404)this.router.navigateByUrl("/notFound")
+      return throwError("User Not Found Exception Verified");
+     }
+    )
+
+  )
 }
 
 getByVectorId(id : number): Observable<Viaggio[]>{
