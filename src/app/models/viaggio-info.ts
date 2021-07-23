@@ -12,5 +12,7 @@ export interface ViaggioInfo {
   companyOwnerViaggio: Company;
   vectorOwnerViaggio: Vector;
   viaggioRouteInfo: ViaggioRoute[];
+  bookedCapacity:number;
+  bookingId:number;
 
 }

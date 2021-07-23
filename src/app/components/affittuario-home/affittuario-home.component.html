@@ -3,9 +3,9 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-spin-clockwise" [fullScreen] = "false">
-  <p style="color: white; padding-top:10%; font-size:20px" > Loading shipping... </p>
+  <p style="color: white; padding-top:10%; font-size:20px" > Loading shipping ... </p>
 </ngx-spinner>
-<div class="container" >
+<div class="container" style="padding-left:8%" >
     <div class="page-header text-center">
         <h1 id="timeline" *ngIf="allViaggioInfo.length!=0" style="font-size:30px" >Latest Shipping</h1>
         <h1 id="timeline"*ngIf="allViaggioInfo.length==0" style="font-size:30px"  >No Shipping avaible </h1>
@@ -29,7 +29,7 @@
               <h1 style="text-align: center; padding-top:5%" class="timeline-title">Shipping from {{travelInfo.routes[0].startCity}} to {{travelInfo.routes[travelInfo.routes.length-1].endCity}} </h1>
               <p class="text-muted" >
                 <i style="margin-left:2%"class="glyphicon glyphicon-time" ></i> Start date {{travelInfo.startDateViaggio|date: 'dd/MM/yyyy hh:mm'}}
-                <i style="margin-left:21%" class="glyphicon glyphicon-time"></i>  End date {{travelInfo.endDateViaggio|date: 'dd/MM/yyyy hh:mm'}}
+                <i style="margin-left:14%" class="glyphicon glyphicon-time"></i>  End date {{travelInfo.endDateViaggio|date: 'dd/MM/yyyy hh:mm'}}
               </p>
             </div>
             <div class="r">

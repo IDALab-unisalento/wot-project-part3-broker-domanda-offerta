@@ -248,7 +248,7 @@ openModal(id : number) {
   // The user can't close the dialog by clicking outside its body
   dialogConfig.disableClose = true;
   dialogConfig.id = "modal-component";
-  dialogConfig.height = "700px";
+  dialogConfig.height = "600px"; // alessio non ha le dimensioni del pc mac percui ha cambiato il parametro
   dialogConfig.width = "800px";
   // https://material.angular.io/components/dialog/overview
   const modalDialog = this.matDialog.open(ScheduleComponent, dialogConfig);

@@ -18,6 +18,7 @@ export class NavBarComponent implements OnInit {
   username : string = "";
   logout='';
   sidebar : boolean = false;
+  show:boolean=false;
 
   constructor(
     public router : Router,private routeService: RouteService,
@@ -37,6 +38,7 @@ requiredCapacity: any='Capacity Kg'
   ngOnInit(): void {
     this.getAllUsers();
     this.getAllCities();
+    if(this.router.url.includes("/history")){this.show=true;}
     this.me = JSON.parse(String(localStorage.getItem("loggedUser")));
     this.logout=JSON.parse(String(localStorage.getItem("logout")))
     this.userType = JSON.parse(String(localStorage.getItem("userType")));

@@ -52,6 +52,8 @@ import { ModalErrorComponent } from './components/modal-error/modal-error.compon
 import { ModalTimeErrorComponent } from './components/modal-time-error/modal-time-error.component';
 import { BookingModalComponent } from './components/booking-modal/booking-modal.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { HistoryComponent } from './components/history/history.component';
+import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
 
 
 @NgModule({
@@ -75,7 +77,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     SummaryModalComponent,
     ModalErrorComponent,
     ModalTimeErrorComponent,
-    BookingModalComponent
+    BookingModalComponent,
+    HistoryComponent,
+    ModalConfirmComponent
     ],
   imports: [
     BrowserModule,

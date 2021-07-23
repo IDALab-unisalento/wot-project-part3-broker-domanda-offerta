@@ -8,6 +8,7 @@ import { MyVectorsComponent } from './components/my-vectors/my-vectors.component
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { SummaryModalComponent } from './components/summary-modal/summary-modal.component';
 import { AffittuarioHomeComponent } from './components/affittuario-home/affittuario-home.component';
+import { HistoryComponent } from './components/history/history.component';
 
 const routes: Routes = [
   {path: '',component:LoginComponent},
@@ -19,8 +20,8 @@ const routes: Routes = [
   {path: 'myVectors/:id', component : MyVectorsComponent},
   {path :'signup', component: SignUpComponent},
   {path: 'summary', component: SummaryModalComponent},
-  {path:'affittuarioHome', component: AffittuarioHomeComponent}
-
+  {path:'affittuarioHome', component: AffittuarioHomeComponent},
+  {path: 'history', component: HistoryComponent}
 
 
 
