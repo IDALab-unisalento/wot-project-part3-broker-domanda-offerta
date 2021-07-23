@@ -359,7 +359,7 @@ async addNewOffer(){
             invalidTime = true;
           }
           else{
-            if(this.startDates[i] > this.startDates[i -1] || this.endDates[i] < this.endDates[i - 1])
+            if(this.startDates[i] < this.startDates[i -1] || this.endDates[i] < this.endDates[i - 1])
             invalidTime = true;
           }
         }
