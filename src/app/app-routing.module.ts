@@ -9,6 +9,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { SummaryModalComponent } from './components/summary-modal/summary-modal.component';
 import { AffittuarioHomeComponent } from './components/affittuario-home/affittuario-home.component';
 import { HistoryComponent } from './components/history/history.component';
+import { AffittuarioAnaliticsComponent } from './components/affittuario-analitics/affittuario-analitics.component';
 
 const routes: Routes = [
   {path: '',component:LoginComponent},
@@ -21,7 +22,8 @@ const routes: Routes = [
   {path :'signup', component: SignUpComponent},
   {path: 'summary', component: SummaryModalComponent},
   {path:'affittuarioHome', component: AffittuarioHomeComponent},
-  {path: 'history', component: HistoryComponent}
+  {path: 'history', component: HistoryComponent},
+  {path:'analytics', component: AffittuarioAnaliticsComponent}
 
 
 

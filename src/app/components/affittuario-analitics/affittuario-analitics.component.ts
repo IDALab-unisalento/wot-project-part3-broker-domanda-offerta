@@ -19,78 +19,63 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AffittuarioPrenotaViaggioRoute } from 'src/app/models/affittuario-prenota-viaggio-route';
 import { AffituarioPrenotaRouteService } from 'src/app/services/affituario-prenota-route.service';
 import { Affittuario } from '../../models/affittuario';
-import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component';
-const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+import {Chart} from 'chart.js';
+
 
 @Component({
-  selector: 'app-history',
-  templateUrl: './history.component.html',
-  styleUrls: ['./history.component.scss']
+  selector: 'app-affittuario-analitics',
+  templateUrl: './affittuario-analitics.component.html',
+  styleUrls: ['./affittuario-analitics.component.scss']
 })
-export class HistoryComponent implements OnInit {
+export class AffittuarioAnaliticsComponent implements OnInit {
+
   allViaggioInfo: ViaggioInfo[]=[];
   loggedUser: Affittuario={} as Affittuario;
+  dataRouteChart: Route[]=[];
+  result:any[]=[];
+  numberChartRoute: number[]=[];
 
-  constructor( private viaggioService: ViaggioService, private routeService: RouteService,
+  dataVectorChart: Vector[]=[];
+  numberChartVector:number[]=[];
+  resultVector:any[]=[];
+
+   doughnutChartLabelsRoute: string[]=[];
+    doughnutChartDataRoute: number[] = []
+   donutColorsRoute = [
+    {
+      backgroundColor: [
+       ''
+      ]
+    }];
+
+
+
+    doughnutChartLabelsVector: string[]=[];
+    doughnutChartDataVector: number[] = []
+   donutColorsVector = [
+    {
+      backgroundColor: [
+       ''
+      ]
+    }];
+
+
+
+  constructor(private viaggioService: ViaggioService, private routeService: RouteService,
     private viaggioRouteService: ViaggioRouteService,private spinnerService : NgxSpinnerService,
      private companyService: CompanyService,private matDialog : MatDialog,
-     private vectorService: VectorService, private affBookRoute: AffituarioPrenotaRouteService) {
-
-
-     }
+     private vectorService: VectorService, private affBookRoute: AffituarioPrenotaRouteService) { }
 
   ngOnInit(): void {
     this.loggedUser=JSON.parse(String(localStorage.getItem('loggedUser')));
     this.loadViaggioInfo();
+    setTimeout(()=>{this.buildDataForChart();},1200);
     this.spinnerService.show();
     setTimeout(() => {
       /** spinner ends after 1500 milliseconds */
      this.spinnerService.hide()
-     console.log(this.allViaggioInfo)
     }, 1200);
-
   }
-
-  show=false;
-
- dateDiffInDays(dat:any) {
-    // Discard the time and time-zone information.
-
-    const a=new Date();
-    const date=new Date(dat);
-    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-    const utc2 = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
-
-    if( Math.floor((utc2 - utc1) / _MS_PER_DAY) >=1 ){
-      console.log( Math.floor((utc2 - utc1) / _MS_PER_DAY))
-      return true;
-
-    }
-    else{
-      console.log( Math.floor((utc2 - utc1) / _MS_PER_DAY))
-      return false;
-    }
-
-  }
-
-  deleteBooking(id:number){
-    this.affBookRoute.deleteBooking(id).toPromise().then(
-      deleted=>{console.log(deleted);   this.openModal("Your cancellation request has been realized");}
-    )
-
-  }
-
-  openModal(modalText: string) {
-
-    localStorage.setItem('ModalText', JSON.stringify(modalText));
-     const dialogConfig = new MatDialogConfig();
-     // The user can't close the dialog by clicking outside its body
-     dialogConfig.disableClose = true;
-     dialogConfig.height = "160px";
-     dialogConfig.width = "550px";
-     // https://material.angular.io/components/dialog/overview
-     const modalDialog = this.matDialog.open(ModalConfirmComponent, dialogConfig);
-   }
 
   loadViaggioInfo(){
 
@@ -135,6 +120,53 @@ export class HistoryComponent implements OnInit {
        }
       }
     )
+  }
+
+  buildDataForChart(){
+    this.dataRouteChart=[];
+    this.dataVectorChart=[];
+    console.log(this.allViaggioInfo)
+    for(let i=0; i<this.allViaggioInfo.length;i++){
+        this.dataRouteChart.push(this.allViaggioInfo[i].routes[0])
+    }
+    this.result = [...this.dataRouteChart.reduce( (mp, o) => {
+      if (!mp.has(o.id)) mp.set(o.id, { ...o, count: 0 });
+      mp.get(o.id).count++;
+      return mp;
+  }, new Map).values()];
+
+      console.log(this.result);
+    for(let i=0; i< this.result.length;i++){
+      this.doughnutChartLabelsRoute[i]=this.result[i].startCity+" "+this.result[i].endCity
+      this.doughnutChartDataRoute[i]=this.result[i].count
+      this.donutColorsRoute[0].backgroundColor[i]=this.getRandomColor();
+    }
+    //built for vector analitics
+    for(let i=0; i<this.allViaggioInfo.length;i++){
+      this.dataVectorChart.push(this.allViaggioInfo[i].vectorOwnerViaggio)
+    }
+    this.resultVector = [...this.dataVectorChart.reduce( (mp, o) => {
+      if (!mp.has(o.id)) mp.set(o.id, { ...o, count: 0 });
+      mp.get(o.id).count++;
+      return mp;
+  }, new Map).values()];
+      console.log(this.resultVector);
+      for(let i=0; i< this.resultVector.length;i++){
+        this.doughnutChartLabelsVector[i]=this.resultVector[i].name;
+        this.doughnutChartDataVector[i]=this.resultVector[i].count
+        this.donutColorsVector[0].backgroundColor[i]=this.getRandomColor();
+      }
+
+  }
+
+
+  getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
 }

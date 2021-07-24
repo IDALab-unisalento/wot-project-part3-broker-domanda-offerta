@@ -48,11 +48,15 @@ text-align: center; margin-top:2%">
                               <td class="text-center">{{item.costoKm}}</td>
 
                                 <td class="text-center"  >
-                                  <button type="button"  (click)="deleteBooking(item.bookingId)"  class=" btn btn-outline-danger">Delete Booking
+                                  <button type="button" *ngIf="dateDiffInDays(item.startDateViaggio)"  (click)="deleteBooking(item.bookingId)"  class=" btn btn-outline-danger">Delete Booking
                                     <i  style="padding-left:3%"class="fa fa-trash"></i>
                                   </button>
+                                  <button type="button" disabled=true *ngIf="!dateDiffInDays(item.startDateViaggio)"  class="btn btn-success" readonly>
+                                    Undeletable
+                                    <i  style="padding-left:3%"class="fa fa-check"></i>
+                                  </button>
 
-                                </td>
+
                             </tr>
 
                         </tbody>

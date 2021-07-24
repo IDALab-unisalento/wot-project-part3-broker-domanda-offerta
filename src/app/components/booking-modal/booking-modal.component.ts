@@ -76,7 +76,7 @@ export class BookingModalComponent implements OnInit {
               }
             else{
               this.closeModal();
-              this.openModal("Can't complete booking, route has already begun")
+              this.openModal("Can't complete booking, route has  begun")
 
             }
           }

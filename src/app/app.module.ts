@@ -54,10 +54,11 @@ import { BookingModalComponent } from './components/booking-modal/booking-modal.
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { HistoryComponent } from './components/history/history.component';
 import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
-
-
+import { AffittuarioAnaliticsComponent } from './components/affittuario-analitics/affittuario-analitics.component';
+import { ChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
+
     AppComponent,
     LoginComponent,
     HomeComponent,
@@ -79,9 +80,11 @@ import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.
     ModalTimeErrorComponent,
     BookingModalComponent,
     HistoryComponent,
-    ModalConfirmComponent
+    ModalConfirmComponent,
+    AffittuarioAnaliticsComponent
     ],
   imports: [
+    ChartsModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,

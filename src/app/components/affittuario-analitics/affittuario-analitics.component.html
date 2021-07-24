@@ -1,0 +1,47 @@
+
+<app-nav-bar></app-nav-bar>
+
+
+<div class="container">
+  <h1 style="text-align: center; margin-bottom:2%; margin-top:2%">User's Analytics </h1>
+  <div class="row">
+    <div class="col-sm" style=" text-align:center ">
+      <h2>Route booked</h2>
+    </div>
+    <div class="col-sm" style=" text-align: center;">
+      <h2>Vector used</h2>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-sm" style="width: 50%; height:70%; ">
+      <div>
+        <canvas baseChart
+                    [data]="doughnutChartDataRoute"
+                    [labels]="doughnutChartLabelsRoute"
+                    chartType="doughnut"
+                    [colors]="donutColorsRoute"
+                    ></canvas>
+      </div>
+    </div>
+    <div class="col-sm" style="width: 50%; height:70%; ">
+      <div>
+        <canvas baseChart
+        [data]="doughnutChartDataVector"
+        [labels]="doughnutChartLabelsVector"
+        chartType="doughnut"
+        [colors]="donutColorsVector"
+        ></canvas>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+

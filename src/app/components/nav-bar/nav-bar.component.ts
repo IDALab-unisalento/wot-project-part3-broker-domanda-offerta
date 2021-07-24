@@ -38,7 +38,7 @@ requiredCapacity: any='Capacity Kg'
   ngOnInit(): void {
     this.getAllUsers();
     this.getAllCities();
-    if(this.router.url.includes("/history")){this.show=true;}
+    if(this.router.url.includes("/history")|| this.router.url.includes("/analytics")){this.show=true;}
     this.me = JSON.parse(String(localStorage.getItem("loggedUser")));
     this.logout=JSON.parse(String(localStorage.getItem("logout")))
     this.userType = JSON.parse(String(localStorage.getItem("userType")));
