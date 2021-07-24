@@ -30,7 +30,10 @@ userType  : string = "";
 cities: string[]=[];
 requiredStartCity: string='Start City';
 requiredEndCity: string='End City';
-requiredCapacity: any='Capacity Kg'
+requiredCapacity: any='Capacity Kg';
+requiredProductType:string='Product type'
+
+productType: string[]=['Bio Medical', 'Frozen', 'All']
 
 
 @ViewChild('sidenav') sidenav !: MatSidenav;
@@ -45,11 +48,16 @@ requiredCapacity: any='Capacity Kg'
 
   }
 
+  selectedProductType(type: string){
+    this.requiredProductType=type;
+  }
+
   saveFilter(){
     var jsonFilter={
       'start': this.requiredStartCity,
       'end': this.requiredEndCity,
-      'kg': this.requiredCapacity
+      'kg': this.requiredCapacity,
+      'productType': this.requiredProductType
     }
     localStorage.setItem('filter', JSON.stringify(jsonFilter))
 

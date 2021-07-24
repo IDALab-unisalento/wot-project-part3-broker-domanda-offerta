@@ -14,24 +14,32 @@
     &nbsp;
  Home</a>
 
- <form style="padding-left:19%; " *ngIf="userType=='affittuario' && !show">
+ <form style="padding-left:13%; " *ngIf="userType=='affittuario' && !show">
 
-  <div class="form-row" >
+  <div class="form-row"  >
 
-    <div class="col-4">
+    <div class="col-3">
       <input type="text" class="form-control" placeholder="{{requiredStartCity}}" (click)="requiredStartCity=''"
         [(ngModel)]="requiredStartCity" name="requiredStartCity"
        [matAutocomplete]="Startcity" (input)="getItems($event)" >
     </div>
-    <div class="col-4">
+    <div class="col-3">
       <input type="text" class="form-control" placeholder="{{requiredEndCity}}" (click)="requiredEndCity=''"
         [(ngModel)]="requiredEndCity" name="requiredEndCity"
        [matAutocomplete]="Endcity" (input)="getItems($event)" >
     </div>
-    <div class="col-3">
+    <!-- choose type product -->
+    <div class="col-2">
+      <input type="text" class="form-control" placeholder="{{requiredProductType}}" (click)="requiredProductType=''"
+      [(ngModel)]="requiredProductType" name="requiredProductType"  [matAutocomplete]="ProductType" (input)="getItems($event)"
+      >
+    </div>
+
+
+    <div class="col-2">
       <input type="text" class="form-control" placeholder="{{requiredCapacity}}" (click)="requiredCapacity=''" [(ngModel)]="requiredCapacity" name="requiredCapacity">
     </div>
-    <div class="col">
+    <div class="" style="width: fit-content;" >
       <button type="submit" (click)="saveFilter()" class="btn btn-success">
         <i class="fa fa-search"></i>
       </button>
@@ -45,9 +53,13 @@
       <mat-option (click)="selectedEnd(city)" *ngFor="let city of cities  | searchFilter :query" >
         {{city}}
       </mat-option>
-
   </mat-autocomplete>
 </mat-autocomplete>
+<mat-autocomplete #ProductType="matAutocomplete">
+  <mat-option (click)="selectedProductType(type)" *ngFor="let type of productType  | searchFilter :query" >
+    {{type}}
+  </mat-option>
+  </mat-autocomplete>
 </form>
 
 
@@ -55,7 +67,6 @@
 
 <div class="left" style="margin-top: 20px" *ngIf="userType=='affittuario'" >
 
-  <mat-divider></mat-divider>
 
 
   <div class="item " onmouseover="" style="cursor: pointer;" routerLink="/history"
