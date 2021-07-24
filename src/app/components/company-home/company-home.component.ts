@@ -67,6 +67,9 @@ export class CompanyHomeComponent implements OnInit {
   startCoordinates : any = {};
   endCoordinates : any = {};
   spinner: boolean = false;
+  paginations : number = 0;
+  selectedPaginations : number = 0;
+  show : boolean = false;
 
 
   ngOnInit(): void {
@@ -94,7 +97,6 @@ export class CompanyHomeComponent implements OnInit {
     this.getAllVectors(); // faccio la getAll perchè tanto so che nel sistema saranno relativamente pochi
     this.getCompanyVectors();
     this.getAllCities();
-
 
   }
 
@@ -151,6 +153,7 @@ export class CompanyHomeComponent implements OnInit {
 
               offer.viaggioId = viaggio.id;
               offer.costoPerKm = viaggio.costoPerKm;
+              offer.maximumWithdrawal = viaggio.maximumWithdrawal;
               setTimeout(()=>{ offer.occupiedCapacity = (vector.capacity - viaggio.initialFreeCapacity) / vector.capacity *100 ;
                 offer.occupiedCapacity =  Number(offer.occupiedCapacity.toFixed(1));});
 
@@ -213,9 +216,9 @@ export class CompanyHomeComponent implements OnInit {
                 for (const route of offer.routes) {
 
                 this.totalDistance = this.totalDistance + route.distanceKm;
-                offer.length = this.totalDistance;
+                offer.length = Number((this.totalDistance).toFixed(1));
 
-              }              this.totalDistance = 0;
+              }  this.totalDistance = 0;
               },150);
 
 
@@ -228,10 +231,7 @@ export class CompanyHomeComponent implements OnInit {
             });
 
             this.offers.push(offer);
-
           });
-
-
         });
       });
     });
@@ -372,6 +372,7 @@ async addNewOffer(){
      viaggio.initialFreeCapacity = this.newOffer.vector.capacity - this.newOffer.initialLoad;
      viaggio.costoPerKm = this.newOffer.costoPerKm;
      viaggio.companyId = this.loggedUser.id;
+     viaggio.maximumWithdrawal = this.newOffer.maximumWithdrawal;
 
      await new Promise<void> ((resolve, reject) => {
      this.viaggioService.save(viaggio).subscribe(async viaggioSaved =>{
@@ -397,8 +398,8 @@ async addNewOffer(){
           this.newOffer.startDate.setHours(Number(String(this.newOffer.startTime).substring(0,2)));
           this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
 
-          viaggioRoute.startDate = this.newOffer.startDate ;
-
+          viaggioRoute.startDate =  this.newOffer.startDate ;
+          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
            //end date
            this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
            this.newOffer.endDate.setMinutes(Number(String(this.newOffer.endTime).substring(3,5)));
@@ -473,6 +474,7 @@ async addNewOffer(){
 
 
           viaggioRoute.startDate = this.newOffer.startDate ;
+          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
 
            //end date
            this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
@@ -543,6 +545,8 @@ async addNewOffer(){
           this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
 
           viaggioRoute.startDate = this.newOffer.startDate ;
+          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+
           //end date
             this.endDates[0].setHours(Number(String(this.endTimes[0]).substring(0,2)));
             this.endDates[0].setMinutes(Number(String(this.endTimes[0]).substring(3,5)));
@@ -572,6 +576,8 @@ async addNewOffer(){
 
 
           viaggioRoute.startDate = this.startDates[i - 1];
+          viaggioRoute.maximumWithdrawal = this.convertDate(this.startDates[i - 1])
+
 
           if(i != this.treatsCity.length){
             //end date
@@ -582,7 +588,6 @@ async addNewOffer(){
 
             viaggioRoute.routeId = route.id;
             viaggioRoute.viaggioId = viaggioSaved.id;
-            console.log(viaggioRoute);
 
             this.viaggioRouteService.save(viaggioRoute).subscribe(savedViaggioRoute =>{
             })
@@ -673,6 +678,8 @@ async addNewOffer(){
           this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
 
           viaggioRoute.startDate = this.newOffer.startDate ;
+          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+
 
           //end date
           this.endDates[0].setHours(Number(String(this.endTimes[0]).substring(0,2)));
@@ -702,6 +709,8 @@ async addNewOffer(){
           this.startDates[i - 1].setMinutes(Number(String(this.startTimes[i - 1]).substring(3,5)));
 
           viaggioRoute.startDate = this.startDates[i - 1] ;
+          viaggioRoute.maximumWithdrawal = this.convertDate(this.startDates[i - 1]);
+
 
           if(i != this.treatsCity.length){
             //end date
@@ -829,4 +838,75 @@ this.viaggioRouteService.getByViaggioId(offer.viaggioId).subscribe(async viaggio
 
     }
   }
+selectPage(pagina : number){
+  this.selectedPaginations = pagina;
+
+}
+
+selectPrevious(){
+  if(this.selectedPaginations != 0)
+    this.selectedPaginations = this.selectedPaginations - 1;
+
+}
+selectNext(){
+
+  if(this.selectedPaginations != (Math.trunc(this.offers.length/10)))
+    this.selectedPaginations = this.selectedPaginations + 1;
+
+}
+
+
+convertDate(date : Date ) : Date{
+
+   var newDate : Date = new Date();
+
+  if(this.newOffer.maximumWithdrawal == '1 hour'){
+    newDate.setTime(date.getTime() - (60*60*1000));
+    return newDate;
+  }
+
+
+  if(this.newOffer.maximumWithdrawal == '2 hours'){
+    newDate.setTime(date.getTime() - (2*60*60*1000));
+    return newDate;
+  }
+
+  if(this.newOffer.maximumWithdrawal == '6 hours'){
+    newDate.setTime(date.getTime() - (6*60*60*1000));
+    return newDate;
+  }
+
+  if(this.newOffer.maximumWithdrawal == '12 hours'){
+    newDate.setTime(date.getTime() - (12*60*60*1000));
+    return newDate;
+  }
+
+  if(this.newOffer.maximumWithdrawal == '1 day'){
+    newDate.setTime(date.getTime() - (24*60*60*1000));
+    return newDate;
+  }
+
+  if(this.newOffer.maximumWithdrawal == '2 days'){
+    newDate.setTime(date.getTime() - (2*24*60*60*1000));
+    return newDate;
+  }
+
+  if(this.newOffer.maximumWithdrawal == '3 days'){
+    newDate.setTime(date.getTime() - (3*24*60*60*1000));
+    return newDate;
+  }
+
+  if(this.newOffer.maximumWithdrawal == '5 days'){
+    newDate.setTime(date.getTime() - (5*24*60*60*1000));
+    return newDate;
+  }
+
+  if(this.newOffer.maximumWithdrawal == '10 days'){
+    newDate.setTime(date.getTime() - (10*24*60*60*1000));
+    return newDate;
+  }
+
+  return newDate;
+
+}
 }

@@ -22,7 +22,8 @@ export class LoginComponent implements OnInit {
    presentAlert : boolean = false;
 
 
-  constructor(private affittuarioService : AffittuarioService, private companyService : CompanyService, private matDialog : MatDialog ,private userService : UserService, private router:Router) { }
+  constructor(
+    private affittuarioService : AffittuarioService, private companyService : CompanyService, private matDialog : MatDialog ,private userService : UserService, private router:Router) { }
 
   ngOnInit(): void {
   }

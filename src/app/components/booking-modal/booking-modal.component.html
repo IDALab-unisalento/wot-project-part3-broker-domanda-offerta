@@ -31,7 +31,7 @@
         <i class="fa fa-train" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'treno' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'train'"></i>
            <i class="fa fa-car" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'car' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'auto' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'automobile' "></i>
         <i class="fa fa-plane" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'plane' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'aereo' ||  travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'aereoplano'  "></i>
-      <i class="fa fa-truck-moving" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'truck' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'camion'"></i>
+      <i class="fas fa-truck-moving" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'truck' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'camion'"></i>
 
       </span>
     <input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{travelSelected.vectorOwnerViaggio.name}}" readonly  />

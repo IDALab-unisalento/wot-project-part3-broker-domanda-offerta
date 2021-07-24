@@ -109,7 +109,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MatNativeDateModule,
     NgxMaterialTimepickerModule,
     NgxSpinnerModule
-    ],
+      ],
   providers: [
             {
               provide: MatDialogRef,

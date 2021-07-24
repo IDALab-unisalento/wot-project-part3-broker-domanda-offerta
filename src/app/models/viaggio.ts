@@ -6,4 +6,6 @@ export interface Viaggio {
   initialFreeCapacity : number;
   costoPerKm : number;
   companyId: number;
+  maximumWithdrawal : string;
+
 }

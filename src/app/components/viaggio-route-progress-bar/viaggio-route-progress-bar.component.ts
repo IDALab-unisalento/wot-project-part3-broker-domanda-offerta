@@ -59,6 +59,10 @@ export class ViaggioRouteProgressBarComponent implements OnInit {
   startDate : string ="";
   endDate : string ="";
   status : string = "";
+  companyTitle : string = "company";
+  rentersTitle : string = "renters";
+  vectorInfo : boolean = false;
+  tripInfo : boolean = false;
 
   ngOnInit(): void {
     this.me = JSON.parse(String(localStorage.getItem("loggedUser")));
@@ -198,7 +202,8 @@ if(nowFormatted >= this.startDate && nowFormatted <this.endDate)
       this.bookingInfoList.push(bookingInfo);
       resolve();
      }
-});
+
+    });
 
 
 
@@ -206,9 +211,13 @@ if(nowFormatted >= this.startDate && nowFormatted <this.endDate)
 
 randomColor(index : number) : string{
   if(index == 0)
-    return "warning"
+    return "warning";
   if(index == 1)
-    return "danger"
+    return "danger";
+  if(index == 2)
+    return "info";
+  if(index == 3)
+    return "primary";
 
   return "";
 
@@ -219,6 +228,10 @@ randomColorRGB(index : number) : string{
     return "#f0ad4e"
   if(index == 1)
     return "#d9534f"
+  if(index == 2)
+    return "#5bc0de";
+    if(index == 2)
+    return "#0275d8";
 
   return "";
 
@@ -226,6 +239,13 @@ randomColorRGB(index : number) : string{
 
 goTo(id : number){
   this.router.navigateByUrl('/viaggioRoute/'+id);
+  setTimeout(()=>{
+    window.location.reload();
+
+  },0.01);
 }
+back(){
+  this.router.navigateByUrl('/home')
+  }
 
 }

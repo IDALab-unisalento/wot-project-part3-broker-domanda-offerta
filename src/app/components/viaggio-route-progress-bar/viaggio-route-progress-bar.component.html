@@ -1,18 +1,41 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+<nav class="navbar navbar-icon-top navbar-expand-lg  navbar-dark"  style=" margin-bottom: -20px; background-color:#044459">
+  <a class="navbar-brand" routerLink="/home" style="color: white;">
+    <i class="fas fa-home" ></i>
+    &nbsp;
+ Home</a>
+</nav>
+
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<body>
 
-
-<div class="container content">
-
-
-<div id="content" class="content" style="min-height: 682px;">
+<div class="container content" style="margin-top : 40px; margin-left: 80px;">
+<div id="content" class="content" style="min-height: 800px;">
   <header class="panel-heading">
-   <div style="font-size: 24px;">  {{IdRouteDelViaggio}}. {{actualRoute.startCity}}-{{actualRoute.endCity}} </div>
+    <header class="panel-heading">
 
-    <span class="tools pull-right" style="position: relative; bottom: 20px;">
+   <div class="andrea-title">
+    <button class="btn" style="color : #3b7ddd" (click)="back()"><mat-icon>keyboard_backspace</mat-icon> </button>
+
+    {{IdRouteDelViaggio}}. {{actualRoute.startCity}}-{{actualRoute.endCity}}
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{actualRoute.distanceKm}} Km
+
+   </div>
+    </header>
+    <span class="tools pull-right" style="position: relative; bottom: 45px; right: 200px;">
       <div class="btn-group " dropdown>
         <a dropdownToggle type="button" class="btn btn-primary dropdown-toggle" class="fa fa-chevron-down"> <!-- {2} -->
         </a>
@@ -28,9 +51,9 @@
       </div>
 
      </span>
-     <hr>
-     <div><strong> Start Date :  </strong>  &nbsp;{{startDate}} </div>
-     <div><strong>End Date : </strong> &nbsp;&nbsp;&nbsp;&nbsp; {{endDate}} </div>
+<br>
+     <div style="padding-left: 20px;"><strong class="text-blue"> Start Date :  </strong>  &nbsp;{{startDate | date :"dd/MM/YYYY, HH:mm"}} </div>
+     <div style="padding-left: 20px;"><strong class="text-blue">End Date : </strong> &nbsp;&nbsp;&nbsp;&nbsp; {{endDate | date :"dd/MM/YYYY, HH:mm"}} </div>
 </header>
 <br>
       <div class="row">
@@ -40,7 +63,7 @@
 
             <div class="project-item">
 
-              <div class="status-desktop pull-left">
+              <div class="status-desktop pull-left" style="position: relative;bottom: 5px; padding-left: 25px;">
                 <span
                 [ngClass]="{'active': status=='active'}"
                 [ngClass]="{'unactive': status=='expired'}"
@@ -49,30 +72,29 @@
                 ></span>{{ status=="active" == true ? ' Active ' :( status=="in trip" ?  'In trip' : "Expired" )}}
               </div>
 
-              <div class="project-box white-bg pull-left">
+              <div class="project-box  pull-left">
 
-
-                <div class="project-tools mobile-tools text-right pull-left">
-                  <a href="#"><i class="fa fa-eye"></i></a>
-                  <a href="#"><i class="fa fa-pencil"></i></a>
-                  <a href="#"><i class="fa fa-close"></i></a>
-                </div>
-
-                <div class="project-progress pull-left" style="width: 600px">
+                <div class="project-progress pull-left" style="width: 600px;">
                   <div class="progress progress-striped active">
-                    <button
+                    <p
                     class="progress-bar progress-bar-striped progress-bar-success" role="progressbar" aria-valuenow="companyPercentage" aria-valuemin="0" aria-valuemax="100" style="width: {{companyPercentage}}%;"
-                    data-toggle="tooltip" data-placement="left" title="{{companyPercentage.toFixed(1)}}% occupied by the company: {{company.name}}">
+                    data-toggle="tooltip" data-placement="left" title="{{companyPercentage.toFixed(1)}}% occupied by the company: {{company.name}}"
+                    style="cursor: pointer;"
+                    >
+                    {{companyPercentage.toFixed(1)}}%
+                    </p>
 
-                    </button>
-
-                    <button *ngFor="let booking of bookingInfoList; let myIndex = index"
+                    <p *ngFor="let booking of bookingInfoList; let myIndex = index"
                         class="progress-bar progress-bar-striped progress-bar-{{randomColor(myIndex)}}" role="progressbar" aria-valuenow="percentage" aria-valuemin="0" aria-valuemax="100" style="width: {{booking.affittuarioPercentage}}%;"
-                        data-toggle="tooltip" data-placement="left" title="{{booking.affittuarioPercentage}}% booked by: {{booking.affittuario.username}}">
+                        data-toggle="tooltip" data-placement="left" title="{{booking.affittuarioPercentage}}% booked by: {{booking.affittuario.username}}"
+                        style="cursor: pointer;"
+                        >
+                        {{booking.affittuarioPercentage}}%
 
-                    </button>
+                    </p>
                   </div>
-                </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{((vectorCapacity - viaggioRoute.availableCapacity)/(vectorCapacity)*100).toFixed(1)}}% occupied
+                </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong style="color : #3b7ddd">{{((vectorCapacity - viaggioRoute.availableCapacity)/(vectorCapacity)*100).toFixed(1)}}%</strong> of <strong style="color : #3b7ddd">{{vectorCapacity}}</strong> Kg  occupied
+                &nbsp;    <button [disabled]="true" *ngIf="viaggioRoute.availableCapacity == vector.capacity" class="btn btnEffectEmpty" >EMPTY RETURN</button>
 
               </div>
 
@@ -80,21 +102,142 @@
 
         </div>
         <hr>
-
-       <strong style="font-weight: 900; font-size: 20px;"> <label style="color:#216ba4"> Legend</label></strong>
-        <br><br>
-        <mat-icon style="color : #5cb85c">circle</mat-icon>
-        <strong>{{company.name}}</strong>'s Percentage : {{companyPercentage.toFixed(1)}}%  &nbsp; {{companyPart}} Kg of {{vectorCapacity}} Kg
-
-        <div *ngFor="let booking of bookingInfoList; let myIndex = index">
-          <mat-icon style="color : {{randomColorRGB(myIndex)}}">circle</mat-icon>
-          <strong>{{booking.affittuario.username}}</strong>'s Percentage : {{booking.affittuarioPercentage}}%  &nbsp; {{booking.bookedKg}} Kg of {{vectorCapacity}} Kg
-
       </div>
       </div>
+      <div >
+        <div class="container-fluid p-0">
+        <div class="row">
+          <div class="col-xl-10">
+
+                <h2 class="card-title mb-0" style="padding-left: 18px;">{{companyTitle | uppercase}}</h2>
+              <div class="card-body">
+                <table class="table table-striped" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th><strong>Legend</strong></th>
+                      <th><strong>Name</strong></th>
+                      <th><strong>Booked capacity (%)</strong></th>
+                      <th><strong>Booked capacity (Kg)</strong></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> <mat-icon style="color : #5cb85c">circle</mat-icon></td>
+                      <td><strong>{{company.name}}</strong></td>
+                      <td>{{companyPercentage.toFixed(1)}}%</td>
+                      <td>{{companyPart}} Kg</td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- RENTERS -->
+
+              <br>
+                <h2 class="card-title mb-0" style="padding-left: 18px;" *ngIf="bookingInfoList.length !=0">{{rentersTitle | uppercase}}</h2 >
+                <div class="card-body" *ngIf="bookingInfoList.length !=0">
+                <table class="table table-striped" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th><strong>Legend</strong></th>
+                      <th><strong>Name</strong></th>
+                      <th><strong>Booked capacity (%)</strong></th>
+                      <th><strong>Booked capacity (Kg)</strong></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let booking of bookingInfoList; let myIndex = index">
+                      <td> <mat-icon style="color : {{randomColorRGB(myIndex)}}">circle</mat-icon></td>
+                      <td><strong>{{booking.affittuario.username}}</strong></td>
+                      <td>{{booking.affittuarioPercentage}}%</td>
+                      <td>{{booking.bookedKg}} Kg</td>
+                    </tr>
+
+
+                  </tbody>
+                </table>
+                </div>
+              </div>
+          </div>
+
+        </div>
       </div>
+      <hr>
+      <div class="row">
+        <div class ="col">
+      <div class="row" >
+          <div class="andrea-title col " style="padding-left: 60px;">  <u>Vector info</u></div>
+          <div class="tools col"  style="position: relative;bottom: 10px;">
+            <a  type="button" class="btn btn-primary dropdown-toggle" class="fa fa-chevron-down" (click)="vectorInfo = !vectorInfo"></a>
+          </div>
+
+          <div class="tools col" ></div>
+
+
+    </div>
+<div *ngIf="vectorInfo" style="padding-left: 20px;">
+
+  <div class="content2" style="padding-top: 30px;">
+    <div class="card">
+        <div class="firstinfo">
+          <i class="fa fa-truck" style="font-size: 120px; margin-left: -50px;" *ngIf="vector.name.toLocaleLowerCase() == 'fiorino'"></i>
+          <i class="fa fa-bus-alt" style="font-size: 120px; margin-left: -50px;" *ngIf="vector.name.toLocaleLowerCase() == 'bus'"></i>
+          <i class="fa fa-train" style="font-size: 120px;  margin-left: -50px;" *ngIf="vector.name.toLocaleLowerCase() == 'treno' || vector.name.toLocaleLowerCase() == 'train'"></i>
+          <i class="fa fa-car" style="font-size: 120px; margin-left: -50px;" *ngIf="vector.name.toLocaleLowerCase() == 'car' || vector.name.toLocaleLowerCase() == 'auto' || vector.name.toLocaleLowerCase() == 'automobile' "></i>
+          <i class="fa fa-plane" style="font-size: 120px; margin-left: -50px;" *ngIf="vector.name.toLocaleLowerCase() == 'plane' || vector.name.toLocaleLowerCase() == 'aereo' ||  vector.name.toLocaleLowerCase() == 'aereoplano'  "></i>
+          <i class="fas fa-truck-moving" style="font-size: 120px; margin-left: -50px;" *ngIf="vector.name.toLocaleLowerCase() == 'truck' || vector.name.toLocaleLowerCase() == 'camion'"></i>            <div class="profileinfo">
+                <h1 style="padding-top: 10px;">{{vector.name}} : {{vector.licensePlate}}</h1>
+                <h3 >{{vector.brand}}</h3>
+
+                <h2 class="d-flex align-items-center mb-0">
+                Capacity :  {{vector.capacity}} Kg
+              </h2>            </div>
+        </div>
+      </div>
+
+    </div>
 
   </div>
 </div>
 
-</body>
+<div class ="col">
+  <div class="row" >
+      <div class="andrea-title col"  style="padding-left: 30px; "><u>Route info</u></div>
+      <div class="tools col"  style="position: relative;bottom: 10px;">
+        <a  type="button" class="btn btn-primary dropdown-toggle" class="fa fa-chevron-down" (click)="tripInfo = !tripInfo"></a>
+      </div>
+
+      <div class="tools col" ></div>
+
+
+</div>
+<div *ngIf="tripInfo">
+
+<div class="content2" style="padding-top: 30px;">
+<div class="card">
+    <div class="firstinfo">
+      <i class="fa fa-globe text-navy mid-icon" style="font-size: 120px; margin-left: -50px;"></i>
+  <div class="profileinfo">
+            <h1 style="padding-top: 10px;">Company : {{company.name}}</h1>
+            <h2 class="d-flex align-items-center mb-0" style="padding-left: 10px;">
+              Service Cost :  {{viaggio.costoPerKm}} $/km
+           </h2>
+           <h2 class="d-flex align-items-center mb-0" style="padding-left: 10px;">
+            Occupied Capacity:  {{vector.capacity - viaggioRoute.availableCapacity}} Kg
+          </h2>
+            <h2 class="d-flex align-items-center mb-0" style="padding-left: 10px;">
+             Available Capacity:  {{viaggioRoute.availableCapacity}} Kg
+          </h2>
+        </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+    </div>
+    </div>
+  </div>

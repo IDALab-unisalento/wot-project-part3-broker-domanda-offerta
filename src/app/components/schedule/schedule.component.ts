@@ -208,7 +208,6 @@ export class ScheduleComponent implements OnInit {
       this.routeService.getPath(this.coordinates[i][0], this.coordinates[i][1],
                                 this.coordinates[i + 1][0], this.coordinates[i + 1][1])
                                 .subscribe((data : any) =>{
-                                  console.log(data)
                                   var coords = polyline.decode(data.routes[0].geometry); // Get the geometry of the request  and convert it from a Google string to coordinates
                                   coords.forEach(coordinate => {
                                     [coordinate[0], coordinate[1]] = [coordinate[1], coordinate[0]];

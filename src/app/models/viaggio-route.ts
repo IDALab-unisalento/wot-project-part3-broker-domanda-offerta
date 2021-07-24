@@ -13,5 +13,6 @@ export interface ViaggioRoute {
   startDateString : string;
   endDateString : string;
   distance : number;
+  maximumWithdrawal : Date;
 
 }

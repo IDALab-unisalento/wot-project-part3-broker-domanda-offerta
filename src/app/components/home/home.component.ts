@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -8,7 +9,8 @@ import { User } from 'src/app/models/user';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(    private spinnerService : NgxSpinnerService,
+    ) { }
 
   me : User = {} as User;
   type : string = "";
@@ -18,6 +20,10 @@ export class HomeComponent implements OnInit {
     this.me = JSON.parse(String(localStorage.getItem("loggedUser")));
     this.type = JSON.parse(String(localStorage.getItem("userType")));
 
+    this.spinnerService.show();
+    setTimeout(() => {
+      this.spinnerService.hide();
+    }, 500);
   }
 
 }

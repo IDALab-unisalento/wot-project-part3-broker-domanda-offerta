@@ -23,6 +23,7 @@
     "@mapbox/mapbox-sdk": "^0.13.0",
     "@progress/kendo-angular-dateinputs": "^5.2.1",
     "@turf/turf": "^6.5.0",
+    "@types/bootstrap": "^5.0.17",
     "@types/mapbox-gl": "^2.3.3",
     "bootstrap": "^5.0.2",
     "igniteui-angular-charts": "^11.2.1",

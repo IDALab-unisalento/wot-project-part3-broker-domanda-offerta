@@ -29,5 +29,6 @@ export interface Offer {
   startTimes : Time[];
   endDates : Date[];
   endTimes : Time[];
+  maximumWithdrawal : string;
 
 }

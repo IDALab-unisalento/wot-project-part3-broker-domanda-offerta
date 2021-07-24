@@ -126,7 +126,7 @@
                           <!-- TREATS -->
 
 
-                          <div class="card " style="background-color:  rgb(236, 238, 250);">
+                          <div class="card" style="background-color:  rgb(236, 238, 250); border-radius: 1.5rem;">
 
                            <ul *ngIf="treatsCity.length > 0">
 
@@ -363,7 +363,7 @@
                                 <label  style="color: #044459">Select from your vectors: <label style="color:red">* </label></label>
 
                                 <div class="col-sm-10">
-                                  <select  class="form-control" required (ngModelChange)="onChange($event)"
+                                  <select  class="form-select" required (ngModelChange)="onChange($event)"
                                   #vector="ngModel"
                                   name="name"
                                   [(ngModel)]="selectedVector">
@@ -384,11 +384,11 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-12 col-sm-6 mb-3" *ngIf="newOffer.vector != null">
-                          <div class="mb-2"><b>Vector Info</b>
+                        <div class="col-12  mb-2" *ngIf="newOffer.vector != null">
+                          <div class="mb-2" style="color : #044459"><b>Vector Info</b>
                             <button  *ngIf="newOffer.vector != null"
                             (click)="removeVector()"
-                              style="position: absolute;right: 17px; font-size: 10px;" class="btn btn-outline-danger"
+                              style="position: absolute;right: 17px; font-size: 10px; border-radius: 1.5rem;" class="btn btn-outline-danger"
                               type="button">Remove selected vector &nbsp;<i class="far fa-times-circle"></i>
                             </button></div>
                           <div class="row">
@@ -414,6 +414,19 @@
                                 <input class="form-control" disabled type="text" value="{{newOffer.vector.capacity}}"></div>
                             </div>
                           </div>
+                          <div class="row">
+                              <div class="form-group">
+                                <label *ngIf="newOffer.vector.frozenProduct"> <span class="d-none d-xl-inline text-success">
+                                  <i class="fas fa-check"></i>
+                                  The vector can carry frozen products
+                                </span></label>
+                                <br>
+                                <label *ngIf="newOffer.vector.biomedicalProducts"> <span class="d-none d-xl-inline text-success">
+                                  <i class="fas fa-check" ></i>
+                                  The vector can carry biomedical products
+                                </span></label>
+                              </div>
+                          </div>
                         </div>
 
                       </div>
@@ -427,7 +440,7 @@
                       <br>
 
                       <label  style="color: #044459">Enter the cost of the trip ($/km): <label style="color:red">* </label></label>
-                      <div class="form-group" style="width: 200px;">
+                      <div class="form-group" style="width: 250px;">
                         <div class="input-group input-group-xl">
                             <span class="input-group-addon">$ / km</span>
                             <input type="text" required class="form-control" name="costoPerKm" placeholder="0.10"
@@ -456,6 +469,53 @@
 
 
                     <!-- FINE PREZZO-->
+                    <br>
+                        <!-- DATA RECESSO -->
+                        <div class="widget-header bordered-top bordered-sky" style="background-color:#044459;  border-radius: 1.5rem;" >
+                          <span class="widget-caption" style="color: white;"> 4. Maximum withdrawal date range</span>
+                      </div>
+
+
+                        <br>
+
+                        <label  style="color: #044459">Select the maximum limit to cancel a booking for a renter: <label style="color:red">* </label></label>
+                        <div class="form-group" style="width: 250px;">
+                          <div class="input-group input-group-xl">
+                            <div class="input-group mb-3">
+                              <select class="form-select" required
+                              #maximumWithdrawal="ngModel"
+                              name="maximumWithdrawal"
+                              [(ngModel)]="newOffer.maximumWithdrawal"
+                              [ngClass]="{'is-invalid': newOffer.maximumWithdrawal=='' || (!maximumWithdrawal.valid && maximumWithdrawal.touched)}"
+                              [ngClass]="{'is-valid': maximumWithdrawal.valid}"
+                              >
+                                <option selected value="Choose...">Choose...</option>
+                                <option value="1 hour">1 hour</option>
+                                <option value="2 hours">2 hours</option>
+                                <option value="6 hours">6 hours</option>
+                                <option value="12 hours">12 hours</option>
+                                <option value="1 day">1 day</option>
+                                <option value="2 days">2 days</option>
+                                <option value="3 days">3 days</option>
+                                <option value="5 days">5 days</option>
+                                <option value="10 days">10 days</option>
+
+                              </select>
+                              <div class="invalid-feedback" [hidden]="!maximumWithdrawal.errors?.required">
+                                <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+                                Maximum withdrawal is required
+                              </div>
+                              <div class="valid-feedback">
+                                <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
+                                Ok!
+                              </div>
+                            </div>
+
+
+
+                          </div>
+                      </div>
+                      <!--  FINE DATA RECESSO-->
                       <br><br>
                       <label style="color: rgb(99, 99, 99);" > <label style="color:red">*</label> : Mandatory Fields</label>
                       <div class="row">
@@ -484,7 +544,7 @@
   </div>
   </div>
     <div class="row">
-        <div class="col-lg-12" style=" padding-left: 100px;">
+        <div class="col-lg-12" style=" padding-left: 50px;">
             <div class="main-box no-header clearfix">
                 <div class="main-box-body clearfix">
                     <div class="table-responsive">
@@ -495,32 +555,34 @@
                                 <th class="text-center" ><span>Vector</span></th>
                                 <th class="text-center"><span>Vector brand</span></th>
                                 <th class="text-center"><span>License Plate</span></th>
-                                <th class="text-center"><span>Status</span></th>
+                                <th class="text-center"><span>Trip Status</span></th>
                                 <th class="text-center">Occupied Capacity</th>
                                 <th class="text-center"><span>Start Warehouse</span></th>
                                 <th class="text-center"><span>End Warehouse</span></th>
-                                <th class="taext-center"><span>Trip Lenght</span></th>
-                                <th class="text-center"><span>$/Km</span></th>
-                                <th class="text-center"><span>Start</span></th>
-                                <th class="text-center"><span>End</span></th>
-                                <th class="text-center"><span>Info</span></th>
+                                <th class="text-center"><span>Trip Lenght</span></th>
+                                <th class="text-center"><span>Cost $/Km</span></th>
+                                <th class="text-center"><span>Trip Starting Time</span></th>
+                                <th class="text-center"><span>Trip Ending Time</span></th>
+                                <th class="text-center"><span>Maximum withdrawal time</span></th>
+                                <th class="text-center"><span>Action</span></th>
 
                                 <th>&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
+
                                 <tr *ngFor=" let offer of offers; let myIndex = index">
-                                  <td class="text-center">{{myIndex + 1}}</td>
-                                  <td class="text-center">{{offer.vectorType}}</td>
-                                  <td class="text-center">{{offer.vectorBrand}}</td>
-                                  <td class="text-center">{{offer.licensePlate}}</td>
-                                  <td class="text-center">
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )" >{{myIndex + 1}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.vectorType}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.vectorBrand}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) ) ">{{offer.licensePlate}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">
                                     <span class="badge badge-success m-0" *ngIf="offer.available && offer.occupiedCapacity < 100 && !offer.lastDay">available</span>
                                     <span class="badge badge-danger m-0" *ngIf="!offer.available">expired</span>
                                     <span class="badge badge-warning m-0" *ngIf="offer.available && offer.lastDay">Hurry up!</span>
 
                                 </td>
-                                  <td class="p-progress">
+                                  <td class="p-progress" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">
                                       <div class="progress progress-xs">
                                           <div
                                           [style.background]="(offer.occupiedCapacity < 70) ? 'rgb(0, 233, 0)' : ( (offer.occupiedCapacity >= 70 && offer.occupiedCapacity <90)? 'rgb(255, 183, 1)':'red')"
@@ -530,14 +592,15 @@
                                       <small style="font-size: 9px;">{{offer.occupiedCapacity}}% Occupied </small>
                                   </td>
 
-                                  <td class="text-center">{{offer.startingCity}}</td>
-                                  <td class="text-center">{{offer.endingCity}}</td>
-                                  <td class="text-center">{{offer.length.toFixed(1)}} Km</td>
-                                  <td class="text-center">{{offer.costoPerKm}} $</td>
-                                  <td class="text-center">{{offer.startingDate | date : "dd/MM/YYYY HH:mm"}}</td>
-                                  <td class="text-center">{{offer.endingDate | date : "dd/MM/YYYY HH:mm"}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.startingCity}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) ) ">{{offer.endingCity}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.length}} Km</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.costoPerKm}} $</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.startingDate | date : "dd/MM/YYYY HH:mm"}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.endingDate | date : "dd/MM/YYYY HH:mm"}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.maximumWithdrawal}}</td>
 
-                                    <td  class="text-center" style="width: 20%">
+                                    <td  class="text-center" style="width: 20%" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) ) ">
                                         <a onmouseover="" style="cursor: pointer;" class="table-link text-warning" (click)="this.openModal(offer.viaggioId); ">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
@@ -556,6 +619,18 @@
 
                             </tbody>
                         </table>
+                        <nav aria-label="Page navigation example" style="display: flex;justify-content:center ">
+                          <ul class="pagination">
+                            <li class="page-item"><a class="page-link text-primary" (click)="selectPrevious()">Previous</a></li>
+                            <div *ngFor="let item of offers; let myIndex = index">
+                              <li class="page-item" (click)="selectPage(myIndex/10)" *ngIf="(myIndex % 10 == 0);" ><a class="page-link text-primary"
+                                [style.background-color]="selectedPaginations ==  myIndex/10 ? 'lightblue' : 'white'"
+                                >{{paginations + 1 + myIndex/10}}</a></li>
+                            </div>
+
+                            <li class="page-item text-primary" (click)="selectNext()"><a class="page-link" >Next</a></li>
+                          </ul>
+                        </nav>
 
                     </div>
                 </div>

@@ -15,6 +15,7 @@ import { Form } from '@angular/forms';
 })
 export class MyVectorsComponent implements OnInit {
 
+
   constructor(
     private matDialog : MatDialog,
     private companyVectorService : CompanyVectorService,
@@ -26,15 +27,19 @@ export class MyVectorsComponent implements OnInit {
   myVectorsList : Vector[] = [] as Vector[];
   addMenu : boolean = false;
   x : boolean = true;
+  x2 : boolean = false;
   allVectorsName : string[] = [] as string[];
   allBrands : string[] = [] as string[];
 
   //form
  newVector : Vector = {} as Vector;
   //end form
+  showToast : boolean = false;
+
 
   ngOnInit(): void {
-
+    this.newVector.biomedicalProducts = false;
+    this.newVector.frozenProduct = false;
     this.me = JSON.parse(String(localStorage.getItem("loggedUser")));
     this.type = JSON.parse(String(localStorage.getItem("userType")));
     this.getMyVectors();
@@ -102,11 +107,12 @@ addNewVector(){
 
     this.vectorService.save(this.newVector).subscribe(vector => {
 
-      console.log(vector)
       this.companyVectorService.save(this.me.id, vector.id).subscribe(data => {console.log(data)});
-      setTimeout(()=>{window.location.reload();},300);
+      this.myVectorsList.push(this.newVector)
     })
   });
+  this.x2 = true;
+  this.showToast = true;
     }
 
     openModal() {
@@ -123,4 +129,5 @@ addNewVector(){
     onSubmit(vectorForm : Form){
 
     }
+
 }

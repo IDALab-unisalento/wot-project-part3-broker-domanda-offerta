@@ -45,7 +45,7 @@ userType  : string = "";
   }
 
   logOut(){
-    localStorage.removeItem('admin');
+    localStorage.removeItem('loggedUser');
     localStorage.setItem('logout',JSON.stringify("out"))
     this.router.navigateByUrl("login")
   }
