@@ -56,6 +56,9 @@ import { ViaggioRouteProgressBarComponent } from './components/viaggio-route-pro
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +83,9 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     ModalTimeErrorComponent,
     BookingModalComponent,
     ViaggioRouteProgressBarComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    DashboardComponent,
+    DashboardCompanyComponent,
     ],
   imports: [
     BsDropdownModule.forRoot(),
@@ -104,11 +109,13 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MatFormFieldModule,
     MatAutocompleteModule,
     MatDatepickerModule,
+    MatButtonModule,
     IgxGeographicMapModule,
     IgxDataChartInteractivityModule,
     MatNativeDateModule,
     NgxMaterialTimepickerModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    HighchartsChartModule
       ],
   providers: [
             {

@@ -4,4 +4,5 @@ export interface AffittuarioPrenotaViaggioRoute {
   affittuarioId : number;
   viaggioRouteId : number;
   bookedCapacity : number;
+  prenotationDate : Date;
 }

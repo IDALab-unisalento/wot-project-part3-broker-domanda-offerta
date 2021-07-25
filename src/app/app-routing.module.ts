@@ -10,6 +10,8 @@ import { SummaryModalComponent } from './components/summary-modal/summary-modal.
 import { AffittuarioHomeComponent } from './components/affittuario-home/affittuario-home.component';
 import { ViaggioRouteProgressBarComponent } from './components/viaggio-route-progress-bar/viaggio-route-progress-bar.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
 
 const routes: Routes = [
   {path: '',component:LoginComponent},
@@ -24,7 +26,8 @@ const routes: Routes = [
   {path: 'viaggioRoute/:id', component: ViaggioRouteProgressBarComponent},
   {path:'affittuarioHome', component: AffittuarioHomeComponent},
   {path: 'notFound', component: NotFoundComponent},
-
+  {path: 'admin/dashboard', component: DashboardComponent},
+  {path: 'company/dashboard/:id', component: DashboardCompanyComponent}
 
 
 

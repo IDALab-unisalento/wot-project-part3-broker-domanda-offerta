@@ -20,6 +20,7 @@ export class AffituarioPrenotaRouteService {
 
   prenotaRouteEndPoint="http://localhost:8080/affittuarioPrenotaViaggioRoute/save";
   getByViaggioRouteIdEndPoint = 'http://localhost:8080/affittuarioPrenotaViaggioRoute/getByViaggioRouteId'
+  getAllEndPoint = 'http://localhost:8080/affittuarioPrenotaViaggioRoute/getAll'
 
   saveBooking(toBook: AffittuarioPrenotaViaggioRoute): Observable<AffittuarioPrenotaViaggioRoute>{
     return this.http.post<AffittuarioPrenotaViaggioRoute>(this.prenotaRouteEndPoint,toBook,httpOptions);
@@ -29,4 +30,8 @@ export class AffituarioPrenotaRouteService {
   getByViaggioRouteId(viaggioRouteId : number) : Observable<AffittuarioPrenotaViaggioRoute[]>{
     return this.http.get<AffittuarioPrenotaViaggioRoute[]>(this.getByViaggioRouteIdEndPoint+'/'+viaggioRouteId);
   }
+
+  getAll(): Observable<AffittuarioPrenotaViaggioRoute[]>{
+    return this.http.get<AffittuarioPrenotaViaggioRoute[]>(this.getAllEndPoint);
+}
 }

@@ -45,8 +45,22 @@
   </div>
 
 
+  <mat-divider></mat-divider>
 
+  <div *ngIf="userType == 'admin'" class="item " onmouseover="" style="cursor: pointer;" routerLink="/admin/dashboard"
+  >
+    <i class="fas fa-tachometer-alt"  onmouseover="" style="cursor: pointer;"
+    > </i>
+   Analytics
+  </div>
+  <mat-divider></mat-divider>
 
+  <div *ngIf="userType == 'company'" class="item " onmouseover="" style="cursor: pointer;" routerLink="/company/dashboard/{{me.id}}"
+  >
+    <i class="fas fa-tachometer-alt"  onmouseover="" style="cursor: pointer;"
+    > </i>
+   Analytics
+  </div>
   <mat-divider></mat-divider>
 
 

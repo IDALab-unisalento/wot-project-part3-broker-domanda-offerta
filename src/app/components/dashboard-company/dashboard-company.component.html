@@ -1,0 +1,25 @@
+<app-nav-bar></app-nav-bar>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+
+
+<div style="margin-left: 250px; padding-top: 50px;">
+  <button class="btn btn-primary" (click)="show2()"> Dashboard</button>
+
+<highcharts-chart
+  style="width: 100%; height: 400px;" *ngIf="show"
+
+  [Highcharts]="Highcharts"
+  [options]="chartOptions"
+
+></highcharts-chart>
+
+<highcharts-chart
+  style="width: 100%; height: 400px; margin-top: 50px;" *ngIf="show"
+
+  [Highcharts]="Highcharts"
+  [options]="pieOptions"
+
+></highcharts-chart>
+
+</div>
+
