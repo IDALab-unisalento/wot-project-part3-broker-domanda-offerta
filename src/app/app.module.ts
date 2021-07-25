@@ -1,4 +1,7 @@
 import { AffittuarioAnaliticsComponent } from './components/affittuario-analitics/affittuario-analitics.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ViaggioRouteProgressBarComponent } from './components/viaggio-route-progress-bar/viaggio-route-progress-bar.component';
+import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
 import { PendingRegistrationComponent } from './components/pending-registrations/pending-registrations.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
@@ -53,17 +56,14 @@ import { ModalErrorComponent } from './components/modal-error/modal-error.compon
 import { ModalTimeErrorComponent } from './components/modal-time-error/modal-time-error.component';
 import { BookingModalComponent } from './components/booking-modal/booking-modal.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { ViaggioRouteProgressBarComponent } from './components/viaggio-route-progress-bar/viaggio-route-progress-bar.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HighchartsChartModule } from 'highcharts-angular';
-import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
 
 import { HistoryComponent } from './components/history/history.component';
-import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
 import { ChartsModule } from 'ng2-charts';
+import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
 @NgModule({
   declarations: [
 
@@ -91,7 +91,6 @@ import { ChartsModule } from 'ng2-charts';
     ModalErrorComponent,
     ModalTimeErrorComponent,
     BookingModalComponent,
-    ViaggioRouteProgressBarComponent,
     NotFoundComponent,
     DashboardComponent,
     DashboardCompanyComponent,
