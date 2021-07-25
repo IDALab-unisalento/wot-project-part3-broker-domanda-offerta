@@ -95,15 +95,13 @@ import { ChartsModule } from 'ng2-charts';
     NotFoundComponent,
     DashboardComponent,
     DashboardCompanyComponent,
+    AffittuarioAnaliticsComponent
     ],
 
   imports: [
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
-    HistoryComponent,
-    ModalConfirmComponent,
-    AffittuarioAnaliticsComponent,
     ChartsModule,
     BrowserModule,
     AppRoutingModule,
@@ -130,6 +128,7 @@ import { ChartsModule } from 'ng2-charts';
     NgxMaterialTimepickerModule,
     NgxSpinnerModule,
     HighchartsChartModule,
+    ChartsModule,
 
       ],
   providers: [

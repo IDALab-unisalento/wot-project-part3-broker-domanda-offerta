@@ -49,8 +49,8 @@ export class ViaggioRouteService {
     );
   }
 
-  getByRouteId(routeId:number): Observable<ViaggioRoute>{
-    return this.http.get<ViaggioRoute>(this.getByRouteIdEndPoint+"/"+routeId);
+  getByRouteId(routeId:number): Observable<ViaggioRoute[]>{
+    return this.http.get<ViaggioRoute[]>(this.getByRouteIdEndPoint+"/"+routeId);
   }
 
   getAll(): Observable<ViaggioRoute[]>{

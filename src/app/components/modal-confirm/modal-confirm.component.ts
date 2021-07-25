@@ -11,7 +11,7 @@ import { ModalComponent } from '../modal/modal.component';
 export class ModalConfirmComponent implements OnInit {
 
 
-  modalText: string='';
+  modalText: string=' ';
 
   constructor(public dialogRef: MatDialogRef<ModalComponent>) { }
 

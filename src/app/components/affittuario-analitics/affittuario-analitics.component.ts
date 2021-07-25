@@ -20,6 +20,7 @@ import { AffittuarioPrenotaViaggioRoute } from 'src/app/models/affittuario-preno
 import { AffituarioPrenotaRouteService } from 'src/app/services/affituario-prenota-route.service';
 import { Affittuario } from '../../models/affittuario';
 import {Chart} from 'chart.js';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 
 @Component({
