@@ -1,3 +1,4 @@
+import { AffittuarioAnaliticsComponent } from './components/affittuario-analitics/affittuario-analitics.component';
 import { PendingRegistrationComponent } from './components/pending-registrations/pending-registrations.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -13,7 +14,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
 import { HistoryComponent } from './components/history/history.component';
-import { AffittuarioAnaliticsComponent } from './components/affittuario-analitics/affittuario-analitics.component';
 
 const routes: Routes = [
   {path: '',component:LoginComponent},

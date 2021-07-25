@@ -1,3 +1,4 @@
+import { AffittuarioAnaliticsComponent } from './components/affittuario-analitics/affittuario-analitics.component';
 import { PendingRegistrationComponent } from './components/pending-registrations/pending-registrations.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
@@ -62,7 +63,6 @@ import { DashboardCompanyComponent } from './components/dashboard-company/dashbo
 
 import { HistoryComponent } from './components/history/history.component';
 import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
-import { AffittuarioAnaliticsComponent } from './components/affittuario-analitics/affittuario-analitics.component';
 import { ChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
@@ -95,7 +95,8 @@ import { ChartsModule } from 'ng2-charts';
     NotFoundComponent,
     DashboardComponent,
     DashboardCompanyComponent,
-    AffittuarioAnaliticsComponent
+    AffittuarioAnaliticsComponent,
+    ViaggioRouteProgressBarComponent
     ],
 
   imports: [
