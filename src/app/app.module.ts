@@ -60,9 +60,17 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
 
+import { HistoryComponent } from './components/history/history.component';
+import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
+import { AffittuarioAnaliticsComponent } from './components/affittuario-analitics/affittuario-analitics.component';
+import { ChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
+
     AppComponent,
+    HistoryComponent,
+    ModalConfirmComponent,
+    NavBarComponent,
     LoginComponent,
     HomeComponent,
     NavBarComponent,
@@ -74,6 +82,7 @@ import { DashboardCompanyComponent } from './components/dashboard-company/dashbo
     ModalBlankComponent,
     ModalWaitComponent,
     ScheduleComponent,
+    ModalConfirmComponent,
     MyVectorsComponent,
     ModalErrorVectorComponent,
     SearchFilterPipe,
@@ -87,10 +96,15 @@ import { DashboardCompanyComponent } from './components/dashboard-company/dashbo
     DashboardComponent,
     DashboardCompanyComponent,
     ],
+
   imports: [
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
+    HistoryComponent,
+    ModalConfirmComponent,
+    AffittuarioAnaliticsComponent,
+    ChartsModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
@@ -115,7 +129,8 @@ import { DashboardCompanyComponent } from './components/dashboard-company/dashbo
     MatNativeDateModule,
     NgxMaterialTimepickerModule,
     NgxSpinnerModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+
       ],
   providers: [
             {

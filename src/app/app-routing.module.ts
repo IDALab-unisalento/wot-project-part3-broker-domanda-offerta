@@ -12,6 +12,8 @@ import { ViaggioRouteProgressBarComponent } from './components/viaggio-route-pro
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
+import { HistoryComponent } from './components/history/history.component';
+import { AffittuarioAnaliticsComponent } from './components/affittuario-analitics/affittuario-analitics.component';
 
 const routes: Routes = [
   {path: '',component:LoginComponent},
@@ -27,8 +29,11 @@ const routes: Routes = [
   {path:'affittuarioHome', component: AffittuarioHomeComponent},
   {path: 'notFound', component: NotFoundComponent},
   {path: 'admin/dashboard', component: DashboardComponent},
-  {path: 'company/dashboard/:id', component: DashboardCompanyComponent}
+  {path: 'company/dashboard/:id', component: DashboardCompanyComponent},
 
+  {path:'affittuarioHome', component: AffittuarioHomeComponent},
+  {path: 'history', component: HistoryComponent},
+  {path:'analytics', component: AffittuarioAnaliticsComponent}
 
 
 

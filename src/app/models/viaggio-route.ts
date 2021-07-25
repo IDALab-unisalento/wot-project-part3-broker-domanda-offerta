@@ -15,4 +15,6 @@ export interface ViaggioRoute {
   distance : number;
   maximumWithdrawal : Date;
 
+
+
 }

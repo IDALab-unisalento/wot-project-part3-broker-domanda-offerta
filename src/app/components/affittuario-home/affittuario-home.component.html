@@ -1,16 +1,21 @@
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
 
-<div class="container" >
+<!------ Include the above in your HEAD tag ---------->
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-spin-clockwise" [fullScreen] = "false">
+  <p style="color: white; padding-top:10%; font-size:20px" > Loading shipping ... </p>
+</ngx-spinner>
+<div class="bg">
+
+ <div class="container" style="padding-left:8%; "  >
     <div class="page-header text-center">
         <h1 id="timeline" *ngIf="allViaggioInfo.length!=0" style="font-size:30px" >Latest Shipping</h1>
         <h1 id="timeline"*ngIf="allViaggioInfo.length==0" style="font-size:30px"  >No Shipping avaible </h1>
     </div>
 
-    <ul class="timeline" *ngIf="allViaggioInfo.length!=0">
-      <li *ngFor="let travelInfo of allViaggioInfo; let travelIndex=index "
+    <ul class="timeline"  *ngIf="allViaggioInfo.length!=0">
+      <li  *ngFor="let travelInfo of allViaggioInfo; let travelIndex=index "
       [ngClass]="{
         'timeline-inverted': 0 === (travelIndex+1)%2
       }" >
@@ -22,12 +27,17 @@
             <i class="fa fa-plane" *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'plane' || travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'aereo' ||  travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'aereoplano'  "></i>
           <i class="fas fa-truck-moving" *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'truck' || travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'camion'"></i>
           </div>
-          <div class="timeline-panel">
+          <div class="timeline-panel" style="background-color: white"  [ngClass]="{
+            'frozenVector': travelInfo.vectorOwnerViaggio.frozenProduct,
+            'bioMedicalVector': travelInfo.vectorOwnerViaggio.biomedicalProducts,
+            'bothVector': travelInfo.vectorOwnerViaggio.frozenProduct && travelInfo.vectorOwnerViaggio.biomedicalProducts,
+            'Vector': !travelInfo.vectorOwnerViaggio.frozenProduct && !travelInfo.vectorOwnerViaggio.biomedicalProducts
+          }">
             <div class="timeline-heading">
               <h1 style="text-align: center; padding-top:5%" class="timeline-title">Shipping from {{travelInfo.routes[0].startCity}} to {{travelInfo.routes[travelInfo.routes.length-1].endCity}} </h1>
               <p class="text-muted" >
                 <i style="margin-left:2%"class="glyphicon glyphicon-time" ></i> Start date {{travelInfo.startDateViaggio|date: 'dd/MM/yyyy hh:mm'}}
-                <i style="margin-left:21%" class="glyphicon glyphicon-time"></i>  End date {{travelInfo.endDateViaggio|date: 'dd/MM/yyyy hh:mm'}}
+                <i style="margin-left:14%" class="glyphicon glyphicon-time"></i>  End date {{travelInfo.endDateViaggio|date: 'dd/MM/yyyy hh:mm'}}
               </p>
             </div>
             <div class="r">
@@ -51,7 +61,7 @@
 
 
 
-              <strong style="margin-left:30%;  margin-top:8%"> Company owner shipping info </strong>
+              <strong style="margin-left:28%;  margin-top:8%"> Company owner shipping info </strong>
 <ul style="padding-top: 2%;">
   <li>
    Company Name:  <strong style="color:blue">{{travelInfo.companyOwnerViaggio.name}}  {{travelInfo.companyOwnerViaggio.legalForm}}</strong>
@@ -59,6 +69,9 @@
   </li>
   <li >
     Web Site: <strong  style="color:blue">{{travelInfo.companyOwnerViaggio.webSite}}</strong>
+  </li>
+  <li >
+    Cost per KM: <strong  style="color:blue">{{travelInfo.costoKm}} &euro;</strong>
   </li>
 </ul>
 <br>
@@ -80,8 +93,7 @@
 </ul>
             </div>
 
-            <div class="timeline-footer primary">
-            </div>
+
           </div>
         </li>
 
@@ -89,4 +101,8 @@
 
     </ul>
 </div>
+
+
+</div>
+
 

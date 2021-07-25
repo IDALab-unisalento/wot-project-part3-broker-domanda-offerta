@@ -7,4 +7,6 @@ export interface Vector {
   licensePlate : string;
   frozenProduct : boolean;
   biomedicalProducts : boolean;
+
+
 }

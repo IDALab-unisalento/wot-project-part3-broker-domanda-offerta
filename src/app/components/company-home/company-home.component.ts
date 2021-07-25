@@ -248,7 +248,7 @@ openModal(id : number) {
   // The user can't close the dialog by clicking outside its body
   dialogConfig.disableClose = true;
   dialogConfig.id = "modal-component";
-  dialogConfig.height = "700px";
+  dialogConfig.height = "600px"; // alessio non ha le dimensioni del pc mac percui ha cambiato il parametro
   dialogConfig.width = "800px";
   // https://material.angular.io/components/dialog/overview
   const modalDialog = this.matDialog.open(ScheduleComponent, dialogConfig);
@@ -257,7 +257,7 @@ openModal(id : number) {
 
 openModalError() {
   const dialogConfig = new MatDialogConfig();
-  // The user can't close the dialog by clicking outside its body
+  // The user can't close the dialog by clicking outside its
   dialogConfig.disableClose = true;
   dialogConfig.id = "modal-component";
   dialogConfig.height = "300px";
@@ -359,7 +359,7 @@ async addNewOffer(){
             invalidTime = true;
           }
           else{
-            if(this.startDates[i] > this.startDates[i -1] || this.endDates[i] < this.endDates[i - 1])
+            if(this.startDates[i] < this.startDates[i -1] || this.endDates[i] < this.endDates[i - 1])
             invalidTime = true;
           }
         }
@@ -772,8 +772,7 @@ async addNewOffer(){
 
     this.spinnerService.hide();
     this.addMenu = false;
-    this.ngOnInit();
-
+window.location.reload();
   }, 1200);
 
 
@@ -786,7 +785,7 @@ async addNewOffer(){
         this.openModalTimeError();
       }
 
-    }
+}
 
 
     isInvalid() : boolean{

@@ -76,6 +76,4 @@ export class ViaggioRouteService {
     return this.http.get<ViaggioRoute[]>(this.getByViaggioIdEndPoint+'/'+viaggioId);
   }
 
-
-
 }

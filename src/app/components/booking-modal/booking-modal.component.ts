@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ModalComponent } from '../modal/modal.component';
 import { ViaggioInfo } from '../../models/viaggio-info';
 import { Route } from 'src/app/models/route';
@@ -8,6 +8,7 @@ import { AffituarioPrenotaRouteService } from 'src/app/services/affituario-preno
 import { Affittuario } from 'src/app/models/affittuario';
 import { ViaggioRouteService } from 'src/app/services/viaggio-route.service';
 import { Router } from '@angular/router';
+import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component';
 
 
 
@@ -30,7 +31,7 @@ export class BookingModalComponent implements OnInit {
   affittuario: Affittuario={} as Affittuario;
 
 
-  constructor(public dialogRef: MatDialogRef<BookingModalComponent>,private router: Router,
+  constructor(public dialogRef: MatDialogRef<BookingModalComponent>,private router: Router,private matDialog : MatDialog,
     private bookingService: AffituarioPrenotaRouteService, private viaggioRouteService: ViaggioRouteService) { }
 
   ngOnInit(): void {
@@ -57,37 +58,53 @@ export class BookingModalComponent implements OnInit {
               toBook.affittuarioId=this.affittuario.id;
               toBook.viaggioRouteId=this.travelSelected.viaggioRouteInfo[i].id;
               toBook.bookedCapacity=this.requiredCapacity;
-              this.bookingService.saveBooking(toBook).toPromise().then(saved=>{console.log(saved)})
-              // aggiorniamo quantità
-              this.viaggioRouteService.updateCapacity(this.travelSelected.viaggioRouteInfo[i].availableCapacity-this.requiredCapacity,
-                this.travelSelected.viaggioRouteInfo[i].id).toPromise().then(ok=>{console.log(ok)})
-                this.closeModal();
+              this.bookingService.alreadyBooked(toBook.affittuarioId, toBook.viaggioRouteId).toPromise().then(
+                getted=>{
 
-                window.location.reload();
+                this.openModal("You already booked this route !")
 
-                alert("Booking done !!")
+                }
+              ).catch(err=>{
+                this.bookingService.saveBooking(toBook).toPromise().then(saved=>{console.log(saved)})
+                // aggiorniamo quantità
+                this.viaggioRouteService.updateCapacity(this.travelSelected.viaggioRouteInfo[i].availableCapacity-this.requiredCapacity,
+                  this.travelSelected.viaggioRouteInfo[i].id).toPromise().then(ok=>{console.log(ok)})
+                  this.closeModal();
+                  this.openModal("Booking correctly done !")
+
+              })
               }
             else{
               this.closeModal();
-              window.location.reload();
-              alert("Unable to complete the booking, the selected route has already begun ! ")
+              this.openModal("Can't complete booking, route has  begun")
 
             }
           }
           else{
-           this.closeModal();
-          window.location.reload();
-          alert ("Unsufficied capacity for satisfied user's request");
-        }
+            this.closeModal();
+            this.openModal ("Unsufficied capacity for satisfied the request");
+          }
             // vedere se di quella tupla la rotta NON è ancora iniziata
 
 
         }
       }
     }
-    else {alert("Insert a capacity to book")}
+    else { this.openModal("Insert a capacity to book");}
   }
 
+
+  openModal(modalText: string) {
+
+    localStorage.setItem('ModalText', JSON.stringify(modalText));
+     const dialogConfig = new MatDialogConfig();
+     // The user can't close the dialog by clicking outside its body
+     dialogConfig.disableClose = true;
+     dialogConfig.height = "160px";
+     dialogConfig.width = "550px";
+     // https://material.angular.io/components/dialog/overview
+     const modalDialog = this.matDialog.open(ModalConfirmComponent, dialogConfig);
+   }
 
 
 }
