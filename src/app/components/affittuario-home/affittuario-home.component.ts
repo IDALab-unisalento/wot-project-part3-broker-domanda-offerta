@@ -28,7 +28,6 @@ export class AffittuarioHomeComponent implements OnInit {
   allViaggioInfo: ViaggioInfo[]=[];
   query : string = "";
   filterViaggioInfo: Viaggio[]=[];
-
   ok=false;
   constructor( private viaggioService: ViaggioService, private routeService: RouteService,
     private viaggioRouteService: ViaggioRouteService,private spinnerService : NgxSpinnerService,
@@ -42,6 +41,7 @@ export class AffittuarioHomeComponent implements OnInit {
       this.filterViaggioInfoLoader(filter);
       setTimeout(()=>{this.loadViaggioInfo(filter);},1200)
       console.log(this.filterViaggioInfo)
+      console.log(this.allViaggioInfo)
 
       setTimeout(() => {
         /** spinner ends after 1500 milliseconds */
@@ -57,6 +57,7 @@ export class AffittuarioHomeComponent implements OnInit {
     var start: string=filterCity.start;
     var end: string=filterCity.end;
     var capacity: string=filterCity.kg;
+    var productType:string=filterCity.productType
 
     /**<<< possiedo solo città di arrivo + capacità richiesta >>>>*/
     if(start =='Start City' &&  end!='End City' && capacity!='Capacity Kg' ){
@@ -74,7 +75,24 @@ export class AffittuarioHomeComponent implements OnInit {
                       //ok inserisci tutto in info viaggio
                       this.viaggioService.getById(viaggioRoute.viaggioId).toPromise().then(
                         travel=>{
-                          this.filterViaggioInfo.push(travel);
+                          // vedi se rispetta i paramentri el filtro
+                          this.vectorService.getById(travel.vectorId).toPromise().then(
+                            vector=>{
+                              if(productType == 'Bio Medical'){
+                                if(vector.biomedicalProducts){
+                                  this.filterViaggioInfo.push(travel)
+                                }
+                              }
+                              if(productType == 'Frozen'){
+                                if(vector.frozenProduct){
+                                  this.filterViaggioInfo.push(travel)
+                                }
+                              }
+                              if(productType== 'Product type' || productType== 'All'){
+                                this.filterViaggioInfo.push(travel);
+                              }
+                            }
+                          )
                         }
                       )
                     }
@@ -106,7 +124,23 @@ export class AffittuarioHomeComponent implements OnInit {
                   //ok inserisci tutto in info viaggio
                   this.viaggioService.getById(viaggioRoute.viaggioId).toPromise().then(
                     travel=>{
-                      this.filterViaggioInfo.push(travel);
+                      this.vectorService.getById(travel.vectorId).toPromise().then(
+                        vector=>{
+                          if(productType == 'Bio Medical'){
+                            if(vector.biomedicalProducts){
+                              this.filterViaggioInfo.push(travel)
+                            }
+                          }
+                          if(productType == 'Frozen'){
+                            if(vector.frozenProduct){
+                              this.filterViaggioInfo.push(travel)
+                            }
+                          }
+                          if(productType== 'Product type' || productType== 'All'){
+                            this.filterViaggioInfo.push(travel);
+                          }
+                        }
+                      )
                     }
                   )
                 }
@@ -134,7 +168,23 @@ export class AffittuarioHomeComponent implements OnInit {
                     //ok inserisci tutto in info viaggio
                     this.viaggioService.getById(viaggioRoute.viaggioId).toPromise().then(
                       travel=>{
-                        this.filterViaggioInfo.push(travel);
+                        this.vectorService.getById(travel.vectorId).toPromise().then(
+                          vector=>{
+                            if(productType == 'Bio Medical'){
+                              if(vector.biomedicalProducts){
+                                this.filterViaggioInfo.push(travel)
+                              }
+                            }
+                            if(productType == 'Frozen'){
+                              if(vector.frozenProduct){
+                                this.filterViaggioInfo.push(travel)
+                              }
+                            }
+                            if(productType== 'Product type' || productType== 'All'){
+                              this.filterViaggioInfo.push(travel);
+                            }
+                          }
+                        )
                       }
                     )
 
@@ -163,7 +213,23 @@ export class AffittuarioHomeComponent implements OnInit {
                     //ok inserisci tutto in info viaggio
                     this.viaggioService.getById(viaggioRoute.viaggioId).toPromise().then(
                       travel=>{
-                        this.filterViaggioInfo.push(travel);
+                        this.vectorService.getById(travel.vectorId).toPromise().then(
+                          vector=>{
+                            if(productType == 'Bio Medical'){
+                              if(vector.biomedicalProducts){
+                                this.filterViaggioInfo.push(travel)
+                              }
+                            }
+                            if(productType == 'Frozen'){
+                              if(vector.frozenProduct){
+                                this.filterViaggioInfo.push(travel)
+                              }
+                            }
+                            if(productType== 'Product type' || productType== 'All'){
+                              this.filterViaggioInfo.push(travel);
+                            }
+                          }
+                        )
                       }
                     )
 
@@ -176,11 +242,76 @@ export class AffittuarioHomeComponent implements OnInit {
         }
       )
     }
+    /** <<solo product type>>> */
+    if(start =='Start City' &&  end=='End City' && capacity=='Capacity Kg'){
+      this.viaggioService.getAll().toPromise().then(
+        travels=>{
+          // for each travels , get :
+          // all routes, the company, the vector of that travel
+          for (let i=0 ; i< travels.length;i++){
+            let viaggioInfo: ViaggioInfo={} as ViaggioInfo;
+            //prima controllo la tipologia di produt type
+            this.vectorService.getById(travels[i].vectorId).toPromise().then(
+              vector=>{
+                if(productType == 'Bio Medical'){
+                  if(vector.biomedicalProducts){
+                    this.viaggioRouteService.getByViaggioId(travels[i].id).toPromise().then(
+                      viaggioRoutesArray=>{
+                        let d1=new Date(viaggioRoutesArray[viaggioRoutesArray.length-1].endDate);
+                        let d2=new Date();
+                        //end date vene prima ( < ) oppure dopo ( > ) di adesso
+                        if( d1 > d2){
+                          this.filterViaggioInfo.push(travels[i])
+                        }
+
+                      }
+                    )
+                  }
+                }
+                if(productType == 'Frozen'){
+                  if(vector.frozenProduct){
+                    this.viaggioRouteService.getByViaggioId(travels[i].id).toPromise().then(
+                      viaggioRoutesArray=>{
+                        let d1=new Date(viaggioRoutesArray[viaggioRoutesArray.length-1].endDate);
+                        let d2=new Date();
+                        //end date vene prima ( < ) oppure dopo ( > ) di adesso
+                        if( d1 > d2){
+                          this.filterViaggioInfo.push(travels[i])
+                        }
+
+                      }
+                    )
+                  }
+                }
+                if(productType== 'Product type' || productType== 'All'){
+                  this.viaggioRouteService.getByViaggioId(travels[i].id).toPromise().then(
+                    viaggioRoutesArray=>{
+                      let d1=new Date(viaggioRoutesArray[viaggioRoutesArray.length-1].endDate);
+                      let d2=new Date();
+                      //end date vene prima ( < ) oppure dopo ( > ) di adesso
+                      if( d1 > d2){
+                        this.filterViaggioInfo.push(travels[i])
+                      }
+
+                    }
+                  )
+                }
+              }
+            )
+
+
+
+
+
+
+         }
+        }
+      )
+    }
+
    }
 
   loadViaggioInfo(filter:any){
-
-
     if(filter!=null ){
       for (let i=0 ; i< this.filterViaggioInfo.length;i++){
         let viaggioInfo: ViaggioInfo={} as ViaggioInfo;
@@ -201,9 +332,7 @@ export class AffittuarioHomeComponent implements OnInit {
             }
             this.routeService.findAllRoutes(this.filterViaggioInfo[i].id).toPromise().then(
               routes=>{
-
                 viaggioInfo.routes=routes
-
               }
             )
 
@@ -232,6 +361,7 @@ export class AffittuarioHomeComponent implements OnInit {
      }
      localStorage.removeItem('filter')
     }
+    //quando il filtro non c'è mostrali tutti
     else {
       this.viaggioService.getAll().toPromise().then(
         travels=>{

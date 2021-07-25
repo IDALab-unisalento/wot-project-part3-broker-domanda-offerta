@@ -5,5 +5,7 @@ export interface Vector {
   brand : string;
   capacity : number;
   licensePlate : string;
+  frozenProduct: boolean,biomedicalProducts:boolean;
+
 
 }

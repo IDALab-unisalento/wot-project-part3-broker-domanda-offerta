@@ -48,6 +48,12 @@ productType: string[]=['Bio Medical', 'Frozen', 'All']
 
   }
 
+  home(){
+    if(this.router.url.includes("/home")){window.location.reload()}
+    else {this.router.navigateByUrl("/home")}
+    }
+
+
   selectedProductType(type: string){
     this.requiredProductType=type;
   }

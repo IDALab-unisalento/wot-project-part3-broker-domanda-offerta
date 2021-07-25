@@ -3,23 +3,25 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-spin-clockwise" [fullScreen] = "false">
   <p style="color: white; padding-top:10%; font-size:20px" > Loading analytics ... </p>
 </ngx-spinner>
-
-<div class="container">
-  <h1 style="text-align: center; margin-bottom:2%; margin-top:2%">User's Analytics </h1>
-  <div class="row">
+<div class="bg" >
+<div class="container" style=" padding-top:3%" >
+ <h1 style=" text-align:center;  border-radius: 30px;">
+<strong>Your Analytics</strong>
+</h1>
+  <div class="row" >
     <div class="col-sm" style=" text-align:center ">
-      <h2>Route booked</h2>
+      <h2 style="background-color: rgba(255, 255, 255, 0.911);border-radius:50px">Route booked</h2>
     </div>
-    <div class="col-sm" style=" text-align: center;">
-      <h2>Vector used</h2>
+    <div class="col-sm" style="  text-align: center;">
+      <h2 style="background-color: rgba(255, 255, 255, 0.911); border-radius:50px">Vector used</h2>
     </div>
 
   </div>
-  <div class="row">
+  <div class="row" >
     <div class="col-sm" style="width: 50%; height:70%; ">
-      <div>
+      <div style="background-color: rgba(255, 255, 255, 0.781); border-radius:30px">
         <canvas baseChart
-                    [data]="doughnutChartDataRoute"
+                            [data]="doughnutChartDataRoute"
                     [labels]="doughnutChartLabelsRoute"
                     chartType="doughnut"
                     [colors]="donutColorsRoute"
@@ -27,7 +29,7 @@
       </div>
     </div>
     <div class="col-sm" style="width: 50%; height:70%; ">
-      <div>
+      <div style="background-color: rgba(255, 255, 255, 0.815); border-radius:30px">
         <canvas baseChart
         [data]="doughnutChartDataVector"
         [labels]="doughnutChartLabelsVector"
@@ -40,6 +42,8 @@
 
   </div>
 </div>
+</div>
+
 
 
 

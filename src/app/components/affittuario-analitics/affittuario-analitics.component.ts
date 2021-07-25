@@ -56,7 +56,9 @@ export class AffittuarioAnaliticsComponent implements OnInit {
     {
       backgroundColor: [
        ''
-      ]
+      ],
+
+
     }];
 
 

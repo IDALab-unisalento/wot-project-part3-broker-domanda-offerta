@@ -1,5 +1,15 @@
 
 
+.bg{
+  background-image: url('https://t3.ftcdn.net/jpg/03/13/73/56/360_F_313735618_kFi8yhrwHlUt4dfpGR1O017ZLjcIVw96.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh !important;
+  background-position: center;
+  font-family: 'Numans', sans-serif;
+  margin-top: -30px;
+
+  }
 
 
 
@@ -8,6 +18,19 @@
   padding: 20px 0 20px;
   position: relative;
 }
+.frozenVector{
+  border: 2px solid rgb(0, 248, 227);
+}
+.bioMedicalVector{
+  border: 2px solid rgb(106, 255, 47)
+}
+.Vector{
+  border: 2px solid #d4d4d4;
+}
+.bothVector{
+  border: 2px solid #cc2626;
+}
+
 .timeline:before {
   top: 0;
   bottom: 0;
@@ -41,7 +64,7 @@
 .timeline > li > .timeline-panel {
   width: 46%;
   float: left;
-  border: 1px solid #d4d4d4;
+
   /*border-radius: 2px;*/
   /*padding: 20px;*/
   position: relative;
