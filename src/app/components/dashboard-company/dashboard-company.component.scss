@@ -1,0 +1,34 @@
+
+h4{
+  margin-top: 0;
+  font-weight: bold;
+
+}
+
+.total{
+  font-size: 2.5em;
+
+}
+.mat-icon,
+.description{
+  color : green;
+  font-size:  1.5em;
+}
+.mat-icon{
+  position: relative;
+  padding: 0 15px;
+  top: 5px;
+}
+
+mat-divider{
+  background-color: #107698;
+  margin-right: 30px;
+  margin-left: 30px;
+  height: 6px;
+  border-radius: 2.5rem;
+}
+
+mat-card{
+  border-radius: 1.5rem;
+}
+

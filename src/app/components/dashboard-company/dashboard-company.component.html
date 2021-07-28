@@ -2,9 +2,104 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 
 
-<div style="margin-left: 250px; padding-top: 50px;">
+<div style="margin-left: 50px; padding-top: 50px;">
   <button class="btn btn-primary" (click)="show2()"> Dashboard</button>
+</div>
 
+  <br>
+
+  <div style="margin-left: 420px;margin-right: 350px;" *ngIf="show" >
+
+<mat-card style="borer-radius : 1.5rem;">
+  <h1 class="font-weight-bold text-center justify-content-center " >{{entireActualMonth}} Trend *</h1>
+</mat-card>
+  </div>
+  <br><br>
+  <div  fxLayout="row" fxLayoutAlign="space between center" fxLayoutGap="20px" class="stats cards" *ngIf="show">
+
+    <mat-card fxFlex="24">
+      <div class="text" style="padding-bottom: 5px; position: relative; top: -5px;" >
+        <h4>Users' Bookings</h4>
+
+        <span class="total" > +{{this.bookingDatiFinestra[3]}}</span>
+
+        <span>
+          <mat-icon color="primary" *ngIf="bookingIncrement >= 0"> trending_up</mat-icon>
+          <mat-icon color="primary" style="color: red;"*ngIf="bookingIncrement < 0"> trending_down</mat-icon>
+
+        </span>
+        <span class="description"
+        [ngClass]="{'text-danger': bookingIncrement < 0}"
+        >
+          &nbsp;{{bookingIncrement}} %
+        </span>
+        <span style="font-size: 14px;" *ngIf="bookingIncrement >= 0"> increment *</span>
+        <span style="font-size: 14px;"  *ngIf="bookingIncrement < 0"> decrement *</span>
+
+      </div>
+      <highcharts-chart style=" display : block;height: 120px; width: 100%; "
+
+      [Highcharts]="Highcharts"
+      [options]="miniChartOptions2"
+
+    ></highcharts-chart>
+    </mat-card>
+    <mat-card fxFlex="24">
+      <div class="text" style="padding-bottom: 5px; position: relative; top: -5px;" >
+        <h4>Money handled</h4>
+
+        <span class="total" style="font-size: 30px;"> +{{this.incassiFinestra[3]}} $</span>
+
+        <span>
+          <mat-icon color="primary" *ngIf="incassiIncrement >= 0"> trending_up</mat-icon>
+          <mat-icon color="primary" style="color: red;"*ngIf="incassiIncrement < 0"> trending_down</mat-icon>
+
+        </span>
+        <span class="description"
+        [ngClass]="{'text-danger': incassiIncrement < 0}"
+        >
+          &nbsp;  {{incassiIncrement}} %
+        </span>
+      </div>
+      <highcharts-chart style=" display : block;height: 120px; width: 100%;"
+
+      [Highcharts]="Highcharts"
+      [options]="miniChartOptions3"
+
+    ></highcharts-chart>
+    </mat-card>
+    <mat-card fxFlex="24">
+      <div class="text" style="padding-bottom: 5px; position: relative; top: -5px;" >
+        <h4>kg of packages handled</h4>
+
+        <span class="total" style="font-size: 30px;"> +{{this.KgFinestra[3]}} Kg</span>
+
+        <span>
+          <mat-icon color="primary" *ngIf="kgIncrement >= 0"> trending_up</mat-icon>
+          <mat-icon color="primary" style="color: red;"*ngIf="kgIncrement < 0"> trending_down</mat-icon>
+
+        </span>
+        <span class="description"
+        [ngClass]="{'text-danger': kgIncrement < 0}"
+        >
+          &nbsp;  {{kgIncrement}} %
+        </span>
+      </div>
+      <highcharts-chart
+      style=" display : block;height: 120px; width: 100%; "
+      [Highcharts]="Highcharts"
+      [options]="miniChartOptions4"
+
+    ></highcharts-chart>
+    </mat-card>
+
+
+  </div>
+  <br>
+    <div fxLayout="row" style="margin-left: 100px;" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show" >
+      <div fxFlex="63" >
+
+    <mat-card>
 <highcharts-chart
   style="width: 100%; height: 400px;" *ngIf="show"
 
@@ -12,14 +107,122 @@
   [options]="chartOptions"
 
 ></highcharts-chart>
+</mat-card>
+      </div>
 
-<highcharts-chart
-  style="width: 100%; height: 400px; margin-top: 50px;" *ngIf="show"
+<div fxFlex="25" style="position: relative; left: -140px;">
 
-  [Highcharts]="Highcharts"
-  [options]="pieOptions"
+  <mat-card *ngIf="show" style="width: 450px;" >
+    <highcharts-chart
+      style="width: 100%; height: 300px;"
 
-></highcharts-chart>
+      [Highcharts]="Highcharts"
+      [options]="allStatsChartOptions"
 
+    ></highcharts-chart>
+    </mat-card>
+    </div>
 </div>
+<div class="row"  *ngIf="show" style="margin-top: 50px; position: relative; left: -15px;">
+  <div class="col"  style="width: 300px;height: 300px; margin-left: 20px; ">
+    <mat-card>
+      <highcharts-chart
+      [Highcharts]="Highcharts"
+      [options]="pieOptions"
+
+    ></highcharts-chart>
+  </mat-card>
+  </div>
+  <div class="col"       style="width: 300px;height: 300px; "
+  >
+  <mat-card>
+    <highcharts-chart
+
+      [Highcharts]="Highcharts"
+      [options]="pieOptions2"
+
+    ></highcharts-chart>
+  </mat-card>
+  </div>
+</div>
+
+<div class="row"  *ngIf="show" style="margin-top: 150px; position: relative; left: -15px;">
+  <div class="col"  style="width: 300px;height: 300px;  margin-left: 20px;">
+    <mat-card>
+      <highcharts-chart
+      [Highcharts]="Highcharts"
+      [options]="pieOptions3"
+
+    ></highcharts-chart>
+  </mat-card>
+  </div>
+  <div class="col"       style="width: 300px;height: 300px; "
+  >
+  <mat-card>
+    <highcharts-chart
+
+      [Highcharts]="Highcharts"
+      [options]="pieOptions4"
+
+    ></highcharts-chart>
+  </mat-card>
+  </div>
+</div>
+
+<br>
+<div style=" padding-top: 150px; display: flex; justify-content: center; padding-bottom: 100px;" *ngIf="show">
+  <mat-card >
+    <header style="display: flex; justify-content: center;">
+      <button-group>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='Jan'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('Jan')">Jan</button>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='Feb'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('Feb')">Feb</button>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='Mar'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('Mar')">Mar</button>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='Apr'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('Apr')">Apr</button>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='May'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('May')">May</button>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='Jun'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('Jun')">Jun</button>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='Jul'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('Jul')">Jul</button>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='Aug'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('Aug')">Aug</button>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='Sep'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('Sep')">Sep</button>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='Oct'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('Oct')">Oct</button>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='Nov'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('Nov')">Nov</button>
+        <button
+        [ngClass]="{'bg-secondary text-white': actualMonth=='Dec'}"
+        class="btn btn-outline-secondary" (click)="setActualMonth('Dec')">Dec</button>
+
+
+      </button-group>
+    </header>
+    <highcharts-chart
+    style="width: 100%; height: 1000px;"
+    [Highcharts]="Highcharts"
+    [options]="chartGiornalieroOptions"
+
+  >
+  </highcharts-chart>
+  </mat-card>
+
+  </div>
+
 

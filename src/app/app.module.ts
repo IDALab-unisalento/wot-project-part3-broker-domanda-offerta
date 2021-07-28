@@ -23,6 +23,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalComponent } from './components/modal/modal.component';
@@ -64,6 +65,7 @@ import { DashboardCompanyComponent } from './components/dashboard-company/dashbo
 import { HistoryComponent } from './components/history/history.component';
 import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
 import { ChartsModule } from 'ng2-charts';
+import { FlexLayoutModule } from '@angular/flex-layout';
 @NgModule({
   declarations: [
 
@@ -130,7 +132,8 @@ import { ChartsModule } from 'ng2-charts';
     NgxSpinnerModule,
     HighchartsChartModule,
     ChartsModule,
-
+    FlexLayoutModule,
+    MatCardModule
       ],
   providers: [
             {
