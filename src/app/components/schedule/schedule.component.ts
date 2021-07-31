@@ -85,6 +85,7 @@ export class ScheduleComponent implements OnInit {
     }).setLngLat([lng,lat])
       .addTo(this.map)
       .setPopup(popup);
+      resolve();
   });
 
   }
