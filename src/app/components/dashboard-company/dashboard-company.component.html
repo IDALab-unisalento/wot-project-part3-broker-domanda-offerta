@@ -2,22 +2,37 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 
 
-<div style="margin-left: 50px; padding-top: 50px;">
-  <button class="btn btn-primary" (click)="show2()"> Dashboard</button>
+<div class="col-md-4 col-sm-6 content-card" style="margin-left: 300px; margin-top: 200px; "*ngIf="!show">
+  <div class="card-big-shadow" style="width: 800px;">
+      <div class="card card-just-text" data-background="color" data-color="blue" data-radius="none" style="border-radius: 1.5rem;">
+          <div class="content">
+              <h6 class="category">Analytics</h6>
+              <h4 class="title"><a href="#">Company Statistics</a></h4>
+              <p class="description">On this page, you company, can view the statistics regarding the data of your transactions.
+                This data is sensitive, so please confirm if you want to see.  </p>
+              <button class="btn btn-warning " style="border-radius: 1.5rem;" (click)="show2()"> Confirm</button>
+
+            </div>
+      </div> <!-- end card -->
+  </div>
 </div>
 
   <br>
 
-  <div style="margin-left: 420px;margin-right: 350px;" *ngIf="show" >
 
-<mat-card style="borer-radius : 1.5rem;">
+  <div style="margin-left: 420px;margin-right: 350px;" *ngIf="show" >
+    <br><br>
+
+    <h1 class="tit"> 1. MONTHLY TREND</h1>
+    <br>
+<mat-card style="border-radius : 1.5rem; background: rgb(191, 215, 255);">
   <h1 class="font-weight-bold text-center justify-content-center " >{{entireActualMonth}} Trend *</h1>
 </mat-card>
   </div>
   <br><br>
-  <div  fxLayout="row" fxLayoutAlign="space between center" fxLayoutGap="20px" class="stats cards" *ngIf="show">
+  <div  fxLayout="row" style="margin-left: 180px;" fxLayoutAlign="space between center" fxLayoutGap="20px" class="stats cards" *ngIf="show">
 
-    <mat-card fxFlex="24">
+    <mat-card fxFlex="29">
       <div class="text" style="padding-bottom: 5px; position: relative; top: -5px;" >
         <h4>Users' Bookings</h4>
 
@@ -44,7 +59,7 @@
 
     ></highcharts-chart>
     </mat-card>
-    <mat-card fxFlex="24">
+    <mat-card fxFlex="29">
       <div class="text" style="padding-bottom: 5px; position: relative; top: -5px;" >
         <h4>Money handled</h4>
 
@@ -68,7 +83,7 @@
 
     ></highcharts-chart>
     </mat-card>
-    <mat-card fxFlex="24">
+    <mat-card fxFlex="29">
       <div class="text" style="padding-bottom: 5px; position: relative; top: -5px;" >
         <h4>kg of packages handled</h4>
 
@@ -95,9 +110,13 @@
 
 
   </div>
-  <br>
-    <div fxLayout="row" style="margin-left: 100px;" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show" >
-      <div fxFlex="63" >
+  <label style="color: rgb(186, 183, 183); margin-left: 125px;margin-top: 25px;" *ngIf="show"> * Compared to the last month</label>
+
+  <br><br>
+  <h1 class="tit" *ngIf="show"> 2. COMPANY NUMBERS</h1>
+  <br><br>
+    <div fxLayout="row" style="margin-left: 150px;" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show" >
+      <div fxFlex="57" >
 
     <mat-card>
 <highcharts-chart
@@ -110,7 +129,7 @@
 </mat-card>
       </div>
 
-<div fxFlex="25" style="position: relative; left: -140px;">
+<div fxFlex="25" style="position: relative; left: -200px;">
 
   <mat-card *ngIf="show" style="width: 450px;" >
     <highcharts-chart
@@ -122,10 +141,13 @@
     ></highcharts-chart>
     </mat-card>
     </div>
+
 </div>
 <div class="row"  *ngIf="show" style="margin-top: 50px; position: relative; left: -15px;">
-  <div class="col"  style="width: 300px;height: 300px; margin-left: 20px; ">
-    <mat-card>
+  <h1 class="tit"> 3. VECTOR STATS</h1>
+<br>
+  <div class="col"  style="width: 300px;height: 300px; margin-left: 85px; ">
+    <mat-card style="width: 550px;">
       <highcharts-chart
       [Highcharts]="Highcharts"
       [options]="pieOptions"
@@ -135,7 +157,7 @@
   </div>
   <div class="col"       style="width: 300px;height: 300px; "
   >
-  <mat-card>
+  <mat-card style="width: 650px; position: relative; left: -70px">
     <highcharts-chart
 
       [Highcharts]="Highcharts"
@@ -147,8 +169,8 @@
 </div>
 
 <div class="row"  *ngIf="show" style="margin-top: 150px; position: relative; left: -15px;">
-  <div class="col"  style="width: 300px;height: 300px;  margin-left: 20px;">
-    <mat-card>
+  <div class="col"  style="width: 300px;height: 300px;  margin-left: 85px;">
+    <mat-card style="width: 550px;">
       <highcharts-chart
       [Highcharts]="Highcharts"
       [options]="pieOptions3"
@@ -158,7 +180,7 @@
   </div>
   <div class="col"       style="width: 300px;height: 300px; "
   >
-  <mat-card>
+  <mat-card style="width: 600px; position: relative; left: -50px;">
     <highcharts-chart
 
       [Highcharts]="Highcharts"
@@ -170,7 +192,10 @@
 </div>
 
 <br>
-<div style=" padding-top: 150px; display: flex; justify-content: center; padding-bottom: 100px;" *ngIf="show">
+<h1 class="tit" *ngIf="show" style=" padding-top: 170px" >4. DAILY REPORT</h1>
+
+<div style=" padding-top: 20px; display: flex; justify-content: center; padding-bottom: 100px;" *ngIf="show">
+
   <mat-card >
     <header style="display: flex; justify-content: center;">
       <button-group>
@@ -224,5 +249,31 @@
   </mat-card>
 
   </div>
+  <h1 class="tit" *ngIf="show">5. GEOGRAPHICAL REPORT</h1>
+  <br>
+  <div fxLayout="row" style="margin-left: 100px;" fxLayoutAlign="space-between center" *ngIf="show">
+
+    <mat-card>
+      <highcharts-chart
+
+        [Highcharts]="Highcharts"
+        [options]="mapOptions1"
+
+      ></highcharts-chart>
+      </mat-card>
+
+      <mat-card style="position: relative; left: -50px">
+        <highcharts-chart
+
+          [Highcharts]="Highcharts"
+          [options]="mapOptions2"
+
+        ></highcharts-chart>
+        </mat-card>
+
+      </div>
+      <br><br>
+
+
 
 

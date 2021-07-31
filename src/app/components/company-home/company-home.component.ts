@@ -1,3 +1,4 @@
+import { AffituarioPrenotaRouteService } from 'src/app/services/affituario-prenota-route.service';
 import { environment } from './../../../environments/environment';
 import { ViaggioRoute } from './../../models/viaggio-route';
 import { Route } from './../../models/route';
@@ -16,8 +17,6 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ScheduleComponent } from '../schedule/schedule.component';
 import { Viaggio } from 'src/app/models/viaggio';
 
-import * as Mapbloxgl from 'mapbox-gl';
-import * as turf from '@turf/turf';
 import { Units } from '@turf/turf';
 import { ModalErrorComponent } from '../modal-error/modal-error.component';
 import { ModalTimeErrorComponent } from '../modal-time-error/modal-time-error.component';
@@ -38,7 +37,8 @@ export class CompanyHomeComponent implements OnInit {
               private viaggioRouteService : ViaggioRouteService,
               private datepipe: DatePipe,
               private matDialog : MatDialog,
-              private viaggioService : ViaggioService
+              private viaggioService : ViaggioService,
+              private bookingService : AffituarioPrenotaRouteService
   ) { }
 
   loggedUser : User = {} as User;
@@ -144,7 +144,7 @@ export class CompanyHomeComponent implements OnInit {
 
               var offer : Offer = {} as Offer;
 
-            this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(viaggi => {
+            this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(async viaggi => {
 
               offer.vectorId = vector.id;
               offer.vectorBrand = vector.brand;
@@ -154,8 +154,9 @@ export class CompanyHomeComponent implements OnInit {
               offer.viaggioId = viaggio.id;
               offer.costoPerKm = viaggio.costoPerKm;
               offer.maximumWithdrawal = viaggio.maximumWithdrawal;
-              setTimeout(()=>{ offer.occupiedCapacity = (vector.capacity - viaggio.initialFreeCapacity) / vector.capacity *100 ;
-                offer.occupiedCapacity =  Number(offer.occupiedCapacity.toFixed(1));});
+              offer.occupiedCapacity = (vector.capacity - viaggio.initialFreeCapacity) / vector.capacity *100 ;
+                offer.occupiedCapacity =  Number(offer.occupiedCapacity.toFixed(1));
+
 
               offer.startingDate = viaggi[0].startDate;
               offer.endingDate = viaggi[viaggi.length-1].endDate;
@@ -204,13 +205,18 @@ export class CompanyHomeComponent implements OnInit {
 
               offer.routes = [];
 
-              for (const vectorRoute of viaggi) {
+              for (const viaggioRoute of viaggi) {
+
+
                 // somma =           storico    +         capacità del vettore - carico libero alla fine della tratta
-                this.availableSum = Number(this.availableSum) + Number(vector.capacity) - Number(vectorRoute.availableCapacity);
-                this.routeService.getById(vectorRoute.routeId).subscribe(route =>{
+                this.availableSum = Number(this.availableSum) +vector.capacity - Number(viaggioRoute.availableCapacity);
+                this.routeService.getById(viaggioRoute.routeId).subscribe(route =>{
                   offer.routes.push(route);
 
                 });
+
+
+
               }
               setTimeout(()=>{
                 for (const route of offer.routes) {
@@ -222,10 +228,8 @@ export class CompanyHomeComponent implements OnInit {
               },150);
 
 
-
                 //aggiorno la percentuale di carico occupata
-                offer.occupiedCapacity = (vector.capacity - element.initialFreeCapacity + this.availableSum) / (vector.capacity *(viaggi.length+1)) *100 ;
-
+                offer.occupiedCapacity = Number(((this.availableSum) / (vector.capacity *(viaggi.length )) *100).toFixed(1)) ;
                 this.availableSum = 0;
 
             });

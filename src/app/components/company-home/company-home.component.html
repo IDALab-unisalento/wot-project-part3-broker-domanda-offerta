@@ -571,7 +571,7 @@
                             <tbody>
 
                                 <tr *ngFor=" let offer of offers; let myIndex = index">
-                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )" >{{myIndex + 1}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )" ><mat-card style="border-radius: 3.5rem;color: rgb(76, 157, 218);"><strong>{{myIndex + 1}}</strong></mat-card></td>
                                   <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.vectorType}}</td>
                                   <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.vectorBrand}}</td>
                                   <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) ) ">{{offer.licensePlate}}</td>

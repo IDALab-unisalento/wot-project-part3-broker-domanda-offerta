@@ -12,7 +12,11 @@ import HC_exporting from 'highcharts/modules/exporting'
 import HC3D from 'highcharts/highcharts-3d'
 import HC_More from 'highcharts/highcharts-more'
 import HCSoldGauge from 'highcharts/modules/solid-gauge';
+import HC_map from 'highcharts/modules/map';
+import worldMap from "@highcharts/map-collection/custom/world.geo.json";
+
 import { AffittuarioPrenotaViaggioRoute } from 'src/app/models/affittuario-prenota-viaggio-route';
+import { NazioneConteggio } from 'src/app/models/nazione-conteggio';
 
 @Component({
   selector: 'app-dashboard-company',
@@ -20,6 +24,7 @@ import { AffittuarioPrenotaViaggioRoute } from 'src/app/models/affittuario-preno
   styleUrls: ['./dashboard-company.component.scss']
 })
 export class DashboardCompanyComponent implements OnInit {
+
 
   chartOptions : any = {};
   show : boolean = false;
@@ -33,6 +38,8 @@ export class DashboardCompanyComponent implements OnInit {
   miniChartOptions2 : any = {};
   miniChartOptions3 : any = {};
   miniChartOptions4 : any = {};
+  mapOptions1 : any = {};
+  mapOptions2 : any = {};
 
   incassiIncrement : number = 0;
   kgIncrement : number = 0;
@@ -193,6 +200,40 @@ export class DashboardCompanyComponent implements OnInit {
   nMyVectorsBooked : number = 0;
   nVectrosBooked : number = 0;
 
+  nationsCount : NazioneConteggio[] = [] as NazioneConteggio[];
+  nationsCount2 : NazioneConteggio[] = [] as NazioneConteggio[];
+
+  italiaCount : number = 0;
+  russiaCount : number = 0;
+  franciaCount : number = 0;
+  usaCount : number = 0;
+  regnoUnitoCount : number = 0;
+  spagnaCount : number = 0;
+  indiaCount : number = 0;
+  canadaCount : number = 0;
+  cinaCount : number = 0;
+  giapponeCount : number = 0;
+  greciaCount : number = 0;
+  svizzeraCount : number = 0;
+  germaniaCount : number = 0;
+  portogalloCount : number = 0;
+
+  italiaCount2 : number = 0;
+  russiaCount2 : number = 0;
+  franciaCount2 : number = 0;
+  usaCount2 : number = 0;
+  regnoUnitoCount2 : number = 0;
+  spagnaCount2 : number = 0;
+  indiaCount2 : number = 0;
+  canadaCount2 : number = 0;
+  cinaCount2 : number = 0;
+  giapponeCount2 : number = 0;
+  greciaCount2 : number = 0;
+  svizzeraCount2 : number = 0;
+  germaniaCount2 : number = 0;
+  portogalloCount2 : number = 0;
+
+
   constructor( private viaggioService : ViaggioService,
                private viaggioRouteService : ViaggioRouteService,
                private vectorService  :VectorService,
@@ -210,7 +251,138 @@ export class DashboardCompanyComponent implements OnInit {
     this.getOffertePubblicate();
     this.getBookings();
     this.getIncassiPerGiorno();
+    this.getAllCities();
+    this.getBookingsCities();
 
+  }
+
+  async getAllCities(){
+
+    await new Promise<void> ((resolve, reject) => {
+    this.viaggioService.getByCompanyId(this.loggedUser.id).subscribe(async viaggi => {
+
+      await new Promise<void> (async (resolve, reject) => {
+      for (const viaggio of viaggi) {
+        await new Promise<void> ((resolve, reject) => {
+          this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(async allList =>{
+            await new Promise<void> (async (resolve, reject) => {
+              for (const viaggioRoute of allList) {
+                await new Promise<void> ((resolve, reject) => {
+                this.routeService.getById(viaggioRoute.routeId).subscribe(async rotta =>{
+
+                  await new Promise<void> ((resolve, reject) => {
+                  this.routeService.getCoordinates(rotta.endCity).subscribe( (result : any) =>{
+
+                    var toAdd : boolean = true;
+                    var nation : string = result.features[0].context[result.features[0].context.length - 1].text;
+
+                    for(var i = 0; i<this.nationsCount.length; i++){
+                      if(this.nationsCount[i].nation == nation){
+                        toAdd = false;
+                      }
+                    }
+
+                    var countToAdd : NazioneConteggio = {} as NazioneConteggio;
+                        countToAdd.nation = nation;
+                        countToAdd.conteggio = 1;
+
+                  if(toAdd)
+                    this.nationsCount.push(countToAdd);
+
+                    this.aggiornaConteggio(countToAdd.nation)
+
+                    resolve();
+                  });
+                  })
+                  resolve();
+                })
+
+                resolve();
+
+                });
+              }
+              resolve();
+            });
+          });
+          resolve();
+        });
+        resolve();
+      }
+    });
+
+    });
+    resolve();
+  });
+
+  }
+
+  async getBookingsCities(){
+
+    await new Promise<void> (async (resolve, reject) => {
+    this.bookingService.getAll().subscribe(async data => {
+
+      await new Promise<void> (async (resolve, reject) => {
+      for (const prenotazione of data) {
+
+        await new Promise<void> (async (resolve, reject) => {
+        this.viaggioRouteService.getById(prenotazione.viaggioRouteId).subscribe(async viaggioRoute => {
+
+          await new Promise<void> (async (resolve, reject) => {
+          this.viaggioService.getById(viaggioRoute.viaggioId).subscribe(async viaggio =>{
+              if(viaggio.companyId == this.loggedUser.id){
+
+                    await new Promise<void> ((resolve, reject) => {
+                    this.routeService.getById(viaggioRoute.routeId).subscribe(async rotta =>{
+
+                      await new Promise<void> ((resolve, reject) => {
+                      this.routeService.getCoordinates(rotta.endCity).subscribe( (result : any) =>{
+
+                        var toAdd : boolean = true;
+                        var nation : string = result.features[0].context[result.features[0].context.length - 1].text;
+
+                        for(var i = 0; i<this.nationsCount2.length; i++){
+                          if(this.nationsCount2[i].nation == nation){
+                            toAdd = false;
+                          }
+                        }
+
+                        var countToAdd : NazioneConteggio = {} as NazioneConteggio;
+                            countToAdd.nation = nation;
+                            countToAdd.conteggio = 1;
+
+                      if(toAdd)
+                        this.nationsCount2.push(countToAdd);
+
+                        this.aggiornaConteggio2(countToAdd.nation)
+
+                        resolve();
+                      });
+                      })
+                      resolve();
+                    })
+
+                    resolve();
+
+
+                  resolve();
+                });
+              }
+
+              resolve();
+          });
+        });
+
+          resolve();
+        })
+      })
+
+      resolve();
+      }
+
+    });
+    resolve();
+    })
+  })
   }
 
   async getIncassiPerGiorno(){
@@ -289,7 +461,7 @@ export class DashboardCompanyComponent implements OnInit {
 
     chart: {
         type: 'column',
-        width : 800,
+        width : 700,
         heigth : 400
     },
     title: {
@@ -349,6 +521,7 @@ export class DashboardCompanyComponent implements OnInit {
 HC3D(Highcharts)
 this.pieOptions= {
     chart: {
+        width : 500,
         type: 'pie',
         options3d: {
             enabled: true,
@@ -429,6 +602,7 @@ this.pieOptions2 = {
 
 this.pieOptions3= {
   chart: {
+       width : 500,
       type: 'pie',
       options3d: {
           enabled: true,
@@ -469,6 +643,7 @@ this.pieOptions3= {
 
 this.pieOptions4 = {
   chart: {
+    width : 550,
       type: 'pie',
       options3d: {
           enabled: true,
@@ -511,8 +686,8 @@ this.pieOptions4 = {
 
 HC_exporting(Highcharts);
 HC_More(Highcharts);
-HC3D(Highcharts);
 HCSoldGauge(Highcharts);
+HC_map(Highcharts);
 
 this.allStatsChartOptions = {
 
@@ -616,7 +791,7 @@ this.allStatsChartOptions = {
 this.chartGiornalieroOptions = {
   chart: {
       type: 'area',
-      width : 1200,
+      width : 1100,
       heigth : 1000,
 
   },
@@ -868,6 +1043,152 @@ this.miniChartOptions4 = {
 
 }
 
+this.mapOptions1 = {
+  chart: {
+    map: worldMap,
+    heigth : 700,
+    width: 600
+    },
+  title: {
+    text: 'TRIPS OFFERED'
+  },
+
+  subtitle: {
+    text:
+    'Trend of world\'s nations from which the offered trip routes pass'
+  },
+  mapNavigation: {
+    enabled: true,
+    buttonOptions: {
+      verticalAlign: 'bottom'
+  }
+  },
+  legend: {
+    enabled: true
+  },
+  colorAxis: {
+    min: 0
+  },
+
+  xAxis: {
+    visible: false,
+
+},
+
+yAxis: {
+    visible: false,
+
+},
+
+  series: [
+    {
+      type: "map",
+      name: 'Deliveries in',
+      color: '#FF0000',
+      states: {
+
+        hover: {
+          color: '#FF0000',
+        }
+      },
+      dataLabels: {
+        format: "{point.name}"
+      },
+      allAreas: true,
+      data:
+      [
+        ['it', this.italiaCount],
+        ['ru', this.russiaCount],
+        ['fr', this.franciaCount],
+        ['us', this.usaCount],
+        ['gb', this.regnoUnitoCount],
+        ['es', this.spagnaCount],
+        ['in', this.indiaCount],
+        ['ca', this.canadaCount],
+        ['cn', this.cinaCount],
+        ['jp', this.giapponeCount],
+        ['gr', this.greciaCount],
+        ['ch', this.svizzeraCount],
+        ['de', this.germaniaCount],
+        ['pt', this.portogalloCount]
+      ]
+    }
+  ]
+};
+
+this.mapOptions2 = {
+  chart: {
+    map: worldMap,
+    heigth : 700,
+    width: 600
+    },
+  title: {
+    text: 'USER\'s BOOKINGS'
+  },
+
+  subtitle: {
+    text:
+    'Trend of world\'s nations where the users book a route'
+  },
+  mapNavigation: {
+    enabled: true,
+    buttonOptions: {
+      verticalAlign: 'bottom'
+  }
+  },
+  legend: {
+    enabled: true
+  },
+  colorAxis: {
+    min: 0
+  },
+
+  xAxis: {
+    visible: false,
+
+},
+
+yAxis: {
+    visible: false,
+
+},
+
+  series: [
+    {
+      type: "map",
+      name: 'Deliveries in',
+      color: '#FF0000',
+      states: {
+
+        hover: {
+          color: '#FF0000',
+        }
+      },
+      dataLabels: {
+        format: "{point.name}"
+      },
+      allAreas: true,
+      data:
+      [
+        ['it', this.italiaCount2],
+        ['ru', this.russiaCount2],
+        ['fr', this.franciaCount2],
+        ['us', this.usaCount2],
+        ['gb', this.regnoUnitoCount2],
+        ['es', this.spagnaCount2],
+        ['in', this.indiaCount2],
+        ['ca', this.canadaCount2],
+        ['cn', this.cinaCount2],
+        ['jp', this.giapponeCount2],
+        ['gr', this.greciaCount2],
+        ['ch', this.svizzeraCount2],
+        ['de', this.germaniaCount2],
+        ['pt', this.portogalloCount2]
+      ]
+    }
+  ]
+};
+
   }
 
   getMese( month : number){
@@ -1081,7 +1402,6 @@ this.miniChartOptions4 = {
         var v : VectorRate = {} as VectorRate;
         v.name = this.myVectorsBooked[i].name;
         v.y = this.countersBooked[i];
-        console.log(v)
         this.vectorBookedRate.push(v);
 
       }
@@ -1846,4 +2166,113 @@ setIncrementoBookings(month : string){
 }
 
 
+aggiornaConteggio( nation : string) {
+
+
+  if(nation == 'Italy'){
+    this.italiaCount = this.italiaCount + 1;
+  }
+
+    if(nation == 'France')
+    this.franciaCount = this.franciaCount + 1;
+
+    if(nation == 'Russia')
+    this.russiaCount = this.russiaCount + 1;
+
+    if(nation == 'United Kingdom')
+    this.regnoUnitoCount = this.regnoUnitoCount + 1;
+
+    if(nation == 'United States of America')
+    this.usaCount = this.usaCount + 1;
+
+    if(nation == 'Spain')
+    this.spagnaCount = this.spagnaCount + 1;
+
+    if(nation == 'China')
+    this.cinaCount = this.cinaCount + 1;
+
+    if(nation == 'India')
+    this.indiaCount = this.indiaCount + 1;
+
+
+    if(nation == 'Greece')
+    this.greciaCount = this.greciaCount + 1;
+
+
+    if(nation == 'Canada')
+    this.canadaCount = this.canadaCount + 1;
+
+
+    if(nation == 'Germany')
+    this.germaniaCount = this.germaniaCount + 1;
+
+
+    if(nation == 'Japan')
+    this.giapponeCount = this.giapponeCount + 1;
+
+    if(nation == 'Switzerland')
+    this.svizzeraCount = this.svizzeraCount + 1;
+
+
+    if(nation == 'Portugal')
+    this.portogalloCount = this.portogalloCount + 1;
+
+
+}
+
+
+
+aggiornaConteggio2( nation : string) {
+
+
+  if(nation == 'Italy'){
+    this.italiaCount2 = this.italiaCount2 + 1;
+  }
+
+    if(nation == 'France')
+    this.franciaCount2 = this.franciaCount2 + 1;
+
+    if(nation == 'Russia')
+    this.russiaCount2 = this.russiaCount2 + 1;
+
+    if(nation == 'United Kingdom')
+    this.regnoUnitoCount2 = this.regnoUnitoCount2 + 1;
+
+    if(nation == 'United States of America')
+    this.usaCount2 = this.usaCount2 + 1;
+
+    if(nation == 'Spain')
+    this.spagnaCount2 = this.spagnaCount2 + 1;
+
+    if(nation == 'China')
+    this.cinaCount2 = this.cinaCount2 + 1;
+
+    if(nation == 'India')
+    this.indiaCount2 = this.indiaCount2 + 1;
+
+
+    if(nation == 'Greece')
+    this.greciaCount2 = this.greciaCount2 + 1;
+
+
+    if(nation == 'Canada')
+    this.canadaCount2 = this.canadaCount2 + 1;
+
+
+    if(nation == 'Germany')
+    this.germaniaCount2 = this.germaniaCount2 + 1;
+
+
+    if(nation == 'Japan')
+    this.giapponeCount2 = this.giapponeCount2 + 1;
+
+    if(nation == 'Switzerland')
+    this.svizzeraCount2 = this.svizzeraCount2 + 1;
+
+
+    if(nation == 'Portugal')
+    this.portogalloCount2 = this.portogalloCount2 + 1;
+
+
+}
 }

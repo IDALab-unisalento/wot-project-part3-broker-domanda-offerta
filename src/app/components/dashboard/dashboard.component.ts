@@ -22,6 +22,9 @@ import HCSoldGauge from 'highcharts/modules/solid-gauge';
 import HC3D from 'highcharts/highcharts-3d'
 import * as HighchartsMap from "highcharts/highmaps";
 import cylinder from "highcharts/modules/cylinder";
+import worldMap from "@highcharts/map-collection/custom/world.geo.json";
+import HC_map from 'highcharts/modules/map';
+import { NazioneConteggio } from 'src/app/models/nazione-conteggio';
 
 @Component({
   selector: 'app-dashboard',
@@ -44,6 +47,7 @@ export class DashboardComponent implements OnInit {
 
   chartOptions3 : any = {};
   Highcharts3 : any = Highcharts;
+  mapOptions : any = {};
 
   miniChartOprions : any = {};
   miniChartOptions2 : any = {};
@@ -52,7 +56,6 @@ export class DashboardComponent implements OnInit {
 
   mapChartOptions : any = {};
   allStatsChartOptions : any = {};
-  mapOptions : any = {};
 
   pieOptions : any = {};
   pie : any = Highcharts;
@@ -234,6 +237,23 @@ export class DashboardComponent implements OnInit {
   prezziBubble : number[][] = [] as number[][];
   nVectors : number = 0;
 
+  nationsCount : NazioneConteggio[] = [] as NazioneConteggio[];
+
+  italiaCount : number = 0;
+  russiaCount : number = 0;
+  franciaCount : number = 0;
+  usaCount : number = 0;
+  regnoUnitoCount : number = 0;
+  spagnaCount : number = 0;
+  indiaCount : number = 0;
+  canadaCount : number = 0;
+  cinaCount : number = 0;
+  giapponeCount : number = 0;
+  greciaCount : number = 0;
+  svizzeraCount : number = 0;
+  germaniaCount : number = 0;
+  portogalloCount : number = 0;
+
    ngOnInit(): void {
     var now = new Date();
     this.entireActualMonth = this.switcherEntireMonth(now.getMonth())
@@ -245,6 +265,7 @@ export class DashboardComponent implements OnInit {
     this.getIncassiPerGiorno();
     this.getFatturato();
     this.getAllPrezzi();
+    this.getAllCities();
 
     this.spinnerService.show();
     setTimeout(() => {
@@ -254,6 +275,51 @@ export class DashboardComponent implements OnInit {
 
 }
 
+  async getAllCities(){
+  await new Promise<void> ((resolve, reject) => {
+  this.viaggioRouteService.getAll().subscribe(async allList =>{
+    await new Promise<void> (async (resolve, reject) => {
+      for (const viaggioRoute of allList) {
+        await new Promise<void> ((resolve, reject) => {
+        this.routeService.getById(viaggioRoute.routeId).subscribe(async rotta =>{
+
+          await new Promise<void> ((resolve, reject) => {
+          this.routeService.getCoordinates(rotta.endCity).subscribe( (result : any) =>{
+
+            var toAdd : boolean = true;
+            var nation : string = result.features[0].context[result.features[0].context.length - 1].text;
+
+            for(var i = 0; i<this.nationsCount.length; i++){
+              if(this.nationsCount[i].nation == nation){
+                toAdd = false;
+                this.nationsCount[i].conteggio = this.nationsCount[i].conteggio + 1;
+              }
+            }
+
+            var countToAdd : NazioneConteggio = {} as NazioneConteggio;
+                countToAdd.nation = nation;
+                countToAdd.conteggio = 1;
+
+          if(toAdd)
+            this.nationsCount.push(countToAdd);
+
+            this.aggiornaConteggio(countToAdd.nation)
+
+            resolve();
+          });
+          })
+          resolve();
+        })
+
+        resolve();
+
+        });
+      }
+    });
+  });
+  resolve();
+});
+}
 getVectors(){
   this.vectorService.getAll().subscribe(all =>{
     this.nVectors = all.length;
@@ -840,11 +906,14 @@ this.chartOptions3 = {
   }]
 
 }
+
 HC_exporting(Highcharts);
 HC_More(Highcharts);
 HCSoldGauge(Highcharts);
 HC3D(Highcharts);
-cylinder(Highcharts)
+cylinder(Highcharts);
+HC_map(Highcharts);
+
 
 if(this.newUserMiniChartData[3] < this.newUserMiniChartData[2])
   this.colorMini1 = '#d9534f';
@@ -1366,6 +1435,80 @@ this.mapChartOptions ={
       }
   }]
 }
+
+this.mapOptions = {
+  chart: {
+    map: worldMap,
+    heigth : 700,
+    width: 700
+    },
+  title: {
+    text: 'MAP WORLD'
+  },
+
+  subtitle: {
+    text:
+    'Trend of world routes'
+  },
+  mapNavigation: {
+    enabled: true,
+    buttonOptions: {
+      verticalAlign: 'bottom'
+  }
+  },
+  legend: {
+    enabled: true
+  },
+  colorAxis: {
+    min: 0
+  },
+
+  xAxis: {
+    visible: false,
+
+},
+
+yAxis: {
+    visible: false,
+
+},
+
+  series: [
+    {
+      type: "map",
+      name: 'Deliveries in',
+      color: '#FF0000',
+      states: {
+
+        hover: {
+          color: '#FF0000',
+        }
+      },
+      dataLabels: {
+        format: "{point.name}"
+      },
+      allAreas: true,
+      data:
+      [
+        ['it', this.italiaCount],
+        ['ru', this.russiaCount],
+        ['fr', this.franciaCount],
+        ['us', this.usaCount],
+        ['gb', this.regnoUnitoCount],
+        ['es', this.spagnaCount],
+        ['in', this.indiaCount],
+        ['ca', this.canadaCount],
+        ['cn', this.cinaCount],
+        ['jp', this.giapponeCount],
+        ['gr', this.greciaCount],
+        ['ch', this.svizzeraCount],
+        ['de', this.germaniaCount],
+        ['pt', this.portogalloCount]
+      ]
+    }
+  ]
+};
+
 }
 
 async getBookings(){
@@ -2123,4 +2266,59 @@ setIncrementoPrezzi(month : string){
   });
 
 }
+
+aggiornaConteggio( nation : string) {
+
+
+    if(nation == 'Italy'){
+      this.italiaCount = this.italiaCount + 1;
+    }
+
+      if(nation == 'France')
+      this.franciaCount = this.franciaCount + 1;
+
+      if(nation == 'Russia')
+      this.russiaCount = this.russiaCount + 1;
+
+      if(nation == 'United Kingdom')
+      this.regnoUnitoCount = this.regnoUnitoCount + 1;
+
+      if(nation == 'United States of America')
+      this.usaCount = this.usaCount + 1;
+
+      if(nation == 'Spain')
+      this.spagnaCount = this.spagnaCount + 1;
+
+      if(nation == 'China')
+      this.cinaCount = this.cinaCount + 1;
+
+      if(nation == 'India')
+      this.indiaCount = this.indiaCount + 1;
+
+
+      if(nation == 'Greece')
+      this.greciaCount = this.greciaCount + 1;
+
+
+      if(nation == 'Canada')
+      this.canadaCount = this.canadaCount + 1;
+
+
+      if(nation == 'Germany')
+      this.germaniaCount = this.germaniaCount + 1;
+
+
+      if(nation == 'Japan')
+      this.giapponeCount = this.giapponeCount + 1;
+
+      if(nation == 'Switzerland')
+      this.svizzeraCount = this.svizzeraCount + 1;
+
+
+      if(nation == 'Portugal')
+      this.portogalloCount = this.portogalloCount + 1;
+
+
 }
+}
+
