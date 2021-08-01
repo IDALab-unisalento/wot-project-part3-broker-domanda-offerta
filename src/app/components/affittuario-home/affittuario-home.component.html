@@ -36,8 +36,8 @@
             <div class="timeline-heading">
               <h1 style="text-align: center; padding-top:5%" class="timeline-title">Shipping from {{travelInfo.routes[0].startCity}} to {{travelInfo.routes[travelInfo.routes.length-1].endCity}} </h1>
               <p class="text-muted" >
-                <i style="margin-left:2%"class="glyphicon glyphicon-time" ></i> Start date {{travelInfo.startDateViaggio|date: 'dd/MM/yyyy hh:mm'}}
-                <i style="margin-left:14%" class="glyphicon glyphicon-time"></i>  End date {{travelInfo.endDateViaggio|date: 'dd/MM/yyyy hh:mm'}}
+                <i style="margin-left:2%"class="glyphicon glyphicon-time" ></i> Start date {{travelInfo.startDateViaggio|date:  'dd/MM/yyyy HH:mm': '+0000'}}
+                <i style="margin-left:14%" class="glyphicon glyphicon-time"></i>  End date {{travelInfo.endDateViaggio|date: 'dd/MM/yyyy HH:mm': '+0000'}}
               </p>
             </div>
             <div class="r">

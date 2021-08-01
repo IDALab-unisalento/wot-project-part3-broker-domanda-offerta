@@ -38,13 +38,13 @@ text-align: center; margin-top:2%">
                         </thead>
                         <tbody>
                             <tr style="font-size:15px" *ngFor="let item of allViaggioInfo; let myIndex=index">
-                              <td class="text-center">{{myIndex + 1}}</td>
+                              <td class="text-center"  ><mat-card style="border-radius: 3.5rem;color: rgb(76, 157, 218);"><strong>{{myIndex + 1}}</strong></mat-card></td>
                               <td class="text-center">{{item.vectorOwnerViaggio.name}}</td>
                               <td class="text-center">{{item.companyOwnerViaggio.name}}</td>
                               <td class="text-center">{{item.routes[0].startCity}}</td>
                               <td class="text-center">{{item.routes[0].endCity}}</td>
-                              <td class="text-center">{{item.startDateViaggio| date :"dd/MM/YYYY HH:mm" }}</td>
-                              <td class="text-center">{{item.endDateViaggio| date :"dd/MM/YYYY HH:mm" }}</td>
+                              <td class="text-center">{{item.startDateViaggio| date :"dd/MM/YYYY HH:mm" : '+0000' }}</td>
+                              <td class="text-center">{{item.endDateViaggio| date :"dd/MM/YYYY HH:mm" : '+0000' }}</td>
                               <td class="text-center">
                                   <strong> {{item.bookedCapacity}} </strong>
                               </td>
@@ -52,10 +52,10 @@ text-align: center; margin-top:2%">
                               <td class="text-center">{{item.costoKm}}</td>
 
                                 <td class="text-center"  >
-                                  <button type="button" *ngIf="dateDiffInDays(item.startDateViaggio)"  (click)="deleteBooking(item.bookingId)"  class=" btn btn-outline-danger">Delete Booking
+                                  <button type="button" *ngIf="dateDiffInDays(item.maximum_WithDrawl)"  (click)="deleteBooking( item)"  class=" btn btn-outline-danger">Delete Booking
                                     <i  style="padding-left:3%"class="fa fa-trash"></i>
                                   </button>
-                                  <button type="button" disabled=true *ngIf="!dateDiffInDays(item.startDateViaggio)"  class="btn btn-success" readonly>
+                                  <button type="button" disabled=true *ngIf="!dateDiffInDays(item.maximum_WithDrawl)"  class="btn btn-success" readonly>
                                     Undeletable
                                     <i  style="padding-left:3%"class="fa fa-check"></i>
                                   </button>

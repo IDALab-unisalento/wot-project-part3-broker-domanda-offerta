@@ -56,6 +56,10 @@ export class BookingModalComponent implements OnInit {
             if (new Date(this.travelSelected.viaggioRouteInfo[i].startDate ) > new Date()){
               let toBook: AffittuarioPrenotaViaggioRoute={} as AffittuarioPrenotaViaggioRoute;
               toBook.affittuarioId=this.affittuario.id;
+              let today=new Date();
+              toBook.prenotationDate= new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(),
+               today.getHours(), today.getMinutes(), today.getSeconds() ))
+              console.log("prenotazione data"+ toBook.prenotationDate)
               toBook.viaggioRouteId=this.travelSelected.viaggioRouteInfo[i].id;
               toBook.bookedCapacity=this.requiredCapacity;
               this.bookingService.alreadyBooked(toBook.affittuarioId, toBook.viaggioRouteId).toPromise().then(
@@ -65,12 +69,16 @@ export class BookingModalComponent implements OnInit {
 
                 }
               ).catch(err=>{
-                this.bookingService.saveBooking(toBook).toPromise().then(saved=>{console.log(saved)})
+                this.bookingService.saveBooking(toBook).toPromise().then(saved=>{console.log(saved)
+                  this.viaggioRouteService.updateCapacity(this.travelSelected.viaggioRouteInfo[i].availableCapacity-this.requiredCapacity,
+                    this.travelSelected.viaggioRouteInfo[i].id).toPromise().then(ok=>{console.log(ok)
+                     this.closeModal();
+                    this.openModal("Booking correctly done !")
+                    })
+
+                })
                 // aggiorniamo quantità
-                this.viaggioRouteService.updateCapacity(this.travelSelected.viaggioRouteInfo[i].availableCapacity-this.requiredCapacity,
-                  this.travelSelected.viaggioRouteInfo[i].id).toPromise().then(ok=>{console.log(ok)})
-                  this.closeModal();
-                  this.openModal("Booking correctly done !")
+
 
               })
               }
