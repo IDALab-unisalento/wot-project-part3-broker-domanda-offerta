@@ -53,13 +53,14 @@ export class HistoryComponent implements OnInit {
 
  dateDiffInDays(dat:any) {
     // Discard the time and time-zone information.
-
-    const a=new Date();
+    if(dat == null){return false;}
+    const now=new Date();
     const maxWithDrawl=new Date(dat);
-    if(a < maxWithDrawl)return true;
+    if(now < maxWithDrawl)return true;
     else return false;
 
   }
+
 
   deleteBooking( item: ViaggioInfo){
 

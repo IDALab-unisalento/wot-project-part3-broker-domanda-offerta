@@ -46,7 +46,7 @@ export class AffittuarioHomeComponent implements OnInit {
       setTimeout(() => {
         /** spinner ends after 1500 milliseconds */
        this.spinnerService.hide()
-      }, 1200);
+      }, 1500);
 
 
    }
@@ -430,7 +430,7 @@ export class AffittuarioHomeComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.disableClose = true;
-    dialogConfig.height = "500px";
+    dialogConfig.height = "560px";
     dialogConfig.width = "600px";
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(BookingModalComponent, dialogConfig);

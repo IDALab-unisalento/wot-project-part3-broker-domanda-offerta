@@ -23,7 +23,7 @@ import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component'
 
 export class BookingModalComponent implements OnInit {
 
-  @ViewChild('bookingForm')bookingForm:any;
+  @ViewChild('Form')bookingForm:any;
 
   travelSelected: ViaggioInfo={} as ViaggioInfo
   routeSelected: Route={} as Route;
@@ -38,6 +38,7 @@ export class BookingModalComponent implements OnInit {
     this.affittuario=JSON.parse(String(localStorage.getItem('loggedUser')));
     this.travelSelected=JSON.parse(String(localStorage.getItem('viaggioSelected')));
     this.routeSelected=JSON.parse(String(localStorage.getItem('routeSelected')));
+    console.log(this.travelSelected)
   }
 
   closeModal() {
@@ -45,8 +46,8 @@ export class BookingModalComponent implements OnInit {
   }
 
 
-
   book(){
+
     if(this.requiredCapacity > 0 ){
       for(let i=0; i<this.travelSelected.viaggioRouteInfo.length;i++){
         // seleziono la particolare tupla
@@ -54,33 +55,38 @@ export class BookingModalComponent implements OnInit {
           //se hai trovato la rotta vedi se c'è possibilità e se la puoi prenotare
           if( this.travelSelected.viaggioRouteInfo[i].availableCapacity >= this.requiredCapacity){
             if (new Date(this.travelSelected.viaggioRouteInfo[i].startDate ) > new Date()){
-              let toBook: AffittuarioPrenotaViaggioRoute={} as AffittuarioPrenotaViaggioRoute;
-              toBook.affittuarioId=this.affittuario.id;
-              let today=new Date();
-              toBook.prenotationDate= new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(),
-               today.getHours(), today.getMinutes(), today.getSeconds() ))
-              console.log("prenotazione data"+ toBook.prenotationDate)
-              toBook.viaggioRouteId=this.travelSelected.viaggioRouteInfo[i].id;
-              toBook.bookedCapacity=this.requiredCapacity;
-              this.bookingService.alreadyBooked(toBook.affittuarioId, toBook.viaggioRouteId).toPromise().then(
-                getted=>{
+              //vedi se la puoi prenotare con la bookingDate
+              if(new Date(this.travelSelected.viaggioRouteInfo[i].maximumBookingDate) > new Date() ){
+                let toBook: AffittuarioPrenotaViaggioRoute={} as AffittuarioPrenotaViaggioRoute;
+                toBook.affittuarioId=this.affittuario.id;
+                let today=new Date();
+                toBook.prenotationDate= new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(),
+                 today.getHours(), today.getMinutes(), today.getSeconds() ))
+                console.log("prenotazione data"+ toBook.prenotationDate)
+                toBook.viaggioRouteId=this.travelSelected.viaggioRouteInfo[i].id;
+                toBook.bookedCapacity=this.requiredCapacity;
+                this.bookingService.alreadyBooked(toBook.affittuarioId, toBook.viaggioRouteId).toPromise().then(
+                  getted=>{
+                  this.openModal("You already booked this route !")
+                  }
+                ).catch(err=>{
+                  this.bookingService.saveBooking(toBook).toPromise().then(saved=>{console.log(saved)
+                    this.viaggioRouteService.updateCapacity(this.travelSelected.viaggioRouteInfo[i].availableCapacity-this.requiredCapacity,
+                      this.travelSelected.viaggioRouteInfo[i].id).toPromise().then(ok=>{console.log(ok)
+                       this.closeModal();
+                      this.openModal("Booking correctly done !")
+                      })
 
-                this.openModal("You already booked this route !")
+                  })
+                  // aggiorniamo quantità
 
-                }
-              ).catch(err=>{
-                this.bookingService.saveBooking(toBook).toPromise().then(saved=>{console.log(saved)
-                  this.viaggioRouteService.updateCapacity(this.travelSelected.viaggioRouteInfo[i].availableCapacity-this.requiredCapacity,
-                    this.travelSelected.viaggioRouteInfo[i].id).toPromise().then(ok=>{console.log(ok)
-                     this.closeModal();
-                    this.openModal("Booking correctly done !")
-                    })
 
                 })
-                // aggiorniamo quantità
-
-
-              })
+              }
+              else {
+                this.closeModal();
+                this.openModal("Max booking date already reached")
+              }
               }
             else{
               this.closeModal();
