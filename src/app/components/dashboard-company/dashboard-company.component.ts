@@ -461,8 +461,7 @@ export class DashboardCompanyComponent implements OnInit {
 
     chart: {
         type: 'column',
-        width : 700,
-        heigth : 400
+
     },
     title: {
       text:  this.loggedUser.name +'\'s offers rec-up '
@@ -521,7 +520,6 @@ export class DashboardCompanyComponent implements OnInit {
 HC3D(Highcharts)
 this.pieOptions= {
     chart: {
-        width : 500,
         type: 'pie',
         options3d: {
             enabled: true,
@@ -602,7 +600,7 @@ this.pieOptions2 = {
 
 this.pieOptions3= {
   chart: {
-       width : 500,
+
       type: 'pie',
       options3d: {
           enabled: true,
@@ -643,7 +641,7 @@ this.pieOptions3= {
 
 this.pieOptions4 = {
   chart: {
-    width : 550,
+
       type: 'pie',
       options3d: {
           enabled: true,
@@ -693,8 +691,7 @@ this.allStatsChartOptions = {
 
   chart: {
       type: 'solidgauge',
-      height: 400,
-      width : 400
+
 
   },
 
@@ -1046,8 +1043,8 @@ this.miniChartOptions4 = {
 this.mapOptions1 = {
   chart: {
     map: worldMap,
-    heigth : 700,
-    width: 600
+
+
     },
   title: {
     text: 'TRIPS OFFERED'
@@ -1119,8 +1116,7 @@ yAxis: {
 this.mapOptions2 = {
   chart: {
     map: worldMap,
-    heigth : 700,
-    width: 600
+
     },
   title: {
     text: 'USER\'s BOOKINGS'

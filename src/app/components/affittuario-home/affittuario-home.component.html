@@ -90,6 +90,19 @@
     Vector Overall Capacity:  <strong style="color:blue"> {{travelInfo.vectorOwnerViaggio.capacity}}</strong>
 
    </li>
+   <li *ngIf="travelInfo.vectorOwnerViaggio.biomedicalProducts && !travelInfo.vectorOwnerViaggio.frozenProduct">
+    Vector particular product type transportable:  <strong style="color:blue"> Bio Medical  </strong>
+
+   </li>
+   <li *ngIf="travelInfo.vectorOwnerViaggio.frozenProduct && !travelInfo.vectorOwnerViaggio.biomedicalProducts ">
+    Vector particular product type transportable:  <strong style="color:blue"> Frozen  </strong>
+
+   </li>
+   <li  *ngIf="travelInfo.vectorOwnerViaggio.frozenProduct && travelInfo.vectorOwnerViaggio.biomedicalProducts ">
+    Vector particular product type transportable:  <strong style="color:blue"> Bio Medical and Frozen  </strong>
+
+   </li>
+
 </ul>
             </div>
 

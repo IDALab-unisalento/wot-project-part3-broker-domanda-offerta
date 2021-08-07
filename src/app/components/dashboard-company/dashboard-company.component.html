@@ -115,86 +115,78 @@
   <br><br>
   <h1 class="tit" *ngIf="show"> 2. COMPANY NUMBERS</h1>
   <br><br>
-    <div fxLayout="row" style="margin-left: 150px;" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show" >
-      <div fxFlex="57" >
+   <div class="container">
+    <div fxLayout="row" *ngIf="show" >
 
-    <mat-card>
-<highcharts-chart
-  style="width: 100%; height: 400px;" *ngIf="show"
+      <highcharts-chart class="col"
+      style=" margin-left:2%; margin-right:2%;border: 1px solid rgb(255, 81, 0) ; border-radius:30px; width:fit-content"
 
-  [Highcharts]="Highcharts"
-  [options]="chartOptions"
+        *ngIf="show"
 
-></highcharts-chart>
-</mat-card>
-      </div>
+        [Highcharts]="Highcharts"
+        [options]="chartOptions"
 
-<div fxFlex="25" style="position: relative; left: -200px;">
+      ></highcharts-chart>
 
-  <mat-card *ngIf="show" style="width: 450px;" >
-    <highcharts-chart
-      style="width: 100%; height: 300px;"
 
-      [Highcharts]="Highcharts"
-      [options]="allStatsChartOptions"
 
-    ></highcharts-chart>
-    </mat-card>
-    </div>
 
+          <highcharts-chart
+            class="col"
+            style="border: 1px solid rgb(229, 255, 0) ; border-radius:30px; width:fit-content"
+
+            *ngIf="show"
+            [Highcharts]="Highcharts"
+            [options]="allStatsChartOptions"
+
+          ></highcharts-chart>
+
+
+          </div>
+   </div>
+
+<div class="container">
+  <div class="row"  *ngIf="show" style="margin-top: 50px;">
+    <h1 class="tit" style="padding-bottom: 3%;"> 3. VECTOR STATS</h1>
+  <br>
+
+        <highcharts-chart class="col"
+        style=" margin-left:2%; margin-right:2%;border: 1px solid blue ; border-radius:30px; width:fit-content"
+        [Highcharts]="Highcharts"
+        [options]="pieOptions"
+
+      ></highcharts-chart>
+      <highcharts-chart class="col" style="border: 1px solid pink ; border-radius:30px; width:fit-content"
+
+        [Highcharts]="Highcharts"
+        [options]="pieOptions2"
+
+      ></highcharts-chart>
+  </div>
 </div>
-<div class="row"  *ngIf="show" style="margin-top: 50px; position: relative; left: -15px;">
-  <h1 class="tit"> 3. VECTOR STATS</h1>
 <br>
-  <div class="col"  style="width: 300px;height: 300px; margin-left: 85px; ">
-    <mat-card style="width: 550px;">
-      <highcharts-chart
-      [Highcharts]="Highcharts"
-      [options]="pieOptions"
+<div class="container">
+  <div class="row"  *ngIf="show" style="">
 
-    ></highcharts-chart>
-  </mat-card>
-  </div>
-  <div class="col"       style="width: 300px;height: 300px; "
-  >
-  <mat-card style="width: 650px; position: relative; left: -70px">
-    <highcharts-chart
-
-      [Highcharts]="Highcharts"
-      [options]="pieOptions2"
-
-    ></highcharts-chart>
-  </mat-card>
-  </div>
-</div>
-
-<div class="row"  *ngIf="show" style="margin-top: 150px; position: relative; left: -15px;">
-  <div class="col"  style="width: 300px;height: 300px;  margin-left: 85px;">
-    <mat-card style="width: 550px;">
-      <highcharts-chart
+      <highcharts-chart class="col" style=" margin-left:2%; margin-right:2%;border: 1px solid red ; border-radius:30px; "
       [Highcharts]="Highcharts"
       [options]="pieOptions3"
 
     ></highcharts-chart>
-  </mat-card>
-  </div>
-  <div class="col"       style="width: 300px;height: 300px; "
-  >
-  <mat-card style="width: 600px; position: relative; left: -80px;">
-    <highcharts-chart
 
+    <highcharts-chart class="col" style="border: 1px solid rgb(10, 245, 49) ; border-radius:30px;"
       [Highcharts]="Highcharts"
       [options]="pieOptions4"
 
     ></highcharts-chart>
-  </mat-card>
-  </div>
+
+</div>
 </div>
 
-<br>
-<h1 class="tit" *ngIf="show" style=" padding-top: 170px" >4. DAILY REPORT</h1>
 
-<div style=" padding-top: 20px; display: flex; justify-content: center; padding-bottom: 100px;" *ngIf="show">
+<h1 class="tit" *ngIf="show" style="padding-top: 3%;;"  >4. DAILY REPORT</h1>
+
+<div style=" padding-top: 20px; display: flex; justify-content: center; padding-bottom: 70px;" *ngIf="show">
 
   <mat-card >
     <header style="display: flex; justify-content: center;">
@@ -251,28 +243,30 @@
   </div>
   <h1 class="tit" *ngIf="show">5. GEOGRAPHICAL REPORT</h1>
   <br>
-  <div fxLayout="row" style="margin-left: 80px;" fxLayoutAlign="space-between center" *ngIf="show">
+  <div class="container">
+    <div fxLayout="row" *ngIf="show">
 
-    <mat-card>
-      <highcharts-chart
+
+      <highcharts-chart class="col"
+      style=" margin-left:2%; margin-right:2%;border: 1px solid rgb(0, 183, 255) ; border-radius:30px; "
 
         [Highcharts]="Highcharts"
         [options]="mapOptions1"
 
       ></highcharts-chart>
-      </mat-card>
 
-      <mat-card style="position: relative; left: -50px; margin-left:60px">
-        <highcharts-chart
+
+        <highcharts-chart class="col"
+        style="border: 1px solid rgb(179, 255, 3) ; border-radius:30px; "
 
           [Highcharts]="Highcharts"
           [options]="mapOptions2"
 
         ></highcharts-chart>
-        </mat-card>
 
       </div>
-      <br><br>
+  </div>
+
 
 
 
