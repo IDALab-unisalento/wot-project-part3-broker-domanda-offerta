@@ -63,7 +63,7 @@ getCoordinates(cityName : string){
 }
 
 getPath(lat1 : number, lon1 : number, lat2 : number, lon2 : number ){
-  return this.http.get("https://api.mapbox.com/directions/v5/mapbox/driving/"+lat1+ ',' + lon1 + ';' + lat2 + ',' + lon2 + "?access_token="+environment.mapboxKey);
+  return this.http.get("https://api.mapbox.com/directions/v5/mapbox/driving-traffic/"+lat1+ ',' + lon1 + ';' + lat2 + ',' + lon2 + "?access_token="+environment.mapboxKey);
 
 }
 }

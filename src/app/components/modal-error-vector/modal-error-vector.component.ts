@@ -16,6 +16,6 @@ export class ModalErrorVectorComponent implements OnInit {
 
   closeModal() {
     this.dialogRef.close();
-    setTimeout(()=>{window.location.reload()},500);
+    setTimeout(()=>{window.location.reload()},1000);
   }
 }

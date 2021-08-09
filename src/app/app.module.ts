@@ -25,6 +25,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalComponent } from './components/modal/modal.component';
 import { CompanyService } from './services/company.service';
@@ -66,6 +67,7 @@ import { HistoryComponent } from './components/history/history.component';
 import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
 import { ChartsModule } from 'ng2-charts';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AboutComponent } from './components/about/about.component';
 @NgModule({
   declarations: [
 
@@ -98,7 +100,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     DashboardComponent,
     DashboardCompanyComponent,
     AffittuarioAnaliticsComponent,
-    ViaggioRouteProgressBarComponent
+    ViaggioRouteProgressBarComponent,
+    AboutComponent
     ],
 
   imports: [
@@ -133,7 +136,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     HighchartsChartModule,
     ChartsModule,
     FlexLayoutModule,
-    MatCardModule
+    MatCardModule,
+    MatSlideToggleModule
       ],
   providers: [
             {

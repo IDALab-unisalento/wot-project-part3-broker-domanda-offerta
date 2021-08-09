@@ -4,11 +4,10 @@ import { VectorService } from './../../services/vector.service';
 import { Route } from './../../models/route';
 import { ViaggioRoute } from '../../models/viaggio-route';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ViaggioRouteService } from 'src/app/services/viaggio-route.service';
 import { RouteService } from 'src/app/services/route.service';
 import { DatePipe } from '@angular/common';
-import { IgxGeographicMapComponent } from 'igniteui-angular-maps';
 import { Vector } from 'src/app/models/vector';
 import { Viaggio } from 'src/app/models/viaggio';
 import * as Mapbloxgl from 'mapbox-gl';
@@ -164,19 +163,19 @@ export class ScheduleComponent implements OnInit {
       var zoom : number = 3;
 
       if(this.totalDistance < 100){
-        zoom = 9;
+        zoom = 7.8;
       }
       if(this.totalDistance< 500 && this.totalDistance >= 100)
-      zoom = 6.5;
+      zoom = 5.8;
 
       if(this.totalDistance< 800 && this.totalDistance >= 500)
-          zoom = 5.5;
+          zoom = 4.5;
       if(this.totalDistance< 1000 && this.totalDistance >= 800)
-          zoom = 5;
+          zoom = 4.2;
       if(this.totalDistance< 2000 && this.totalDistance >= 1000)
-        zoom = 4;
+        zoom = 3.2;
       if(this.totalDistance< 4000 && this.totalDistance >= 2000)
-        zoom = 3;
+        zoom = 2.2;
 
       (Mapbloxgl as any).accessToken = environment.mapboxKey;
       this.map = new Mapbloxgl.Map({
@@ -202,43 +201,47 @@ export class ScheduleComponent implements OnInit {
       }
 
 
-      for(var i = 0; i < this.coordinates.length - 1; i++){
+      this.map.on('load', async ()=>{
+        for(var i = 0; i < this.coordinates.length - 1; i++){
 
-        await new Promise<void> ((resolve, reject) => {
+          await new Promise<void> ((resolve, reject) => {
 
-      this.routeService.getPath(this.coordinates[i][0], this.coordinates[i][1],
-                                this.coordinates[i + 1][0], this.coordinates[i + 1][1])
-                                .subscribe((data : any) =>{
-                                  var coords = polyline.decode(data.routes[0].geometry); // Get the geometry of the request  and convert it from a Google string to coordinates
-                                  coords.forEach(coordinate => {
-                                    [coordinate[0], coordinate[1]] = [coordinate[1], coordinate[0]];
+        this.routeService.getPath(this.coordinates[i][0], this.coordinates[i][1],
+                                  this.coordinates[i + 1][0], this.coordinates[i + 1][1])
+                                  .subscribe((data : any) =>{
+                                    var coords = polyline.decode(data.routes[0].geometry); // Get the geometry of the request  and convert it from a Google string to coordinates
+                                    coords.forEach(coordinate => {
+                                      [coordinate[0], coordinate[1]] = [coordinate[1], coordinate[0]];
 
-                                  });
-                                  var path = turf.lineString(coords);
+                                    });
+                                    var path = turf.lineString(coords);
 
-                                  this.map.addLayer({
-                                    "id": "path"+String(i),
-                                    "type": "line",
-                                    "source": {
-                                        "type": "geojson",
-                                        "data": path
-                                    },
 
-                                    })
+                                    this.map.addLayer({
+                                      "id": "path"+String(i),
+                                      "type": "line",
+                                      "source": {
+                                          "type": "geojson",
+                                          "data": path
+                                      },
 
-                                    var color : string;
-                                    color = 'rgb(24, 0, 255)';
-                                    if(i == this.coordinates.length - 2 || i == 0) // questo qui andrebbe fatto solo per i tratti di EMPTY RETURN, adesso invece sta fatto a prescindere per l'ultima tratta
-                                      color = 'rgb(255, 0, 0)';
-                                    this.map.setPaintProperty('path'+String(i), 'line-color', color );
-                                    this.map.setPaintProperty('path'+String(i), 'line-width', 2.5);
+                                      })
 
-                                    resolve();
-                                  });
+                                      var color : string;
+                                      color = 'rgb(24, 0, 255)';
+                                      if(i == this.coordinates.length - 2 || i == 0) // questo qui andrebbe fatto solo per i tratti di EMPTY RETURN, adesso invece sta fatto a prescindere per l'ultima tratta
+                                        color = 'rgb(255, 0, 0)';
+                                      this.map.setPaintProperty('path'+String(i), 'line-color', color );
+                                      this.map.setPaintProperty('path'+String(i), 'line-width', 2.5);
 
-                        });
+                                      resolve();
+                                    });
 
-                      }
+                          });
+
+                        }
+      })
+
 
   /*      var popupStart = new mapboxgl.Popup({ offset: [0, -35] })
   .setLngLat(this.coordinates[0])

@@ -17,6 +17,7 @@ import worldMap from "@highcharts/map-collection/custom/world.geo.json";
 
 import { AffittuarioPrenotaViaggioRoute } from 'src/app/models/affittuario-prenota-viaggio-route';
 import { NazioneConteggio } from 'src/app/models/nazione-conteggio';
+import { RicercaDate } from 'src/app/models/ricerca-date';
 
 @Component({
   selector: 'app-dashboard-company',
@@ -26,6 +27,7 @@ import { NazioneConteggio } from 'src/app/models/nazione-conteggio';
 export class DashboardCompanyComponent implements OnInit {
 
 
+  searchView : boolean = false;
   chartOptions : any = {};
   show : boolean = false;
   pieOptions : any = {};
@@ -203,6 +205,9 @@ export class DashboardCompanyComponent implements OnInit {
   nationsCount : NazioneConteggio[] = [] as NazioneConteggio[];
   nationsCount2 : NazioneConteggio[] = [] as NazioneConteggio[];
 
+  conteggioNazione : NazioneConteggio[] = [] as NazioneConteggio[];
+  conteggioNazione2 : NazioneConteggio[] = [] as NazioneConteggio[];
+
   italiaCount : number = 0;
   russiaCount : number = 0;
   franciaCount : number = 0;
@@ -233,6 +238,14 @@ export class DashboardCompanyComponent implements OnInit {
   germaniaCount2 : number = 0;
   portogalloCount2 : number = 0;
 
+  ricerca : RicercaDate = {} as RicercaDate;
+
+
+  offerteRicerca : number = 0;
+  soldiRicerca : number = 0;
+  KgRicerca : number = 0;
+  bookingsRicerca : number = 0;
+
 
   constructor( private viaggioService : ViaggioService,
                private viaggioRouteService : ViaggioRouteService,
@@ -243,6 +256,19 @@ export class DashboardCompanyComponent implements OnInit {
                ) { }
 
   ngOnInit(): void {
+    this.counters = [];
+    this.totalVectorsOffer = 0;
+    this.myVectors = [];
+    this.myVectors2 = [];
+    this.counters2 = [];
+    this.vectorRate = [];
+    this.vectorLicenseRate = [];
+    this.vectorBookedRate = [];
+    this.vectorLicenseBookedRate = [];
+    this.myVectorsBooked = [];
+    this.countersBooked = [];
+    this.myVectorsBooked2 = [];
+    this.countersBooked2 = [];
     this.loggedUser = JSON.parse(String(localStorage.getItem("loggedUser")));
     var now = new Date();
     this.entireActualMonth = this.switcherEntireMonth(now.getMonth())
@@ -265,6 +291,7 @@ export class DashboardCompanyComponent implements OnInit {
       for (const viaggio of viaggi) {
         await new Promise<void> ((resolve, reject) => {
           this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(async allList =>{
+
             await new Promise<void> (async (resolve, reject) => {
               for (const viaggioRoute of allList) {
                 await new Promise<void> ((resolve, reject) => {
@@ -520,7 +547,8 @@ export class DashboardCompanyComponent implements OnInit {
 HC3D(Highcharts)
 this.pieOptions= {
     chart: {
-        type: 'pie',
+
+      type: 'pie',
         options3d: {
             enabled: true,
             alpha: 45,
@@ -600,7 +628,6 @@ this.pieOptions2 = {
 
 this.pieOptions3= {
   chart: {
-
       type: 'pie',
       options3d: {
           enabled: true,
@@ -641,7 +668,6 @@ this.pieOptions3= {
 
 this.pieOptions4 = {
   chart: {
-
       type: 'pie',
       options3d: {
           enabled: true,
@@ -1044,7 +1070,6 @@ this.mapOptions1 = {
   chart: {
     map: worldMap,
 
-
     },
   title: {
     text: 'TRIPS OFFERED'
@@ -1184,6 +1209,8 @@ yAxis: {
     }
   ]
 };
+
+
 
   }
 
@@ -2271,4 +2298,773 @@ aggiornaConteggio2( nation : string) {
 
 
 }
+
+search(){
+  this.aggiornaPie();
+  this.getNumeri();
 }
+
+  async aggiornaPie(){
+    this.searchView = true;
+    this.counters = [];
+    this.totalVectorsOffer = 0;
+    this.myVectors = [];
+    this.myVectors2 = [];
+    this.counters2 = [];
+    this.vectorRate = [];
+    this.vectorLicenseRate = [];
+    this.vectorBookedRate = [];
+    this.vectorLicenseBookedRate = [];
+    this.myVectorsBooked = [];
+    this.countersBooked = [];
+    this.myVectorsBooked2 = [];
+    this.countersBooked2 = [];
+    this.KgRicerca = 0;
+    this.soldiRicerca = 0;
+    this.offerteRicerca = 0;
+    this.bookingsRicerca = 0;
+
+
+    this.nationsCount = [] ;
+    this.nationsCount2  = [] ;
+
+    this.italiaCount  = 0;
+    this.russiaCount  = 0;
+    this.franciaCount  = 0;
+    this.usaCount  = 0;
+    this.regnoUnitoCount  = 0;
+    this.spagnaCount  = 0;
+    this.indiaCount  = 0;
+    this.canadaCount  = 0;
+    this.cinaCount  = 0;
+    this.giapponeCount  = 0;
+    this.greciaCount  = 0;
+    this.svizzeraCount  = 0;
+    this.germaniaCount  = 0;
+    this.portogalloCount  = 0;
+
+    this.italiaCount2 = 0;
+    this.russiaCount2  = 0;
+    this.franciaCount2  = 0;
+    this.usaCount2  = 0;
+    this.regnoUnitoCount2  = 0;
+    this.spagnaCount2  = 0;
+    this.indiaCount2  = 0;
+    this.canadaCount2  = 0;
+    this.cinaCount2  = 0;
+    this.giapponeCount2  = 0;
+    this.greciaCount2  = 0;
+    this.svizzeraCount2  = 0;
+    this.germaniaCount2  = 0;
+    this.portogalloCount2  = 0;
+
+    await new Promise<void> ((resolve, reject) => {
+
+    this.viaggioService.getByCompanyId(this.loggedUser.id).subscribe(async viaggi =>{
+
+      await new Promise<void> (async (resolve, reject) => {
+      for (const viaggio of viaggi) {
+        await new Promise<void> (async (resolve, reject) => {
+
+        this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(async viaggioRoute =>{
+          var date : Date = new Date(viaggioRoute[viaggioRoute.length - 1].endDate)
+          if(date  >= this.ricerca.dateStart && date <= this.ricerca.dateEnd ){
+            await new Promise<void> ((resolve, reject) => {
+              this.vectorService.getById(viaggio.vectorId).subscribe(vector=>{
+
+                var toAdd : boolean = true;
+                for(var i = 0; i<this.myVectors.length; i++)
+                {
+                  if(this.myVectors[i].name == vector.name){
+                    toAdd = false;
+                    this.counters[i] = this.counters[i] + 1;
+                    this.totalVectorsOffer = this.totalVectorsOffer + 1;
+                  }
+                }
+                if(toAdd){
+                  this.myVectors.push(vector);
+                  this.counters.push(1);
+                  this.totalVectorsOffer = this.totalVectorsOffer + 1;
+
+                }
+
+
+
+                var toAdd2 : boolean = true;
+                for(var i = 0; i<this.myVectors2.length; i++)
+                {
+                  if(this.myVectors2[i].licensePlate == vector.licensePlate){
+                    toAdd2 = false;
+                    this.counters2[i] = this.counters2[i] + 1;
+                  }
+                }
+                this.nMyVectors =  this.myVectors2.length;
+
+                if(toAdd2){
+                  this.myVectors2.push(vector);
+                  this.counters2.push(1);
+                }
+
+
+                resolve();
+              });
+            });
+
+
+          }
+          resolve();
+        })
+      });
+
+
+      }
+
+      for(var i = 0; i<this.myVectors.length; i++){
+
+        this.counters[i] = Number(((this.counters[i]/this.totalVectorsOffer)*100).toFixed(1));
+        var v : VectorRate = {} as VectorRate;
+        v.name = this.myVectors[i].name;
+        v.y = this.counters[i];
+        this.vectorRate.push(v);
+
+      }
+
+      for(var i = 0; i<this.myVectors2.length; i++){
+
+        this.counters2[i] = Number(((this.counters2[i]/this.totalVectorsOffer)*100).toFixed(1));
+        var v : VectorRate = {} as VectorRate;
+        v.name = this.myVectors2[i].name +' '+ this.myVectors2[i].licensePlate;
+        v.y = this.counters2[i];
+        this.vectorLicenseRate.push(v);
+
+      }
+      resolve();
+
+    });
+    });
+    resolve()
+  });
+
+  await new Promise<void> ((resolve, reject) => {
+    this.bookingService.getAll().subscribe(async data =>{
+
+      await new Promise<void> (async (resolve, reject) => {
+      for (const booking of data) {
+        var dateBooking : Date = new Date(booking.prenotationDate);
+        if(dateBooking >= this.ricerca.dateStart && dateBooking <= this.ricerca.dateEnd){
+        await new Promise<void> ((resolve, reject) => {
+          this.viaggioRouteService.getById(booking.viaggioRouteId).subscribe(async viaggioRoute =>{
+
+            await new Promise<void> ((resolve, reject) => {
+            this.viaggioService.getById(viaggioRoute.viaggioId).subscribe(async viaggio =>{
+
+              if(viaggio.companyId == this.loggedUser.id){
+
+                await new Promise<void> ((resolve, reject) => {
+                  this.vectorService.getById(viaggio.vectorId).subscribe(vector=>{
+
+                    var toAddVec : boolean = true;
+                    for(var i = 0; i<this.myVectorsBooked.length; i++)
+                    {
+                      if(this.myVectorsBooked[i].name == vector.name){
+                        toAddVec = false;
+                        this.countersBooked[i] = this.countersBooked[i] + 1;
+                        this.nVectrosBooked = this.nVectrosBooked + 1;
+                      }
+                    }
+                    if(toAddVec){
+                      this.myVectorsBooked.push(vector);
+                      this.countersBooked.push(1);
+                      this.nVectrosBooked = this.nVectrosBooked + 1;
+
+                    }
+
+
+
+                    var toAddVec2 : boolean = true;
+                    for(var i = 0; i<this.myVectorsBooked2.length; i++)
+                    {
+                      if(this.myVectorsBooked2[i].licensePlate == vector.licensePlate){
+                        toAddVec2 = false;
+                        this.countersBooked2[i] = this.countersBooked2[i] + 1;
+                      }
+                    }
+                    this.nMyVectorsBooked =  this.myVectorsBooked2.length;
+
+                    if(toAddVec2){
+                      this.myVectorsBooked2.push(vector);
+                      this.countersBooked2.push(1);
+                    }
+
+
+                    resolve();
+                  });
+                });
+
+              }
+              resolve();
+            });
+          });
+            resolve();
+          });
+        });
+      }
+
+        resolve();
+      }
+      var now : Date = new Date();
+      var monthString = this.switcherMonth(now.getMonth());
+      this.setIncrementoBookings(monthString);
+      if(this.bookingDatiFinestra[2] != 0)
+      this.bookingIncrement = Number((((this.bookingDatiFinestra[3]-this.bookingDatiFinestra[2])/this.bookingDatiFinestra[2])*100).toFixed(1))
+      else
+        this.bookingIncrement = 100;
+        for(var i = 0; i<this.myVectorsBooked.length; i++){
+
+          this.countersBooked[i] = Number(((this.countersBooked[i]/this.nVectrosBooked)*100).toFixed(1));
+          var v : VectorRate = {} as VectorRate;
+          v.name = this.myVectorsBooked[i].name;
+          v.y = this.countersBooked[i];
+          this.vectorBookedRate.push(v);
+
+        }
+
+        for(var i = 0; i<this.myVectorsBooked2.length; i++){
+
+          this.countersBooked2[i] = Number(((this.countersBooked2[i]/this.nVectrosBooked)*100).toFixed(1));
+          var v : VectorRate = {} as VectorRate;
+          v.name = this.myVectorsBooked2[i].name +' '+ this.myVectorsBooked2[i].licensePlate;
+          v.y = this.countersBooked2[i];
+          this.vectorLicenseBookedRate.push(v);
+
+        }
+    });
+        resolve();
+    });
+  });
+
+  await new Promise<void> ((resolve, reject) => {
+    this.viaggioService.getByCompanyId(this.loggedUser.id).subscribe(async viaggi => {
+
+      await new Promise<void> (async (resolve, reject) => {
+      for (const viaggio of viaggi) {
+        await new Promise<void> ((resolve, reject) => {
+          this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(async allList =>{
+
+            var date : Date = new Date(allList[allList.length - 1 ].endDate);
+            if(this.ricerca.dateStart != null && this.ricerca.dateEnd != null){
+            if(date <= this.ricerca.dateEnd && date >= this.ricerca.dateStart ){
+            await new Promise<void> (async (resolve, reject) => {
+              for (const viaggioRoute of allList) {
+                await new Promise<void> ((resolve, reject) => {
+                this.routeService.getById(viaggioRoute.routeId).subscribe(async rotta =>{
+
+                  await new Promise<void> ((resolve, reject) => {
+                  this.routeService.getCoordinates(rotta.endCity).subscribe( (result : any) =>{
+
+                    var toAdd : boolean = true;
+                    var nation : string = result.features[0].context[result.features[0].context.length - 1].text;
+
+                    for(var i = 0; i<this.nationsCount.length; i++){
+                      if(this.nationsCount[i].nation == nation){
+                        toAdd = false;
+                      }
+                    }
+
+                    var countToAdd : NazioneConteggio = {} as NazioneConteggio;
+                        countToAdd.nation = nation;
+                        countToAdd.conteggio = 1;
+
+                  if(toAdd)
+                    this.nationsCount.push(countToAdd);
+
+                    this.aggiornaConteggio(countToAdd.nation)
+
+                    resolve();
+                  });
+                  })
+                  resolve();
+                })
+
+                resolve();
+
+                });
+              }
+              resolve();
+            });
+          }
+        }
+          });
+          resolve();
+        });
+        resolve();
+      }
+    });
+
+    });
+    resolve();
+  });
+
+  await new Promise<void> (async (resolve, reject) => {
+    this.bookingService.getAll().subscribe(async data => {
+
+      await new Promise<void> (async (resolve, reject) => {
+      for (const prenotazione of data) {
+
+        var date : Date = new Date(prenotazione.prenotationDate);
+        if(date <= this.ricerca.dateEnd && date >= this.ricerca.dateStart){
+
+        await new Promise<void> (async (resolve, reject) => {
+        this.viaggioRouteService.getById(prenotazione.viaggioRouteId).subscribe(async viaggioRoute => {
+
+          await new Promise<void> (async (resolve, reject) => {
+          this.viaggioService.getById(viaggioRoute.viaggioId).subscribe(async viaggio =>{
+              if(viaggio.companyId == this.loggedUser.id){
+
+                    await new Promise<void> ((resolve, reject) => {
+                    this.routeService.getById(viaggioRoute.routeId).subscribe(async rotta =>{
+
+                      await new Promise<void> ((resolve, reject) => {
+                      this.routeService.getCoordinates(rotta.endCity).subscribe( (result : any) =>{
+
+                        var toAdd : boolean = true;
+                        var nation : string = result.features[0].context[result.features[0].context.length - 1].text;
+
+                        for(var i = 0; i<this.nationsCount2.length; i++){
+                          if(this.nationsCount2[i].nation == nation){
+                            toAdd = false;
+                          }
+                        }
+
+                        var countToAdd : NazioneConteggio = {} as NazioneConteggio;
+                            countToAdd.nation = nation;
+                            countToAdd.conteggio = 1;
+
+                      if(toAdd)
+                        this.nationsCount2.push(countToAdd);
+
+                        this.aggiornaConteggio2(countToAdd.nation)
+
+                        resolve();
+                      });
+                      })
+                      resolve();
+                    })
+
+                    resolve();
+
+
+                  resolve();
+                });
+              }
+
+              resolve();
+          });
+        });
+
+          resolve();
+        })
+      });
+    }
+      resolve();
+      }
+
+    });
+    resolve();
+    })
+  })
+
+
+
+  setTimeout(()=>{
+    this.pieOptions= {
+      chart: {
+          type: 'pie',
+          options3d: {
+              enabled: true,
+              alpha: 45,
+              beta: 0
+          }
+      },
+      title: {
+          text: 'Most used Vector Type'
+      },
+      accessibility: {
+          point: {
+              valueSuffix: '%'
+          }
+      },
+      tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      plotOptions: {
+          pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              depth: 35,
+              dataLabels: {
+                  enabled: true,
+                  format: '{point.name}: {point.y:.1f}%'
+              }
+          }
+      },
+      series: [{
+          type: 'pie',
+          name: 'Percentage',
+          data: this.vectorRate,
+          showInLegend : true
+
+      }]
+  }
+  this.pieOptions2 = {
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0
+        }
+    },
+    title: {
+        text: 'Most used Vector '
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 35,
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}: {point.y:.1f}%'
+            }
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Percentage',
+        data: this.vectorLicenseRate,
+        showInLegend : true
+
+    }]
+  }
+
+
+  this.pieOptions3= {
+    chart: {
+
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0
+        }
+    },
+    title: {
+        text: 'Most Rented Vector Types'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 35,
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            }
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Percentage',
+        data: this.vectorBookedRate,
+        showInLegend : true
+
+    }]
+  }
+
+  this.pieOptions4 = {
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0
+        }
+    },
+    title: {
+        text: 'Most Rented Vectors '
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 35,
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            }
+        }
+    },
+
+    series: [{
+        type: 'pie',
+        name: 'Percentage',
+        data: this.vectorLicenseBookedRate,
+        showInLegend : true
+    },
+
+  ]
+  }
+
+
+this.mapOptions1 = {
+  chart: {
+    map: worldMap,
+
+    },
+  title: {
+    text: 'TRIPS OFFERED'
+  },
+
+  subtitle: {
+    text:
+    'Trend of world\'s nations from which the offered trip routes pass'
+  },
+  mapNavigation: {
+    enabled: true,
+    buttonOptions: {
+      verticalAlign: 'bottom'
+  }
+  },
+  legend: {
+    enabled: true
+  },
+  colorAxis: {
+    min: 0
+  },
+
+  xAxis: {
+    visible: false,
+
+},
+
+yAxis: {
+    visible: false,
+
+},
+
+  series: [
+    {
+      type: "map",
+      name: 'Deliveries in',
+      color: '#FF0000',
+      states: {
+
+        hover: {
+          color: '#FF0000',
+        }
+      },
+      dataLabels: {
+        format: "{point.name}"
+      },
+      allAreas: true,
+      data:
+      [
+        ['it', this.italiaCount],
+        ['ru', this.russiaCount],
+        ['fr', this.franciaCount],
+        ['us', this.usaCount],
+        ['gb', this.regnoUnitoCount],
+        ['es', this.spagnaCount],
+        ['in', this.indiaCount],
+        ['ca', this.canadaCount],
+        ['cn', this.cinaCount],
+        ['jp', this.giapponeCount],
+        ['gr', this.greciaCount],
+        ['ch', this.svizzeraCount],
+        ['de', this.germaniaCount],
+        ['pt', this.portogalloCount]
+      ]
+    }
+  ]
+};
+
+this.mapOptions2 = {
+  chart: {
+    map: worldMap,
+
+    },
+  title: {
+    text: 'USER\'s BOOKINGS'
+  },
+
+  subtitle: {
+    text:
+    'Trend of world\'s nations where the users book a route'
+  },
+  mapNavigation: {
+    enabled: true,
+    buttonOptions: {
+      verticalAlign: 'bottom'
+  }
+  },
+  legend: {
+    enabled: true
+  },
+  colorAxis: {
+    min: 0
+  },
+
+  xAxis: {
+    visible: false,
+
+},
+
+yAxis: {
+    visible: false,
+
+},
+
+  series: [
+    {
+      type: "map",
+      name: 'Deliveries in',
+      color: '#FF0000',
+      states: {
+
+        hover: {
+          color: '#FF0000',
+        }
+      },
+      dataLabels: {
+        format: "{point.name}"
+      },
+      allAreas: true,
+      data:
+      [
+        ['it', this.italiaCount2],
+        ['ru', this.russiaCount2],
+        ['fr', this.franciaCount2],
+        ['us', this.usaCount2],
+        ['gb', this.regnoUnitoCount2],
+        ['es', this.spagnaCount2],
+        ['in', this.indiaCount2],
+        ['ca', this.canadaCount2],
+        ['cn', this.cinaCount2],
+        ['jp', this.giapponeCount2],
+        ['gr', this.greciaCount2],
+        ['ch', this.svizzeraCount2],
+        ['de', this.germaniaCount2],
+        ['pt', this.portogalloCount2]
+      ]
+    }
+  ]
+};
+  },800);
+
+}
+
+recharge(){
+  window.location.reload();
+}
+
+  async getNumeri(){
+
+  await new Promise<void> ((resolve, reject) => {
+  this.bookingService.getAll().subscribe(async prenotazioni => {
+
+    await new Promise<void> (async (resolve, reject) => {
+    for (const booking of prenotazioni) {
+      var kgPrenotati : number = booking.bookedCapacity;
+      var date : Date = new Date(booking.prenotationDate);
+
+      if (date <= this.ricerca.dateEnd  && date >= this.ricerca.dateStart){
+        await new Promise<void> ((resolve, reject) => {
+        this.viaggioRouteService.getById(booking.viaggioRouteId).subscribe(async viaggioRoute =>{
+
+
+          await new Promise<void> ((resolve, reject) => {
+          this.viaggioService.getById(viaggioRoute.viaggioId).subscribe(async viaggio =>{
+
+            if(viaggio.companyId == this.loggedUser.id){
+            this.bookingsRicerca = this.bookingsRicerca + 1;
+            this.KgRicerca = this.KgRicerca + kgPrenotati;
+          }
+
+          var costoPerKm : number = viaggio.costoPerKm;
+
+          await new Promise<void> ((resolve, reject) => {
+          this.routeService.getById(viaggioRoute.routeId).subscribe(route =>{
+            this.soldiRicerca = this.soldiRicerca + costoPerKm * route.distanceKm;
+
+            resolve();
+          });
+        });
+            resolve();
+          });
+        });
+
+
+
+          resolve();
+        });
+      });
+      }
+
+      resolve();
+    }
+  });
+    resolve();
+  });
+});
+
+await new Promise<void> ((resolve, reject) => {
+this.viaggioService.getByCompanyId(this.loggedUser.id).subscribe(async allViaggi => {
+
+  await new Promise<void> (async (resolve, reject) => {
+  for (const viaggio of allViaggi) {
+
+    await new Promise<void> ((resolve, reject) => {
+    this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(viaggiRoute =>{
+
+      var date : Date = new Date(viaggiRoute[viaggiRoute.length -1 ].endDate);
+      if(date <= this.ricerca.dateEnd && date >= this.ricerca.dateStart){
+        this.offerteRicerca = this.offerteRicerca + 1;
+      }
+
+      resolve();
+    });
+  });
+    resolve();
+  }
+});
+  });
+  resolve();
+});
+}
+}
+

@@ -20,6 +20,8 @@
         'timeline-inverted': 0 === (travelIndex+1)%2
       }" >
       <div class=" timeline-badge info ">
+        <i class="fas fa-truck" *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'tir'"></i>
+        <i class="fas fa-ship" *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'nave'"></i>
             <i class="fas fa-truck"  *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'fiorino'"></i>
             <i class="fa fa-bus-alt" *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'bus'"></i>
             <i class="fa fa-train" *ngIf="travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'treno' || travelInfo.vectorOwnerViaggio.name.toLocaleLowerCase() == 'train'"></i>
