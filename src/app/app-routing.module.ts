@@ -17,7 +17,7 @@ import { HistoryComponent } from './components/history/history.component';
 import { AboutComponent } from './components/about/about.component';
 
 const routes: Routes = [
-  {path: '',component:LoginComponent},
+  {path: '',component:AboutComponent},
   //{path: 'errors', component:NotFound404Component},
   {path :'login', component:LoginComponent},
   {path: 'home', component: HomeComponent},

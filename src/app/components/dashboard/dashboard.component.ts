@@ -2494,9 +2494,6 @@ aggiornaConteggio( nation : string) {
         });
           resolve();
         }
-
-
-
         for(var i = 0; i< this.fatturati.length;i ++){
 
           var percFatt : PercentualeFatturato  = {} as PercentualeFatturato;
@@ -2507,7 +2504,6 @@ aggiornaConteggio( nation : string) {
           this.percentuali.push(percFatt);
 
         }
-
       });
 
       resolve();
