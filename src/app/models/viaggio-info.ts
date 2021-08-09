@@ -6,6 +6,7 @@ import { ViaggioRoute } from './viaggio-route';
 
 export interface ViaggioInfo {
 
+  idViaggio_Route:number;
   costoKm:number, startDateViaggio:Date, endDateViaggio:Date,
   avaibleCapacityViaggio: number;
   routes:Route[];
@@ -14,5 +15,6 @@ export interface ViaggioInfo {
   viaggioRouteInfo: ViaggioRoute[];
   bookedCapacity:number;
   bookingId:number;
+  maximum_WithDrawl: Date;
 
 }

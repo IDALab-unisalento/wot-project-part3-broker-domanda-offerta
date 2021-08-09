@@ -6,7 +6,7 @@
   <button  mat-button style="margin-left: 88%"  (click)="closeModal();">X</button>
       <h2 style="text-align: left;">Route booking summary	</h2>
             <!-- content goes here -->
-			<form >
+			<form  >
         <div class="form-group">
         	<div class="input-group" >
             <span class="input-group-addon"><i class="fas fa-shipping-fast" aria-hidden="true"></i></span>
@@ -41,6 +41,21 @@
     <span class="input-group-addon"><i class="bi bi-building" aria-hidden="true"></i></span>
   <input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{travelSelected.companyOwnerViaggio.name}}" readonly  />
 </div>
+<!-- maximum with drawl and booking date -->
+<div class="input-group" style="padding-top: 3%;" *ngIf="travelSelected.viaggioRouteInfo[0].maximumBookingDate!= null">
+  <span class="input-group-addon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
+<input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{travelSelected.viaggioRouteInfo[0].maximumBookingDate |date:  'dd/MM/yyyy HH:mm': '+0000' }}" readonly  />
+</div>
+<div class="input-group" style="padding-top: 3%;" *ngIf="travelSelected.viaggioRouteInfo[0].maximumWithdrawal != null">
+  <span class="input-group-addon"><i class="bi bi-calendar-x" aria-hidden="true" ></i></span>
+<input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{travelSelected.viaggioRouteInfo[0].maximumWithdrawal |date:  'dd/MM/yyyy HH:mm': '+0000' }}" readonly  />
+</div>
+<div class="input-group" style="padding-top: 3%;" *ngIf="travelSelected.viaggioRouteInfo[0].maximumWithdrawal == null">
+  <span class="input-group-addon"><i class="bi bi-calendar-x" aria-hidden="true"></i></span>
+<input type="text" class="form-control" style="margin-right: 20%"  placeholder="Booking will not be deleted once done" readonly  />
+</div>
+
+
 <!-- avaible capaicty to select -->
 <div class="input-group" style="padding-top: 3%; " >
   <span class="input-group-addon"><i class="fas fa-dolly" aria-hidden="true"></i></span>
@@ -55,10 +70,10 @@
 </div>
 
 </form>
-		<footer>
+		<footer *ngIf="requiredCapacity > 0">
 			<div class="btn-group btn-group-justified" role="group" aria-label="group button">
 				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-default"  (click)="closeModal()" role="button">Close</button>
+					<button type="button" class="btn btn-default"  (click)="closeModal();" role="button">Close</button>
 				</div>
 				<div class="btn-group" role="group">
 					<button type="button" class="btn btn-default btn-hover-green"  (click)="book()" role="button">Save</button>

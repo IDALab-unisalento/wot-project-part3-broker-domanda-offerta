@@ -19,11 +19,13 @@ export class HomeComponent implements OnInit {
 
     this.me = JSON.parse(String(localStorage.getItem("loggedUser")));
     this.type = JSON.parse(String(localStorage.getItem("userType")));
+    if(this.type !='affittuario'){
+      this.spinnerService.show();
+      setTimeout(() => {
+        this.spinnerService.hide();
+      }, 500);
+    }
 
-    this.spinnerService.show();
-    setTimeout(() => {
-      this.spinnerService.hide();
-    }, 500);
   }
 
 }

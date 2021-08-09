@@ -843,7 +843,11 @@ this.viaggioRouteService.getByViaggioId(offer.viaggioId).subscribe(async viaggio
     }, 1200);
 
     }
-  }
+}
+
+
+
+
 selectPage(pagina : number){
   this.selectedPaginations = pagina;
 
@@ -864,9 +868,10 @@ selectNext(){
 
 convertDate(date : Date ) : Date{
 
-   var newDate : Date = new Date();
-
+  var newDate : Date = new Date();
+  console.log("qui")
   if(this.newOffer.maximumWithdrawal == '1 hour'){
+
     newDate.setTime(date.getTime() - (60*60*1000));
     return newDate;
   }
