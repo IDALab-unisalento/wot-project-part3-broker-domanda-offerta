@@ -25,6 +25,7 @@ import cylinder from "highcharts/modules/cylinder";
 import worldMap from "@highcharts/map-collection/custom/world.geo.json";
 import HC_map from 'highcharts/modules/map';
 import { NazioneConteggio } from 'src/app/models/nazione-conteggio';
+import { RicercaDate } from 'src/app/models/ricerca-date';
 
 @Component({
   selector: 'app-dashboard',
@@ -60,6 +61,12 @@ export class DashboardComponent implements OnInit {
   pieOptions : any = {};
   pie : any = Highcharts;
 
+  ricerca : RicercaDate = {} as RicercaDate;
+  offerteRicerca : number = 0;
+  soldiRicerca : number = 0;
+  KgRicerca : number = 0;
+  bookingsRicerca : number = 0;
+  subscribersRicerca : number = 0;
 
   JanIncassi : number = 0;
   FebIncassi : number = 0;
@@ -196,6 +203,7 @@ export class DashboardComponent implements OnInit {
   OctA : number = 0;
   NovA : number = 0;
   DecA : number = 0;
+  searchView : boolean = false;
 
   actualMonth : string = "";
   prezzi : number [] = [];
@@ -957,7 +965,7 @@ this.pieOptions = {
           depth: 35,
           dataLabels: {
               enabled: true,
-              format: '{point.name}'
+              format: '{point.name} : {point.y}%'
           }
       }
   },
@@ -2320,5 +2328,288 @@ aggiornaConteggio( nation : string) {
 
 
 }
+
+  async search(){
+
+    this.KgRicerca = 0;
+    this.soldiRicerca = 0;
+    this.offerteRicerca = 0;
+    this.bookingsRicerca = 0;
+    this.subscribersRicerca = 0;
+    this.percentuali = [];
+    this.fatturati = [];
+
+
+    this.nationsCount = [] ;
+
+    this.italiaCount  = 0;
+    this.russiaCount  = 0;
+    this.franciaCount  = 0;
+    this.usaCount  = 0;
+    this.regnoUnitoCount  = 0;
+    this.spagnaCount  = 0;
+    this.indiaCount  = 0;
+    this.canadaCount  = 0;
+    this.cinaCount  = 0;
+    this.giapponeCount  = 0;
+    this.greciaCount  = 0;
+    this.svizzeraCount  = 0;
+    this.germaniaCount  = 0;
+    this.portogalloCount  = 0;
+
+  this.searchView = true;
+
+  await new Promise<void> ((resolve, reject) => {
+  this.bookingService.getAll().subscribe(async all =>{
+
+    await new Promise<void> (async (resolve, reject) => {
+    for (const booking of all) {
+      var date : Date = new Date(booking.prenotationDate);
+      if(date >= this.ricerca.dateStart && date <= this.ricerca.dateEnd ){
+        this.bookingsRicerca = this.bookingsRicerca + 1;
+        this.KgRicerca = this.KgRicerca + booking.bookedCapacity;
+
+        await new Promise<void> ((resolve, reject) => {
+        this.viaggioRouteService.getById(booking.viaggioRouteId).subscribe(async viaggioRoute => {
+
+          await new Promise<void> ((resolve, reject) => {
+          this.routeService.getById(viaggioRoute.routeId).subscribe(async route => {
+
+            var costoPerKm : number  = 0;
+            await new Promise<void> ((resolve, reject) => {
+            this.viaggioService.getById(viaggioRoute.viaggioId).subscribe(viaggio => {
+              costoPerKm = viaggio.costoPerKm;
+              resolve();
+            });
+          });
+
+            this.soldiRicerca = this.soldiRicerca + (route.distanceKm * costoPerKm)
+            resolve();
+          });
+        }),
+
+          resolve();
+        });
+      });
+      }
+      resolve();
+    }
+  });
+    resolve();
+  });
+  });
+
+  this.userService.getAll().subscribe(all =>{
+    for (const user of all) {
+      if(user.type == 'company'){
+        this.companyService.getById(user.id).subscribe(company => {
+          var date : Date = new Date(company.abilitationDate);
+          if(date <= this.ricerca.dateEnd && date >= this.ricerca.dateStart ){
+            this.subscribersRicerca = this.subscribersRicerca + 1;
+          }
+        })
+      }
+      if(user.type == 'affittuario'){
+        this.affittuarioService.getById(user.id).subscribe(affittuario => {
+          var date : Date = new Date(affittuario.abilitationDate);
+          if(date <= this.ricerca.dateEnd && date >= this.ricerca.dateStart ){
+            this.subscribersRicerca = this.subscribersRicerca + 1;
+          }
+        })
+      }
+
+    }
+  });
+
+  this.viaggioService.getAll().subscribe(all =>{
+    for (const viaggio of all) {
+      this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(viaggioRoutes =>{
+        var date2 : Date = new Date(viaggioRoutes[viaggioRoutes.length - 1].endDate);
+        if(date2 <= this.ricerca.dateEnd && date2 >= this.ricerca.dateStart){
+          this.offerteRicerca = this.offerteRicerca + 1;
+        }
+      })
+
+    }
+  });
+
+  await new Promise<void> ((resolve, reject) => {
+    this.bookingService.getAll().subscribe(async data =>{
+      this.bookings = data;
+
+      await new Promise<void> (async (resolve, reject) => {
+        for (const booking of data) {
+
+          await new Promise<void> ((resolve, reject) => {
+          this.viaggioRouteService.getById(booking.viaggioRouteId).subscribe(async viaggioRoute =>{
+
+            var date3 : Date = new Date(viaggioRoute.endDate);
+            if(date3 >= this.ricerca.dateStart &&date3 <= this.ricerca.dateEnd){
+            var costo : number;
+            var distance : number;
+            var prezzo : number;
+            var companyName : string;
+
+            await new Promise<void> ((resolve, reject) => {
+
+            this.viaggioService.getById(viaggioRoute.viaggioId).subscribe(async viaggio=>{
+                costo = viaggio.costoPerKm;
+                await new Promise<void> ((resolve, reject) => {
+
+                this.companyService.getById(viaggio.companyId).subscribe(company=>{
+                  companyName = company.name
+                  resolve();
+                })
+              })
+
+
+                resolve();
+            });
+          });
+
+          await new Promise<void> ((resolve, reject) => {
+
+            this.routeService.getById(viaggioRoute.routeId).subscribe(route=>{
+                distance = route.distanceKm;
+                 prezzo = distance * costo;
+                var fatturato : Fatturato = {} as Fatturato;
+                fatturato.companyName = companyName;
+                fatturato.fatturato = Number(prezzo.toFixed(1));
+                var yetPresent : boolean = false;
+                for(var i = 0; i<this.fatturati.length;i++){
+                  if(this.fatturati[i].companyName == fatturato.companyName){
+                  yetPresent = true;
+                  this.fatturati[i].fatturato = this.fatturati[i].fatturato + fatturato.fatturato;
+                }
+                }
+                if(!yetPresent)
+                  this.fatturati.push(fatturato);
+                  resolve();
+            });
+          });
+            resolve();
+        }
+          });
+
+        });
+          resolve();
+        }
+
+
+
+        for(var i = 0; i< this.fatturati.length;i ++){
+
+          var percFatt : PercentualeFatturato  = {} as PercentualeFatturato;
+
+          percFatt.name = this.fatturati[i].companyName;
+          percFatt.y = Number(((this.fatturati[i].fatturato / this.incassiTotali) * 100).toFixed(1));
+
+          this.percentuali.push(percFatt);
+
+        }
+
+      });
+
+      resolve();
+    });
+  });
+
+  await new Promise<void> ((resolve, reject) => {
+    this.viaggioRouteService.getAll().subscribe(async allList =>{
+      await new Promise<void> (async (resolve, reject) => {
+        for (const viaggioRoute of allList) {
+          var date4 : Date = new Date(viaggioRoute.endDate);
+
+          if(date4 <= this.ricerca.dateEnd && this.ricerca.dateStart){
+
+
+          await new Promise<void> ((resolve, reject) => {
+          this.routeService.getById(viaggioRoute.routeId).subscribe(async rotta =>{
+
+            await new Promise<void> ((resolve, reject) => {
+            this.routeService.getCoordinates(rotta.endCity).subscribe( (result : any) =>{
+
+              var toAdd : boolean = true;
+              var nation : string = result.features[0].context[result.features[0].context.length - 1].text;
+
+              for(var i = 0; i<this.nationsCount.length; i++){
+                if(this.nationsCount[i].nation == nation){
+                  toAdd = false;
+                  this.nationsCount[i].conteggio = this.nationsCount[i].conteggio + 1;
+                }
+              }
+
+              var countToAdd : NazioneConteggio = {} as NazioneConteggio;
+                  countToAdd.nation = nation;
+                  countToAdd.conteggio = 1;
+
+            if(toAdd)
+              this.nationsCount.push(countToAdd);
+
+              this.aggiornaConteggio(countToAdd.nation)
+
+              resolve();
+            });
+            })
+            resolve();
+          })
+
+          resolve();
+
+          });
+        }
+        }
+      });
+    });
+    resolve();
+  });
+
+  setTimeout(()=>{
+    this.pieOptions = {
+      chart: {
+          type: 'pie',
+          width : 450,
+          heigth : 300,
+          options3d: {
+              enabled: true,
+              alpha: 45,
+              beta: 0
+          }
+      },
+      title: {
+          text: 'Major beneficiary companies'
+      },
+      accessibility: {
+          point: {
+              valueSuffix: '%'
+          }
+      },
+      tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      plotOptions: {
+          pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              depth: 35,
+              dataLabels: {
+                  enabled: true,
+                  format: '{point.name} : {point.percentage:.1f}%'
+              }
+          }
+      },
+      series:
+      [{
+          type: 'pie',
+          name: 'Percentage',
+          data:  this.percentuali
+      }],
+
+    }
+  },600);
 }
 
+recharge(){
+  window.location.reload();
+}
+}

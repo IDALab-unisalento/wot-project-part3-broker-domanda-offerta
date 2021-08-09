@@ -3,7 +3,7 @@
 
 
 <div class="col-md-4 col-sm-6 content-card" style="margin-left: 300px; margin-top: 200px; "*ngIf="!show">
-  <div class="card-big-shadow" style="width: 800px;">
+  <div class="card-big-shadow" style="width: 1000px;">
       <div class="card card-just-text" data-background="color" data-color="blue" data-radius="none" style="border-radius: 1.5rem;">
           <div class="content">
               <h6 class="category">Analytics</h6>
@@ -22,13 +22,75 @@
 
   <div style="margin-left: 420px;margin-right: 350px;" *ngIf="show" >
     <br><br>
+    <h1  style="text-align: center;color :#216ba4"> Results' filtering by date</h1>
+    <mat-card class="datePicker">
 
+
+        <div class="form-group">
+
+        <mat-form-field  appearance="fill" style="width: 100%;">
+          <mat-label style="font-size: 12px;">Start Date</mat-label>
+          <input  class="input-date" matInput required  [matDatepicker]="startDate"
+          [value]=""
+          name="startDate"
+          [(ngModel)]="ricerca.dateStart">
+          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+          <mat-datepicker #startDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="form-group" style="margin-left: 50px;">
+
+        <mat-form-field  appearance="fill" style="width: 100%;">
+          <mat-label style="font-size: 12px;">End Date</mat-label>
+          <input  class="input-date" matInput required  [matDatepicker]="endDate"
+          [value]=""
+          name="endDate"
+          [(ngModel)]="ricerca.dateEnd">
+          <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+          <mat-datepicker #endDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <button
+      [disabled]="!ricerca.dateStart || !ricerca.dateEnd"
+      class="btn-danger search-button" (click)="search()">SEARCH </button>
+    </mat-card>
+    <br>
+    <button
+    style="border-radius: 1.5rem;height: 40px; margin-left: 320px;"
+    class="btn-info" (click)="recharge()">Back to the general view </button>
+    <br><br><br>
+
+    <div *ngIf="searchView">
+
+      <h1 class="tit"> 1. The numbers of the selected period</h1>
+      <br><br>
+        <div fxLayout="row"  >
+          <div fxFlex="57" >
+
+               <mat-card style="position: relative; left: 150px;" class="numbers">
+
+                <ul class="info">
+                  <li >Renter reservations : <a>{{bookingsRicerca}}</a></li>
+                  <li >Kg booked by renters : <a>{{KgRicerca}} Kg</a></li>
+                  <li >Money earned : <a>{{soldiRicerca.toFixed(1)}} $</a></li>
+                  <li >Offers added : <a>{{offerteRicerca}} </a></li>
+
+                </ul>
+
+               </mat-card>
+              </div>
+            </div>
+          </div>
+
+<div *ngIf="show && !searchView">
     <h1 class="tit"> 1. MONTHLY TREND</h1>
     <br>
 <mat-card style="border-radius : 1.5rem; background: rgb(191, 215, 255);">
   <h1 class="font-weight-bold text-center justify-content-center " >{{entireActualMonth}} Trend *</h1>
 </mat-card>
+</div>
   </div>
+  <div *ngIf="show && !searchView">
   <br><br>
   <div  fxLayout="row" style="margin-left: 180px;" fxLayoutAlign="space between center" fxLayoutGap="20px" class="stats cards" *ngIf="show">
 
@@ -111,8 +173,10 @@
 
   </div>
   <label style="color: rgb(186, 183, 183); margin-left: 125px;margin-top: 25px;" *ngIf="show"> * Compared to the last month</label>
-
+</div>
   <br><br>
+  <div *ngIf="show && !searchView">
+
   <h1 class="tit" *ngIf="show"> 2. COMPANY NUMBERS</h1>
   <br><br>
     <div fxLayout="row" style="margin-left: 150px;" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show" >
@@ -143,8 +207,10 @@
     </div>
 
 </div>
+</div>
 <div class="row"  *ngIf="show" style="margin-top: 50px; position: relative; left: -15px;">
-  <h1 class="tit"> 3. VECTOR STATS</h1>
+  <h1 class="tit" *ngIf="!searchView"> 3. VECTOR STATS</h1>
+  <h1 class="tit" *ngIf="searchView"> 2. VECTOR STATS</h1>
 <br>
   <div class="col"  style="width: 300px;height: 300px; margin-left: 85px; ">
     <mat-card style="width: 550px;">
@@ -192,9 +258,10 @@
 </div>
 
 <br>
+<div *ngIf="show && !searchView">
 <h1 class="tit" *ngIf="show" style=" padding-top: 170px" >4. DAILY REPORT</h1>
 
-<div style=" padding-top: 20px; display: flex; justify-content: center; padding-bottom: 100px;" *ngIf="show">
+<div style=" padding-top: 20px; display: flex; justify-content: center; " *ngIf="show">
 
   <mat-card >
     <header style="display: flex; justify-content: center;">
@@ -249,26 +316,80 @@
   </mat-card>
 
   </div>
-  <h1 class="tit" *ngIf="show">5. GEOGRAPHICAL REPORT</h1>
+</div>
+  <h1  style="margin-top: 200px;" class="tit" *ngIf="show && !searchView">5. GEOGRAPHICAL REPORT</h1>
+  <h1  style="margin-top: 200px;" class="tit" *ngIf="searchView">3. GEOGRAPHICAL REPORT</h1>
+
   <br>
   <div fxLayout="row" style="margin-left: 100px;" fxLayoutAlign="space-between center" *ngIf="show">
 
-    <mat-card>
+    <mat-card class="mapcard">
+      <div class='col'>
+        <div class="row">
       <highcharts-chart
 
         [Highcharts]="Highcharts"
         [options]="mapOptions1"
 
       ></highcharts-chart>
+    </div>
+    <div class="row te" style="margin-left: 50px;">
+      <br>
+        <ul >
+          <li *ngIf="italiaCount != 0"> Italy : {{this.italiaCount}}</li>
+          <li  *ngIf="russiaCount != 0"> Russia : {{this.russiaCount}}</li>
+          <li  *ngIf="franciaCount != 0"> France : {{this.franciaCount}}</li>
+          <li  *ngIf="usaCount != 0"> USA : {{this.usaCount}}</li>
+          <li  *ngIf="regnoUnitoCount != 0"> United Kingdom : {{this.regnoUnitoCount}}</li>
+          <li  *ngIf="spagnaCount != 0"> Spain : {{this.spagnaCount}}</li>
+          <li  *ngIf="indiaCount != 0"> India : {{this.indiaCount}}</li>
+          <li  *ngIf="canadaCount != 0"> Canada : {{this.canadaCount}}</li>
+          <li  *ngIf="cinaCount != 0"> China : {{this.cinaCount}}</li>
+          <li  *ngIf="giapponeCount != 0"> Japan : {{this.giapponeCount}}</li>
+          <li  *ngIf="greciaCount != 0"> Greece : {{this.greciaCount}}</li>
+          <li  *ngIf="svizzeraCount != 0"> Switzerland : {{this.svizzeraCount}}</li>
+          <li  *ngIf="germaniaCount != 0"> Germany : {{this.germaniaCount}}</li>
+          <li  *ngIf="portogalloCount != 0"> Portugal : {{this.portogalloCount}}</li>
+
+
+        </ul>
+    </div>
+    </div>
+
       </mat-card>
 
-      <mat-card style="position: relative; left: -50px">
+      <mat-card style="position: relative; left: -50px" class="mapcard">
+        <div class='col'>
+          <div class="row te">
         <highcharts-chart
 
           [Highcharts]="Highcharts"
           [options]="mapOptions2"
 
         ></highcharts-chart>
+      </div>
+      <div class="row te" style="margin-left: 50px;">
+        <br>
+        <ul >
+            <li *ngIf="italiaCount2 != 0"> Italy : {{this.italiaCount2}}</li>
+            <li  *ngIf="russiaCount2 != 0"> Russia : {{this.russiaCount2}}</li>
+            <li  *ngIf="franciaCount2 != 0"> France : {{this.franciaCount2}}</li>
+            <li  *ngIf="usaCount2 != 0"> USA : {{this.usaCount2}}</li>
+            <li  *ngIf="regnoUnitoCount2 != 0"> United Kingdom : {{this.regnoUnitoCount2}}</li>
+            <li  *ngIf="spagnaCount2 != 0"> Spain : {{this.spagnaCount2}}</li>
+            <li  *ngIf="indiaCount2 != 0"> India : {{this.indiaCount2}}</li>
+            <li  *ngIf="canadaCount2 != 0"> Canada : {{this.canadaCount2}}</li>
+            <li  *ngIf="cinaCount2 != 0"> China : {{this.cinaCount2}}</li>
+            <li  *ngIf="giapponeCount2 != 0"> Japan : {{this.giapponeCount2}}</li>
+            <li  *ngIf="greciaCount2 != 0"> Greece : {{this.greciaCount2}}</li>
+            <li  *ngIf="svizzeraCount2 != 0"> Switzerland : {{this.svizzeraCount2}}</li>
+            <li  *ngIf="germaniaCount2 != 0"> Germany : {{this.germaniaCount2}}</li>
+            <li  *ngIf="portogalloCount2 != 0"> Portugal : {{this.portogalloCount2}}</li>
+
+
+          </ul>
+      </div>
+      </div>
         </mat-card>
 
       </div>

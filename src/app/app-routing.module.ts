@@ -14,6 +14,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
 import { HistoryComponent } from './components/history/history.component';
+import { AboutComponent } from './components/about/about.component';
 
 const routes: Routes = [
   {path: '',component:LoginComponent},
@@ -30,7 +31,7 @@ const routes: Routes = [
   {path: 'notFound', component: NotFoundComponent},
   {path: 'admin/dashboard', component: DashboardComponent},
   {path: 'company/dashboard/:id', component: DashboardCompanyComponent},
-
+  {path:'about', component: AboutComponent},
   {path:'affittuarioHome', component: AffittuarioHomeComponent},
   {path: 'history', component: HistoryComponent},
   {path:'analytics', component: AffittuarioAnaliticsComponent}

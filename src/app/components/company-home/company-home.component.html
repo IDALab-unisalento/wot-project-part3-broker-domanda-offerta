@@ -129,7 +129,7 @@
 
                            <ul *ngIf="treatsCity.length > 0">
 
-                            <li *ngFor="let city of treatsCity; let myIndex = index" >
+                            <li *ngFor="let city of treatsCity; let myIndex = index; trackBy:customTrackBy" >
 
                             <div class="row">
                               <i class="fas fa-minus-circle" style="color: rgb(210, 6, 6); font-size: 25px;cursor: pointer; position: relative; left: -5px;"(click)="removeTreats(myIndex)" ></i>
@@ -143,7 +143,7 @@
                             <span class="input-icon">
 
                               <input class="form-control"  [matAutocomplete]="treats10" (input)="getItems($event)" type="text" placeholder="City" style="width: 205px;"
-                              name="treatsCity{{treatsCity[myIndex]}}"
+                              name="treatsCity[myIndex]"
                               [ngClass]="{'is-valid': treatsCity[myIndex] == treatsCity[myIndex - 1]}"
                               [(ngModel)]="treatsCity[myIndex]"
                               >
@@ -471,13 +471,65 @@
                     <br>
                         <!-- DATA RECESSO -->
                         <div class="widget-header bordered-top bordered-sky" style="background-color:#044459;  border-radius: 1.5rem;" >
-                          <span class="widget-caption" style="color: white;"> 4. Maximum withdrawal date range</span>
+                          <span class="widget-caption" style="color: white;"> 4. Maximum withdrawal and prenotation date range</span>
                       </div>
 
 
                         <br>
 
-                        <label  style="color: #044459">Select the maximum limit to cancel a booking for a renter: <label style="color:red">* </label></label>
+
+
+                      <label  style="color: #044459">Select the maximum limit to book an offer for a renter: <label style="color:red">* </label></label>
+                        <div class="form-group" style="width: 250px;">
+                          <div class="input-group input-group-xl">
+                            <div class="input-group mb-3">
+                              <select class="form-select" required
+                              #maximumBookingDate="ngModel"
+                              name="maximumBookingDate"
+                              [(ngModel)]="newOffer.maximumBookingDate"
+                              [ngClass]="{'is-invalid': newOffer.maximumBookingDate=='' || (!maximumBookingDate.valid && maximumBookingDate.touched)}"
+                              [ngClass]="{'is-valid': maximumBookingDate.valid}"
+                              >
+                                <option selected value="Choose...">Choose...</option>
+                                <option value="1 hour">1 hour</option>
+                                <option value="2 hours">2 hours</option>
+                                <option value="6 hours">6 hours</option>
+                                <option value="12 hours">12 hours</option>
+                                <option value="1 day">1 day</option>
+                                <option value="2 days">2 days</option>
+                                <option value="3 days">3 days</option>
+                                <option value="5 days">5 days</option>
+                                <option value="10 days">10 days</option>
+
+                              </select>
+                              <div class="invalid-feedback" [hidden]="!maximumBookingDate.errors?.required">
+                                <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+                                Maximum Booking Date is required
+                              </div>
+                              <div class="valid-feedback">
+                                <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
+                                Ok!
+                              </div>
+                            </div>
+
+
+
+                          </div>
+                      </div>
+
+                    <div style="position: relative; top: -20px">
+                      <label  style="color: #044459">  Do you want to give the possibility to a renter to cancel the reservation?</label>
+
+                        &nbsp;&nbsp;&nbsp;<mat-slide-toggle
+                        [(ngModel)]="newOffer.enableCancelation"
+                        #enableCancelation="ngModel"
+                        color = 'primary'
+                        checked = "false"
+                        name="enableCancelation"> {{newOffer.enableCancelation ? 'Yes': 'No'}}</mat-slide-toggle>
+
+                      <div *ngIf = "newOffer.enableCancelation">
+                        <br>
+                      <label  style="color: #044459">Select the maximum limit to cancel a booking for a renter: <label style="color:red">* </label></label>
                         <div class="form-group" style="width: 250px;">
                           <div class="input-group input-group-xl">
                             <div class="input-group mb-3">
@@ -514,6 +566,8 @@
 
                           </div>
                       </div>
+                    </div>
+                  </div>
                       <!--  FINE DATA RECESSO-->
                       <br><br>
                       <label style="color: rgb(99, 99, 99);" > <label style="color:red">*</label> : Mandatory Fields</label>
@@ -542,8 +596,8 @@
   </div>
   </div>
   </div>
-    <div class="row">
-        <div class="col-lg-12" style=" padding-left: 50px;">
+    <div class="row" style="width: 1200px;">
+        <div class="col-lg-12" >
             <div class="main-box no-header clearfix">
                 <div class="main-box-body clearfix">
                     <div class="table-responsive">
@@ -597,7 +651,9 @@
                                   <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.costoPerKm}} $</td>
                                   <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.startingDate | date : "dd/MM/YYYY HH:mm"}}</td>
                                   <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.endingDate | date : "dd/MM/YYYY HH:mm"}}</td>
-                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) )">{{offer.maximumWithdrawal}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) ) && offer.maximumWithdrawal">{{offer.maximumWithdrawal}}</td>
+                                  <td class="text-center" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) ) && !offer.maximumWithdrawal"><mat-icon style="color: red;">close</mat-icon>
+                                  </td>
 
                                     <td  class="text-center" style="width: 20%" *ngIf="myIndex >= ((10*myIndex%10) +10*selectedPaginations) && myIndex < ((10*myIndex%10) + 10*(selectedPaginations + 1) ) ">
                                         <a onmouseover="" style="cursor: pointer;" class="table-link text-warning" (click)="this.openModal(offer.viaggioId); ">
@@ -636,6 +692,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 
 

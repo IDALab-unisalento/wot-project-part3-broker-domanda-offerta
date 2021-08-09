@@ -71,9 +71,7 @@ export class CompanyHomeComponent implements OnInit {
   selectedPaginations : number = 0;
   show : boolean = false;
 
-
   ngOnInit(): void {
-
     this.loggedUser = JSON.parse(String(localStorage.getItem("loggedUser")));
     this.offers = [];
     this.newOffer = {} as Offer;
@@ -403,7 +401,10 @@ async addNewOffer(){
           this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
 
           viaggioRoute.startDate =  this.newOffer.startDate ;
-          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
+
            //end date
            this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
            this.newOffer.endDate.setMinutes(Number(String(this.newOffer.endTime).substring(3,5)));
@@ -423,16 +424,12 @@ async addNewOffer(){
 
        },
       async err =>{
-      //non esiste ancora questa route nel DB, la aggiungiamo
-
-        //qui andrebbe messo tutto il sistema delle API di google
-        var turfOptions = { units: 'kilometers' as Units };
 
         await new Promise<void> ((resolve, reject) => {
 
         this.routeService.getCoordinates(route.startCity).subscribe(async (data : any) =>{
           this.startCoordinates = data.features[0].center;
-          resolve()
+          resolve();
         });
       });
 
@@ -440,7 +437,7 @@ async addNewOffer(){
 
         this.routeService.getCoordinates(route.endCity).subscribe(async (data : any) =>{
           this.endCoordinates = data.features[0].center;
-          resolve()
+          resolve();
         });
       });
 
@@ -455,10 +452,6 @@ async addNewOffer(){
                 resolve();
               });
 
-
-      //   route.distanceKm = Number(turf.distance(this.startCoordinates ,this.endCoordinates,turfOptions).toFixed(1));
-      //   console.log(route.distanceKm)
-      // resolve();
       });
 
 
@@ -479,6 +472,8 @@ async addNewOffer(){
 
           viaggioRoute.startDate = this.newOffer.startDate ;
           viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
 
            //end date
            this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
@@ -550,6 +545,8 @@ async addNewOffer(){
 
           viaggioRoute.startDate = this.newOffer.startDate ;
           viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
 
           //end date
             this.endDates[0].setHours(Number(String(this.endTimes[0]).substring(0,2)));
@@ -581,6 +578,8 @@ async addNewOffer(){
 
           viaggioRoute.startDate = this.startDates[i - 1];
           viaggioRoute.maximumWithdrawal = this.convertDate(this.startDates[i - 1])
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
 
 
           if(i != this.treatsCity.length){
@@ -683,6 +682,8 @@ async addNewOffer(){
 
           viaggioRoute.startDate = this.newOffer.startDate ;
           viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
 
 
           //end date
@@ -714,6 +715,8 @@ async addNewOffer(){
 
           viaggioRoute.startDate = this.startDates[i - 1] ;
           viaggioRoute.maximumWithdrawal = this.convertDate(this.startDates[i - 1]);
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
 
 
           if(i != this.treatsCity.length){
@@ -776,8 +779,8 @@ async addNewOffer(){
 
     this.spinnerService.hide();
     this.addMenu = false;
-window.location.reload();
-  }, 1200);
+    window.location.reload();
+  }, 8000);
 
 
 
@@ -911,5 +914,62 @@ convertDate(date : Date ) : Date{
 
   return newDate;
 
+}
+
+convertBookingDate(date : Date ) : Date{
+
+  var newDate : Date = new Date();
+
+ if(this.newOffer.maximumBookingDate == '1 hour'){
+   newDate.setTime(date.getTime() - (60*60*1000));
+   return newDate;
+ }
+
+
+ if(this.newOffer.maximumBookingDate == '2 hours'){
+   newDate.setTime(date.getTime() - (2*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '6 hours'){
+   newDate.setTime(date.getTime() - (6*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '12 hours'){
+   newDate.setTime(date.getTime() - (12*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '1 day'){
+   newDate.setTime(date.getTime() - (24*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '2 days'){
+   newDate.setTime(date.getTime() - (2*24*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '3 days'){
+   newDate.setTime(date.getTime() - (3*24*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '5 days'){
+   newDate.setTime(date.getTime() - (5*24*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '10 days'){
+   newDate.setTime(date.getTime() - (10*24*60*60*1000));
+   return newDate;
+ }
+
+ return newDate;
+
+}
+customTrackBy(index: number, obj: any): any {
+  return index;
 }
 }

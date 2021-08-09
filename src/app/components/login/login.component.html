@@ -9,14 +9,39 @@
 <link rel="stylesheet" type="text/css" href="login.component.scss">
 <!-- inizio pagina login-component -->
 <div class="container">
+  <div class="banner">
+    <div class="navbar">
+      <ul style="position: absolute; right: -200px; top : 50px">
+        <li routerLink="/about"> <a>Home</a></li>
+        <li routerLink="/signup"> <a>Sign Up</a></li>
+        <li routerLink="/login"> <a>Login</a></li>
+
+
+      </ul>
+    </div>
+
+</div>
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
 			<div class="card-header">
 
 				<strong>
-          <h1 style="color:white; text-align: center">Sign in</h1>
+          <h1 style="color:#009688; text-align: center; font-size : 30px; font-weight: bold">Sign in</h1>
         </strong>
 			</div>
+        <a style="margin-left: 70px; color: white;" class="fb btn social">
+          <i class="fab fa-facebook fa-fw" ></i> Login with Facebook
+        </a>
+        <a style="margin-left: 70px; color: white;"  class="twitter btn social">
+          <i class="fab fa-twitter fa-fw"></i> Login with Twitter
+        </a>
+        <a style="margin-left: 70px; color: white;"  class="google btn social">
+          <i class="fab fa-google fa-fw"></i> Login with Google+
+        </a>
+        <br>
+        <div style="color: white;display: flex;justify-content: center; font-weight: bold; font-size: 20px;" >
+          <mat-card style="border-radius: 1.5rem;z-index: -1; background-color: rgb(165, 164, 164);">Or</mat-card></div>
+          <div class="divider"></div>
       <div class="alert alert-warning" role="alert" *ngIf="presentAlert">
         <h4 class="alert-heading">Attention!</h4>
         <p>You are registered on our site, but you do not have permission to access the web features</p>
@@ -61,15 +86,11 @@
 					</div>
 					<br>
 					<div class="form-group">
-						<input type="submit" value="Login" class="btn float-right login_btn">
+						<input type="submit" value="Login" class="button">
 					</div>
 				</form>
 			</div>
       <br>
-      <div style="color: white;display: flex;justify-content: center; font-weight: bold; font-size: 20px;" > Or</div>
-      <div style="display: flex; justify-content: center;">
-        <input  type="submit" class="btnRegister bg-danger" value="Sign Up" routerLink="/signup"/>
-    </div>
     </div>
 	</div>
 </div>
