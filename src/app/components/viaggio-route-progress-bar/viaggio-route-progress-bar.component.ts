@@ -15,7 +15,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Viaggio } from 'src/app/models/viaggio';
 import { AffituarioPrenotaRouteService } from 'src/app/services/affituario-prenota-route.service';
-import { Affittuario } from 'src/app/models/affittuario';
 import { BookingInfo } from 'src/app/models/booking-info';
 
 @Component({

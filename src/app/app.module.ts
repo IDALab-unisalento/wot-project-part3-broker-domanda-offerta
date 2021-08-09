@@ -26,7 +26,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalComponent } from './components/modal/modal.component';
 import { CompanyService } from './services/company.service';
@@ -63,7 +65,12 @@ import { HighchartsChartModule } from 'highcharts-angular';
 
 import { HistoryComponent } from './components/history/history.component';
 import { ChartsModule } from 'ng2-charts';
+<<<<<<< HEAD
 import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
+=======
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { AboutComponent } from './components/about/about.component';
+>>>>>>> develop
 @NgModule({
   declarations: [
 
@@ -95,7 +102,8 @@ import { DashboardCompanyComponent } from './components/dashboard-company/dashbo
     DashboardComponent,
     DashboardCompanyComponent,
     AffittuarioAnaliticsComponent,
-    ViaggioRouteProgressBarComponent
+    ViaggioRouteProgressBarComponent,
+    AboutComponent
     ],
 
   imports: [
@@ -129,7 +137,9 @@ import { DashboardCompanyComponent } from './components/dashboard-company/dashbo
     NgxSpinnerModule,
     HighchartsChartModule,
     ChartsModule,
-
+    FlexLayoutModule,
+    MatCardModule,
+    MatSlideToggleModule
       ],
   providers: [
             {

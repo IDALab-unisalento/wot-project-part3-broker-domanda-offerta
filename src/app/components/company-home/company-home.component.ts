@@ -1,3 +1,4 @@
+import { AffituarioPrenotaRouteService } from 'src/app/services/affituario-prenota-route.service';
 import { environment } from './../../../environments/environment';
 import { ViaggioRoute } from './../../models/viaggio-route';
 import { Route } from './../../models/route';
@@ -16,8 +17,6 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ScheduleComponent } from '../schedule/schedule.component';
 import { Viaggio } from 'src/app/models/viaggio';
 
-import * as Mapbloxgl from 'mapbox-gl';
-import * as turf from '@turf/turf';
 import { Units } from '@turf/turf';
 import { ModalErrorComponent } from '../modal-error/modal-error.component';
 import { ModalTimeErrorComponent } from '../modal-time-error/modal-time-error.component';
@@ -38,7 +37,8 @@ export class CompanyHomeComponent implements OnInit {
               private viaggioRouteService : ViaggioRouteService,
               private datepipe: DatePipe,
               private matDialog : MatDialog,
-              private viaggioService : ViaggioService
+              private viaggioService : ViaggioService,
+              private bookingService : AffituarioPrenotaRouteService
   ) { }
 
   loggedUser : User = {} as User;
@@ -71,9 +71,7 @@ export class CompanyHomeComponent implements OnInit {
   selectedPaginations : number = 0;
   show : boolean = false;
 
-
   ngOnInit(): void {
-
     this.loggedUser = JSON.parse(String(localStorage.getItem("loggedUser")));
     this.offers = [];
     this.newOffer = {} as Offer;
@@ -144,7 +142,7 @@ export class CompanyHomeComponent implements OnInit {
 
               var offer : Offer = {} as Offer;
 
-            this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(viaggi => {
+            this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(async viaggi => {
 
               offer.vectorId = vector.id;
               offer.vectorBrand = vector.brand;
@@ -154,8 +152,9 @@ export class CompanyHomeComponent implements OnInit {
               offer.viaggioId = viaggio.id;
               offer.costoPerKm = viaggio.costoPerKm;
               offer.maximumWithdrawal = viaggio.maximumWithdrawal;
-              setTimeout(()=>{ offer.occupiedCapacity = (vector.capacity - viaggio.initialFreeCapacity) / vector.capacity *100 ;
-                offer.occupiedCapacity =  Number(offer.occupiedCapacity.toFixed(1));});
+              offer.occupiedCapacity = (vector.capacity - viaggio.initialFreeCapacity) / vector.capacity *100 ;
+                offer.occupiedCapacity =  Number(offer.occupiedCapacity.toFixed(1));
+
 
               offer.startingDate = viaggi[0].startDate;
               offer.endingDate = viaggi[viaggi.length-1].endDate;
@@ -204,13 +203,18 @@ export class CompanyHomeComponent implements OnInit {
 
               offer.routes = [];
 
-              for (const vectorRoute of viaggi) {
+              for (const viaggioRoute of viaggi) {
+
+
                 // somma =           storico    +         capacità del vettore - carico libero alla fine della tratta
-                this.availableSum = Number(this.availableSum) + Number(vector.capacity) - Number(vectorRoute.availableCapacity);
-                this.routeService.getById(vectorRoute.routeId).subscribe(route =>{
+                this.availableSum = Number(this.availableSum) +vector.capacity - Number(viaggioRoute.availableCapacity);
+                this.routeService.getById(viaggioRoute.routeId).subscribe(route =>{
                   offer.routes.push(route);
 
                 });
+
+
+
               }
               setTimeout(()=>{
                 for (const route of offer.routes) {
@@ -222,10 +226,8 @@ export class CompanyHomeComponent implements OnInit {
               },150);
 
 
-
                 //aggiorno la percentuale di carico occupata
-                offer.occupiedCapacity = (vector.capacity - element.initialFreeCapacity + this.availableSum) / (vector.capacity *(viaggi.length+1)) *100 ;
-
+                offer.occupiedCapacity = Number(((this.availableSum) / (vector.capacity *(viaggi.length )) *100).toFixed(1)) ;
                 this.availableSum = 0;
 
             });
@@ -248,8 +250,8 @@ openModal(id : number) {
   // The user can't close the dialog by clicking outside its body
   dialogConfig.disableClose = true;
   dialogConfig.id = "modal-component";
-  dialogConfig.height = "600px"; // alessio non ha le dimensioni del pc mac percui ha cambiato il parametro
-  dialogConfig.width = "800px";
+  dialogConfig.height = "700px"; // alessio non ha le dimensioni del pc mac percui ha cambiato il parametro
+  dialogConfig.width = "900px";
   // https://material.angular.io/components/dialog/overview
   const modalDialog = this.matDialog.open(ScheduleComponent, dialogConfig);
 }
@@ -399,7 +401,10 @@ async addNewOffer(){
           this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
 
           viaggioRoute.startDate =  this.newOffer.startDate ;
-          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
+
            //end date
            this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
            this.newOffer.endDate.setMinutes(Number(String(this.newOffer.endTime).substring(3,5)));
@@ -419,16 +424,12 @@ async addNewOffer(){
 
        },
       async err =>{
-      //non esiste ancora questa route nel DB, la aggiungiamo
-
-        //qui andrebbe messo tutto il sistema delle API di google
-        var turfOptions = { units: 'kilometers' as Units };
 
         await new Promise<void> ((resolve, reject) => {
 
         this.routeService.getCoordinates(route.startCity).subscribe(async (data : any) =>{
           this.startCoordinates = data.features[0].center;
-          resolve()
+          resolve();
         });
       });
 
@@ -436,7 +437,7 @@ async addNewOffer(){
 
         this.routeService.getCoordinates(route.endCity).subscribe(async (data : any) =>{
           this.endCoordinates = data.features[0].center;
-          resolve()
+          resolve();
         });
       });
 
@@ -451,10 +452,6 @@ async addNewOffer(){
                 resolve();
               });
 
-
-      //   route.distanceKm = Number(turf.distance(this.startCoordinates ,this.endCoordinates,turfOptions).toFixed(1));
-      //   console.log(route.distanceKm)
-      // resolve();
       });
 
 
@@ -475,6 +472,8 @@ async addNewOffer(){
 
           viaggioRoute.startDate = this.newOffer.startDate ;
           viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
 
            //end date
            this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
@@ -546,6 +545,8 @@ async addNewOffer(){
 
           viaggioRoute.startDate = this.newOffer.startDate ;
           viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
 
           //end date
             this.endDates[0].setHours(Number(String(this.endTimes[0]).substring(0,2)));
@@ -577,6 +578,8 @@ async addNewOffer(){
 
           viaggioRoute.startDate = this.startDates[i - 1];
           viaggioRoute.maximumWithdrawal = this.convertDate(this.startDates[i - 1])
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
 
 
           if(i != this.treatsCity.length){
@@ -679,6 +682,8 @@ async addNewOffer(){
 
           viaggioRoute.startDate = this.newOffer.startDate ;
           viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
 
 
           //end date
@@ -710,6 +715,8 @@ async addNewOffer(){
 
           viaggioRoute.startDate = this.startDates[i - 1] ;
           viaggioRoute.maximumWithdrawal = this.convertDate(this.startDates[i - 1]);
+          if(this.newOffer.enableCancelation)
+            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
 
 
           if(i != this.treatsCity.length){
@@ -772,8 +779,8 @@ async addNewOffer(){
 
     this.spinnerService.hide();
     this.addMenu = false;
-window.location.reload();
-  }, 1200);
+    window.location.reload();
+  }, 8000);
 
 
 
@@ -836,7 +843,11 @@ this.viaggioRouteService.getByViaggioId(offer.viaggioId).subscribe(async viaggio
     }, 1200);
 
     }
-  }
+}
+
+
+
+
 selectPage(pagina : number){
   this.selectedPaginations = pagina;
 
@@ -857,9 +868,10 @@ selectNext(){
 
 convertDate(date : Date ) : Date{
 
-   var newDate : Date = new Date();
-
+  var newDate : Date = new Date();
+  console.log("qui")
   if(this.newOffer.maximumWithdrawal == '1 hour'){
+
     newDate.setTime(date.getTime() - (60*60*1000));
     return newDate;
   }
@@ -907,5 +919,62 @@ convertDate(date : Date ) : Date{
 
   return newDate;
 
+}
+
+convertBookingDate(date : Date ) : Date{
+
+  var newDate : Date = new Date();
+
+ if(this.newOffer.maximumBookingDate == '1 hour'){
+   newDate.setTime(date.getTime() - (60*60*1000));
+   return newDate;
+ }
+
+
+ if(this.newOffer.maximumBookingDate == '2 hours'){
+   newDate.setTime(date.getTime() - (2*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '6 hours'){
+   newDate.setTime(date.getTime() - (6*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '12 hours'){
+   newDate.setTime(date.getTime() - (12*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '1 day'){
+   newDate.setTime(date.getTime() - (24*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '2 days'){
+   newDate.setTime(date.getTime() - (2*24*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '3 days'){
+   newDate.setTime(date.getTime() - (3*24*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '5 days'){
+   newDate.setTime(date.getTime() - (5*24*60*60*1000));
+   return newDate;
+ }
+
+ if(this.newOffer.maximumBookingDate == '10 days'){
+   newDate.setTime(date.getTime() - (10*24*60*60*1000));
+   return newDate;
+ }
+
+ return newDate;
+
+}
+customTrackBy(index: number, obj: any): any {
+  return index;
 }
 }

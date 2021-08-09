@@ -30,5 +30,7 @@ export interface Offer {
   endDates : Date[];
   endTimes : Time[];
   maximumWithdrawal : string;
+  maximumBookingDate : string;
+  enableCancelation : boolean ;
 
 }

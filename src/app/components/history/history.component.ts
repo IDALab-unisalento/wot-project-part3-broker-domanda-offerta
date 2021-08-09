@@ -35,8 +35,6 @@ export class HistoryComponent implements OnInit {
     private viaggioRouteService: ViaggioRouteService,private spinnerService : NgxSpinnerService,
      private companyService: CompanyService,private matDialog : MatDialog,
      private vectorService: VectorService, private affBookRoute: AffituarioPrenotaRouteService) {
-
-
      }
 
   ngOnInit(): void {
@@ -55,28 +53,32 @@ export class HistoryComponent implements OnInit {
 
  dateDiffInDays(dat:any) {
     // Discard the time and time-zone information.
-
-    const a=new Date();
-    const date=new Date(dat);
-    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-    const utc2 = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
-
-    if( Math.floor((utc2 - utc1) / _MS_PER_DAY) >=1 ){
-      console.log( Math.floor((utc2 - utc1) / _MS_PER_DAY))
-      return true;
-
-    }
-    else{
-      console.log( Math.floor((utc2 - utc1) / _MS_PER_DAY))
-      return false;
-    }
+    if(dat == null){return false;}
+    const now=new Date();
+    const maxWithDrawl=new Date(dat);
+    if(now < maxWithDrawl)return true;
+    else return false;
 
   }
 
-  deleteBooking(id:number){
-    this.affBookRoute.deleteBooking(id).toPromise().then(
-      deleted=>{console.log(deleted);   this.openModal("Your cancellation request has been realized");}
+
+  deleteBooking( item: ViaggioInfo){
+
+    this.spinnerService.show();
+
+    this.affBookRoute.deleteBooking(item.bookingId).toPromise().then(
+      deleted=>{console.log(deleted);
+        this.viaggioRouteService.updateCapacity(item.avaibleCapacityViaggio+item.bookedCapacity,item.idViaggio_Route).toPromise().then(
+          fatto=>{
+            console.log(fatto)
+            this.spinnerService.hide();
+            this.openModal("Your cancellation request has been realized");
+
+          }
+        )
+    }
     )
+
 
   }
 
@@ -100,11 +102,13 @@ export class HistoryComponent implements OnInit {
         // all routes, the company, the vector of that travel
         for (let i=0 ; i< bookingList.length;i++){
           let viaggioInfo: ViaggioInfo={} as ViaggioInfo;
+          viaggioInfo.idViaggio_Route=bookingList[i].viaggioRouteId;
           viaggioInfo.bookedCapacity=bookingList[i].bookedCapacity;
           viaggioInfo.bookingId=bookingList[i].id;
           this.viaggioRouteService.getById(bookingList[i].viaggioRouteId).toPromise().then(
             viaggioRoutes=>{
               viaggioInfo.avaibleCapacityViaggio=viaggioRoutes.availableCapacity;
+              viaggioInfo.maximum_WithDrawl=viaggioRoutes.maximumWithdrawal;
               viaggioInfo.startDateViaggio=viaggioRoutes.startDate;
               viaggioInfo.endDateViaggio=viaggioRoutes.endDate;
               this.routeService.getById(viaggioRoutes.routeId).toPromise().then(

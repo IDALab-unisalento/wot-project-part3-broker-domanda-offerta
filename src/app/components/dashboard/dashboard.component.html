@@ -1,51 +1,390 @@
 <app-nav-bar></app-nav-bar>
+<body>
+  <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
+
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 
+<div class="col-md-4 col-sm-6 content-card" style="margin-left: 300px; margin-top: 200px;"*ngIf="!show">
+  <div class="card-big-shadow" style="width: 1000px;">
+      <div class="card card-just-text" data-background="color" data-color="blue" data-radius="none" style="border-radius: 1.5rem;">
+          <div class="content">
+              <h6 class="category">Analytics</h6>
+              <h4 class="title"><a href="#">Admin Statistics</a></h4>
+              <p class="description">On this page, you admin can view the statistics regarding the data of all subscribers.
+                This data is sensitive, so please confirm if you want to see.  </p>
+              <button class="btn btn-info " style="border-radius: 1.5rem;" (click)="show2()"> Confirm</button>
 
-<div style="margin-left: 250px; padding-top: 50px;">
-  <button class="btn btn-primary" (click)="show2()"> Dashboard</button>
+            </div>
+      </div> <!-- end card -->
+  </div>
+</div>
+
+<div>
+
+  <h1  style="text-align: center;color :#216ba4" *ngIf="show"> Results' filtering by date</h1>
+  <mat-card class="datePicker" style="margin-left: 400px;"  *ngIf="show">
+
+
+      <div class="form-group">
+
+      <mat-form-field  appearance="fill" style="width: 100%;">
+        <mat-label style="font-size: 12px;">Start Date</mat-label>
+        <input  class="input-date" matInput required  [matDatepicker]="startDate"
+        [value]=""
+        name="startDate"
+        [(ngModel)]="ricerca.dateStart">
+        <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+        <mat-datepicker #startDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="form-group" style="margin-left: 50px;">
+
+      <mat-form-field  appearance="fill" style="width: 100%;">
+        <mat-label style="font-size: 12px;">End Date</mat-label>
+        <input  class="input-date" matInput required  [matDatepicker]="endDate"
+        [value]=""
+        name="endDate"
+        [(ngModel)]="ricerca.dateEnd">
+        <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+        <mat-datepicker #endDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <button
+    [disabled]="!ricerca.dateStart || !ricerca.dateEnd"
+    class="btn-danger search-button" (click)="search()">SEARCH </button>
+  </mat-card>
+  <br>
+  <button *ngIf="show"
+style="border-radius: 1.5rem;height: 40px; margin-left: 620px;"
+class="btn-info" (click)="recharge()">Back to the general view </button>
+<br><br>
+<br>
+<div *ngIf="searchView">
+
+  <h1 class="tit"> 1. The numbers of the selected period</h1>
+  <br><br>
+    <div fxLayout="row"  >
+      <div fxFlex="57" >
+
+           <mat-card style="position: relative; left: 350px;" class="numbers">
+
+            <ul class="info">
+              <li >Renter reservations : <a>{{bookingsRicerca}}</a></li>
+              <li >Kg booked by renters : <a>{{KgRicerca}} Kg</a></li>
+              <li >Money earned : <a>{{soldiRicerca.toFixed(1)}} $</a></li>
+              <li >Offers added : <a>{{offerteRicerca}} </a></li>
+              <li >Subscribers : <a>{{subscribersRicerca}} </a></li>
+
+            </ul>
+
+           </mat-card>
+          </div>
+        </div>
+      </div>
+  <div style="margin-left: 220px; padding-top: 50px;">
+<mat-card *ngIf="show && !searchView" style="width: 1050px;">
+
+  <h1 class="tit"> 1. SIGN-UP TREND</h1>
 
 <highcharts-chart
-  style="width: 100%; height: 400px;" *ngIf="show"
+  style="width: 100%; height: 500px;"
 
   [Highcharts]="Highcharts"
   [options]="chartOptions"
 
 ></highcharts-chart>
+</mat-card>
+
+<br>
+
+
+</div>
+<div style="margin-left: 100px;margin-right: 50px;" *ngIf="show && !searchView" >
+  <br>
+  <br>
+<h1 class="tit" *ngIf="show &&!searchView " > 2. MONTHLY TREND</h1>
+<br><br>
+<div style="margin-left: 340px;margin-right: 340px;" *ngIf="show" >
+
+<mat-card style="border-radius : 1.5rem ;background: rgb(191, 215, 255);">
+  <h1 class="font-weight-bold text-center justify-content-center ">{{entireActualMonth}} Trend *</h1>
+</mat-card>
+</div>
+  <br><br>
+
+
+<div fxLayout="row" fxLayoutAlign="space between center" fxLayoutGap="20px" class="stats cards">
+  <mat-card fxFlex="24"  >
+    <div class="text" style="position: relative; top: -5px;" >
+      <h4>New users</h4>
+
+      <span class="total" > +{{this.newUserMiniChartData[3]}}</span>
+
+      <span>
+        <mat-icon color="primary" *ngIf="newUserIncrement >= 0"> trending_up</mat-icon>
+        <mat-icon color="primary" style="color: red;"*ngIf="newUserIncrement < 0"> trending_down</mat-icon>
+
+      </span>
+      <span class="description"
+      [ngClass]="{'text-danger': newUserIncrement < 0}"
+      >
+          &nbsp;{{newUserIncrement}}%
+      </span>
+      <span style="font-size: 14px;"  *ngIf="newUserIncrement >= 0"> increment *</span>
+      <span style="font-size: 14px;"  *ngIf="newUserIncrement < 0"> decrement *</span>
+
+    </div>
+    <highcharts-chart style=" display : block;height: 120px; width: 100%;"
+    [Highcharts]="Highcharts2"
+    [options]="miniChartOprions"
+
+  ></highcharts-chart>  </mat-card>
+  <mat-card fxFlex="24">
+    <div class="text" style="padding-bottom: 5px; position: relative; top: -5px;" >
+      <h4>Bookings</h4>
+
+      <span class="total" > +{{this.bookingDatiFinestra[3]}}</span>
+
+      <span>
+        <mat-icon color="primary" *ngIf="bookingIncrement >= 0"> trending_up</mat-icon>
+        <mat-icon color="primary" style="color: red;"*ngIf="bookingIncrement < 0"> trending_down</mat-icon>
+
+      </span>
+      <span class="description"
+      [ngClass]="{'text-danger': bookingIncrement < 0}"
+      >
+        &nbsp;{{bookingIncrement}} %
+      </span>
+      <span style="font-size: 14px;" *ngIf="bookingIncrement >= 0"> increment *</span>
+      <span style="font-size: 14px;"  *ngIf="bookingIncrement < 0"> decrement *</span>
+
+    </div>
+    <highcharts-chart style=" display : block;height: 120px; width: 100%; "
+
+    [Highcharts]="Highcharts2"
+    [options]="miniChartOptions2"
+
+  ></highcharts-chart>
+  </mat-card>
+  <mat-card fxFlex="24">
+    <div class="text" style="padding-bottom: 5px; position: relative; top: -5px;" >
+      <h4>Money handled</h4>
+
+      <span class="total" style="font-size: 30px;"> +{{this.incassiFinestra[3].toFixed(1)}} $</span>
+
+      <span>
+        <mat-icon color="primary" *ngIf="incassiIncrement >= 0"> trending_up</mat-icon>
+        <mat-icon color="primary" style="color: red;"*ngIf="incassiIncrement < 0"> trending_down</mat-icon>
+
+      </span>
+      <span class="description"
+      [ngClass]="{'text-danger': incassiIncrement < 0}"
+      >
+        &nbsp;  {{incassiIncrement}} %
+      </span>
+    </div>
+    <highcharts-chart style=" display : block;height: 120px; width: 100%;"
+
+    [Highcharts]="Highcharts"
+    [options]="miniChartOptions3"
+
+  ></highcharts-chart>
+  </mat-card>
+  <mat-card fxFlex="24">
+    <div class="text" style="padding-bottom: 5px; position: relative; top: -5px;" >
+      <h4>kg of packages handled</h4>
+
+      <span class="total" style="font-size: 30px;"> +{{this.KgFinestra[3]}} Kg</span>
+
+      <span>
+        <mat-icon color="primary" *ngIf="kgIncrement >= 0"> trending_up</mat-icon>
+        <mat-icon color="primary" style="color: red;"*ngIf="kgIncrement < 0"> trending_down</mat-icon>
+
+      </span>
+      <span class="description"
+      [ngClass]="{'text-danger': kgIncrement < 0}"
+      >
+        &nbsp;  {{kgIncrement}} %
+      </span>
+    </div>
+    <highcharts-chart
+    style=" display : block;height: 120px; width: 100%; "
+    [Highcharts]="Highcharts"
+    [options]="miniChartOptions4"
+
+  ></highcharts-chart>
+  </mat-card>
+
 
 </div>
 
-<div style="margin-left: 250px; padding-top: 50px;">
+<label style="color: rgb(186, 183, 183); margin-left: 15px;margin-top: 15px;"> * Compared to the last month</label>
 
-  <highcharts-chart
-  style="width: 100%; height: 400px;" *ngIf="show"
-  [Highcharts]="Highcharts2"
-  [options]="chartOptions2"
-
-></highcharts-chart>
+<br><br>
 
 </div>
 
+<h1 class="tit" *ngIf="show && !searchView" > 3. STATISTICS</h1>
+<h1 class="tit" *ngIf="show && searchView" > 2. STATISTICS</h1>
 
-<div style="margin-left: 250px; padding-top: 50px;">
+<br><br>
 
-  <highcharts-chart
-  style="width: 100%; height: 400px;" *ngIf="show"
-  [Highcharts]="Highcharts3"
-  [options]="chartOptions3"
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show">
 
-></highcharts-chart>
+  <div fxFlex="50" style="padding-left: 60px;" *ngIf="show && !searchView">
+  <mat-card style="width: 720px;
+  ">
+    <highcharts-chart
+    style="width: 100%; height: 500px;"
+    [Highcharts]="Highcharts2"
+    [options]="chartOptions2"
 
-</div>
-
-<div style="padding-top: 50px;display: flex; justify-content: flex-end;">
-
-  <highcharts-chart
-  style="width: 100%; height: 400px;" *ngIf="show"
+  ></highcharts-chart>
+</mat-card>
+  </div>
+  <div fxFlex="42"  >
+    <mat-card style="width: 500px; height : 430px">
+    <highcharts-chart
+  style="width: 100%; height: 400px; position: relative;"
   [Highcharts]="pie"
   [options]="pieOptions"
 
 ></highcharts-chart>
+</mat-card>
+  </div>
+
+</div>
+<br>
+
+<div style=" padding-top: 50px; display: flex; justify-content: center; padding-bottom: 60px;" *ngIf="show && !searchView">
+<mat-card >
+  <header style="display: flex; justify-content: center;">
+    <button-group>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='Jan'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('Jan')">Jan</button>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='Feb'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('Feb')">Feb</button>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='Mar'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('Mar')">Mar</button>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='Apr'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('Apr')">Apr</button>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='May'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('May')">May</button>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='Jun'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('Jun')">Jun</button>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='Jul'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('Jul')">Jul</button>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='Aug'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('Aug')">Aug</button>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='Sep'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('Sep')">Sep</button>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='Oct'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('Oct')">Oct</button>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='Nov'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('Nov')">Nov</button>
+      <button
+      [ngClass]="{'bg-secondary text-white': actualMonth=='Dec'}"
+      class="btn btn-outline-secondary" (click)="setActualMonth('Dec')">Dec</button>
+
+
+    </button-group>
+  </header>
+  <highcharts-chart
+  style="width: 100%; height: 1000px;"
+  [Highcharts]="Highcharts3"
+  [options]="chartOptions3"
+
+>
+</highcharts-chart>
+</mat-card>
 
 </div>
 
+
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show && !searchView">
+  <div fxFlex="50" style="padding-left: 120px;">
+
+  <mat-card *ngIf="show" style="width: 650px;" >
+    <highcharts-chart
+      style="width: 100%; height: 500px;"
+
+      [Highcharts]="Highcharts"
+      [options]="bubbleChart"
+
+    ></highcharts-chart>
+    </mat-card>
+    </div>
+
+    <div fxFlex="30" style="position: relative; left: -160px;">
+
+      <mat-card *ngIf="show" style="width: 450px;" >
+        <highcharts-chart
+          style="width: 100%; height: 300px;"
+
+          [Highcharts]="Highcharts"
+          [options]="allStatsChartOptions"
+
+        ></highcharts-chart>
+        </mat-card>
+        </div>
+    </div>
+    <br><br>
+
+
+    <h1 class="tit" *ngIf="show && !searchView" > 4. GEOGRAPHICAL TREND</h1>
+    <h1 class="tit" *ngIf="show && searchView" > 3. GEOGRAPHICAL TREND</h1>
+
+    <br>
+<div fxLayout="row" style="margin-left: 400px;" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show">
+
+  <mat-card>
+    <div class="row">
+
+    <highcharts-chart
+
+      [Highcharts]="Highcharts"
+      [options]="mapOptions"
+
+    ></highcharts-chart>
+  </div>
+  <div class="row te" style="margin-left: 50px;">
+    <br>
+      <ul >
+        <li *ngIf="italiaCount != 0"> Italy : {{this.italiaCount}}</li>
+        <li  *ngIf="russiaCount != 0"> Russia : {{this.russiaCount}}</li>
+        <li  *ngIf="franciaCount != 0"> France : {{this.franciaCount}}</li>
+        <li  *ngIf="usaCount != 0"> USA : {{this.usaCount}}</li>
+        <li  *ngIf="regnoUnitoCount != 0"> United Kingdom : {{this.regnoUnitoCount}}</li>
+        <li  *ngIf="spagnaCount != 0"> Spain : {{this.spagnaCount}}</li>
+        <li  *ngIf="indiaCount != 0"> India : {{this.indiaCount}}</li>
+        <li  *ngIf="canadaCount != 0"> Canada : {{this.canadaCount}}</li>
+        <li  *ngIf="cinaCount != 0"> China : {{this.cinaCount}}</li>
+        <li  *ngIf="giapponeCount != 0"> Japan : {{this.giapponeCount}}</li>
+        <li  *ngIf="greciaCount != 0"> Greece : {{this.greciaCount}}</li>
+        <li  *ngIf="svizzeraCount != 0"> Switzerland : {{this.svizzeraCount}}</li>
+        <li  *ngIf="germaniaCount != 0"> Germany : {{this.germaniaCount}}</li>
+        <li  *ngIf="portogalloCount != 0"> Portugal : {{this.portogalloCount}}</li>
+
+
+      </ul>
+  </div>
+
+    </mat-card>
+
+    </div>
+    <br><br><br>
+
+</div>
+
+</body>
