@@ -20,8 +20,8 @@ import { AffittuarioPrenotaViaggioRoute } from 'src/app/models/affittuario-preno
 import { AffituarioPrenotaRouteService } from 'src/app/services/affituario-prenota-route.service';
 import { Affittuario } from '../../models/affittuario';
 import {Chart} from 'chart.js';
-import { ChartsModule } from 'ng2-charts/ng2-charts';
-
+import { ChartDataSets, ChartOptions } from 'chart.js';
+import { Color, Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-affittuario-analitics',
@@ -48,40 +48,117 @@ export class AffittuarioAnaliticsComponent implements OnInit {
        ''
       ]
     }];
-
-
-
     doughnutChartLabelsVector: string[]=[];
     doughnutChartDataVector: number[] = []
    donutColorsVector = [
     {
       backgroundColor: [
        ''
-      ],
+      ],}];
+
+    data:number[]=[0,0,0,0,0,0,0,0,0,0,0,0];
+    filterYear:number=new Date().getFullYear();
 
 
-    }];
+    lineChartData: ChartDataSets[] = [
+      { data:this.data, label: 'Booking trend of '+this.filterYear }
+    ];
+    lineChartLabels: Label[] = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'Dicember'
+    ];
 
+    lineChartColors: Color[] = [
+      {
+        borderColor: '#5677fc',
+        pointHoverBorderWidth:25,
+        pointBorderWidth:4,
+
+
+      }
+    ];
+    show=false;
 
 
   constructor(private viaggioService: ViaggioService, private routeService: RouteService,
     private viaggioRouteService: ViaggioRouteService,private spinnerService : NgxSpinnerService,
      private companyService: CompanyService,private matDialog : MatDialog,
-     private vectorService: VectorService, private affBookRoute: AffituarioPrenotaRouteService) { }
+     private vectorService: VectorService, private affBookRoute: AffituarioPrenotaRouteService) {
+
+      }
 
   ngOnInit(): void {
     this.loggedUser=JSON.parse(String(localStorage.getItem('loggedUser')));
     this.loadViaggioInfo();
-    setTimeout(()=>{this.buildDataForChart();},1200);
+    setTimeout(()=>{ this.buildDataForChart(this.filterYear);},1200);
     this.spinnerService.show();
     setTimeout(() => {
       /** spinner ends after 1500 milliseconds */
      this.spinnerService.hide()
-    }, 1200);
+    }, 1800);
+  }
+
+  reset(){}
+  applyFilter(){
+    this.data=[0,0,0,0,0,0,0,0,0,0,0,0];
+    let year=this.filterYear;
+    for(let i=0; i<this.allViaggioInfo.length;i++){
+      let d1=new Date(this.allViaggioInfo[i].prenotationDate);
+      if(d1.getFullYear()==year && d1.getMonth()==0){
+        this.data[0]++;
+      }
+      if(d1.getFullYear()==year && d1.getMonth()==1){
+        this.data[1]++;
+      }
+      if(d1.getFullYear()==year && d1.getMonth()==2){
+        this.data[2]++;
+      }
+      if(d1.getFullYear()==year && d1.getMonth()==3){
+        this.data[3]++;
+      }
+      if(d1.getFullYear()==year && d1.getMonth()==4){
+        this.data[4]++;
+      }
+
+      if(d1.getFullYear()==year && d1.getMonth()==5){
+        this.data[5]++;
+      }
+      if(d1.getFullYear()==year && d1.getMonth()==6){
+        this.data[6]++
+      }
+      if(d1.getFullYear()==year && d1.getMonth()==7){
+        this.data[7]++;
+      }
+      if(d1.getFullYear()==year && d1.getMonth()==8){
+        this.data[8]++;
+      }
+      if(d1.getFullYear()==year && d1.getMonth()==9){
+        this.data[9]++;
+      }
+      if(d1.getFullYear()==year && d1.getMonth()==10){
+        this.data[10]++;
+      }
+      if(d1.getFullYear()==year && d1.getMonth()==11){
+        this.data[11]++;
+      }
+    }
+    this.lineChartData[0].data=this.data;
+    this.lineChartData[0].label='Booking trend of '+this.filterYear
+
+
   }
 
   loadViaggioInfo(){
-
     this.affBookRoute.getByAffittuario(this.loggedUser.id).toPromise().then(
       bookingList=>{
         // for each travels , get :
@@ -90,6 +167,7 @@ export class AffittuarioAnaliticsComponent implements OnInit {
           let viaggioInfo: ViaggioInfo={} as ViaggioInfo;
           viaggioInfo.bookedCapacity=bookingList[i].bookedCapacity;
           viaggioInfo.bookingId=bookingList[i].id;
+          viaggioInfo.prenotationDate=bookingList[i].prenotationDate;
           this.viaggioRouteService.getById(bookingList[i].viaggioRouteId).toPromise().then(
             viaggioRoutes=>{
               viaggioInfo.avaibleCapacityViaggio=viaggioRoutes.availableCapacity;
@@ -125,7 +203,7 @@ export class AffittuarioAnaliticsComponent implements OnInit {
     )
   }
 
-  buildDataForChart(){
+  buildDataForChart(year:number){
     this.dataRouteChart=[];
     this.dataVectorChart=[];
     console.log(this.allViaggioInfo)
@@ -159,9 +237,52 @@ export class AffittuarioAnaliticsComponent implements OnInit {
         this.doughnutChartDataVector[i]=this.resultVector[i].count
         this.donutColorsVector[0].backgroundColor[i]=this.getRandomColor();
       }
+      //code for line cahrt
+      for(let i=0; i<this.allViaggioInfo.length;i++){
+        let d1=new Date(this.allViaggioInfo[i].prenotationDate);
+        if(d1.getFullYear()==year && d1.getMonth()==0){
+          this.data[0]++;
+        }
+        if(d1.getFullYear()==year && d1.getMonth()==1){
+          this.data[1]++;
+        }
+        if(d1.getFullYear()==year && d1.getMonth()==2){
+          this.data[2]++;
+        }
+        if(d1.getFullYear()==year && d1.getMonth()==3){
+          this.data[3]++;
+        }
+        if(d1.getFullYear()==year && d1.getMonth()==4){
+          this.data[4]++;
+        }
+
+        if(d1.getFullYear()==year && d1.getMonth()==5){
+          this.data[5]++;
+        }
+        if(d1.getFullYear()==year && d1.getMonth()==6){
+          this.data[6]++
+        }
+        if(d1.getFullYear()==year && d1.getMonth()==7){
+          this.data[7]++;
+        }
+        if(d1.getFullYear()==year && d1.getMonth()==8){
+          this.data[8]++;
+        }
+        if(d1.getFullYear()==year && d1.getMonth()==9){
+          this.data[9]++;
+        }
+        if(d1.getFullYear()==year && d1.getMonth()==10){
+          this.data[10]++;
+        }
+        if(d1.getFullYear()==year && d1.getMonth()==11){
+          this.data[11]++;
+        }
+      }
+      this.show=true;
+      console.log(this.data)
+
 
   }
-
 
   getRandomColor() {
     var letters = '0123456789ABCDEF';

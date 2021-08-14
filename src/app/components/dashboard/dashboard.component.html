@@ -19,7 +19,7 @@
   </div>
 </div>
 
-<div>
+<div style="margin-top:2%;">
 
   <h1  style="text-align: center;color :#216ba4" *ngIf="show"> Results' filtering by date</h1>
   <mat-card class="datePicker" style="margin-left: 25%;"  *ngIf="show">
@@ -57,7 +57,7 @@
   <button *ngIf="show"
   style="border-radius: 30px; margin-left:40%;"
   class="btn btn-info" (click)="recharge()">Back to the general view </button>
-  <br><br><br><br>
+  <br><br>
 <div *ngIf="searchView">
 
   <h1 class="tit"> 1. The numbers of the selected period</h1>
@@ -80,7 +80,7 @@
           </div>
         </div>
       </div>
-  <div style="margin-left: 220px; padding-top: 50px;">
+  <div style="margin-left:13%; padding-top: 50px;">
 <mat-card *ngIf="show && !searchView" style="width: 1050px;">
 
   <h1 class="tit"> 1. SIGN-UP TREND</h1>
@@ -317,7 +317,7 @@
 
 
   <highcharts-chart class="col" *ngIf="show"
-    style=" margin-left:2%;border:1px solid pink; border-radius:30px; margin-right:2%;"
+    style=" margin-left:2%;border:1px solid rgb(0, 255, 255); border-radius:30px; margin-right:2%;"
 
     [Highcharts]="Highcharts"
     [options]="bubbleChart"
@@ -344,7 +344,7 @@
     <h1 class="tit" *ngIf="show && searchView" > 3. GEOGRAPHICAL TREND</h1>
 
     <br>
-<div fxLayout="row" style="margin-left: 400px;" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show">
+<div fxLayout="row" style="margin-left: 22%" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show">
 
   <mat-card>
     <div class="row">

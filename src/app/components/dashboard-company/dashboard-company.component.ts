@@ -7,6 +7,8 @@ import { User } from 'src/app/models/user';
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { VectorRate } from 'src/app/models/vector-rate';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 import { Vector } from 'src/app/models/vector';
 import HC_exporting from 'highcharts/modules/exporting'
 import HC3D from 'highcharts/highcharts-3d'
@@ -251,11 +253,12 @@ export class DashboardCompanyComponent implements OnInit {
                private viaggioRouteService : ViaggioRouteService,
                private vectorService  :VectorService,
                private bookingService: AffituarioPrenotaRouteService,
-               private routeService : RouteService
+               private routeService : RouteService,
+               private spinnerService : NgxSpinnerService
 
                ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.counters = [];
     this.totalVectorsOffer = 0;
     this.myVectors = [];
@@ -269,6 +272,8 @@ export class DashboardCompanyComponent implements OnInit {
     this.countersBooked = [];
     this.myVectorsBooked2 = [];
     this.countersBooked2 = [];
+    this.spinnerService.show();
+    setTimeout(()=>{this.spinnerService.hide();},3000)
     this.loggedUser = JSON.parse(String(localStorage.getItem("loggedUser")));
     var now = new Date();
     this.entireActualMonth = this.switcherEntireMonth(now.getMonth())
@@ -279,6 +284,8 @@ export class DashboardCompanyComponent implements OnInit {
     this.getIncassiPerGiorno();
     this.getAllCities();
     this.getBookingsCities();
+
+
 
   }
 
@@ -480,8 +487,8 @@ export class DashboardCompanyComponent implements OnInit {
     });
   }
 
-
   show2(){
+
   this.nMyBookings = this.JanBook + this.FebBook + this.MarBook + this.AprBook + this.MayBook + this.JunBook + this.JulBook + this.AugBook + this.SepBook + this.OctBook + this.NovBook + this.DecBook;
   this.show = !this.show;
   this.chartOptions =  {
@@ -2299,9 +2306,10 @@ aggiornaConteggio2( nation : string) {
 
 }
 
-search(){
+ search(){
   this.aggiornaPie();
   this.getNumeri();
+  setTimeout(()=>{},2000)
 }
 
   async aggiornaPie(){
@@ -2358,7 +2366,7 @@ search(){
     this.germaniaCount2  = 0;
     this.portogalloCount2  = 0;
 
-    await new Promise<void> ((resolve, reject) => {
+  await new Promise<void> ((resolve, reject) => {
 
     this.viaggioService.getByCompanyId(this.loggedUser.id).subscribe(async viaggi =>{
 
@@ -2370,6 +2378,7 @@ search(){
           var date : Date = new Date(viaggioRoute[viaggioRoute.length - 1].endDate)
           if(date  >= this.ricerca.dateStart && date <= this.ricerca.dateEnd ){
             await new Promise<void> ((resolve, reject) => {
+
               this.vectorService.getById(viaggio.vectorId).subscribe(vector=>{
 
                 var toAdd : boolean = true;
@@ -2409,8 +2418,6 @@ search(){
                 resolve();
               });
             });
-
-
           }
           resolve();
         })
@@ -2674,10 +2681,10 @@ search(){
     })
   })
 
-
-
+  this.spinnerService.show();
   setTimeout(()=>{
-    this.pieOptions= {
+
+  this.pieOptions= {
       chart: {
           type: 'pie',
           options3d: {
@@ -2755,7 +2762,6 @@ search(){
 
     }]
   }
-
 
   this.pieOptions3= {
     chart: {
@@ -2840,8 +2846,7 @@ search(){
   ]
   }
 
-
-this.mapOptions1 = {
+  this.mapOptions1 = {
   chart: {
     map: worldMap,
 
@@ -2984,7 +2989,8 @@ yAxis: {
     }
   ]
 };
-  },800);
+this.spinnerService.hide();
+},2000);
 
 }
 

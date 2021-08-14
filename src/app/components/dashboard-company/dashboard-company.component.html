@@ -1,5 +1,9 @@
+<div style="background-color: rgba(255, 255, 255, 0.87);">
+
+
 <app-nav-bar></app-nav-bar>
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" >
+  Loading... </p></ngx-spinner>
 
 
 <div class="col-md-4 col-sm-6 content-card" style="margin-left:15%"*ngIf="!show">
@@ -23,7 +27,7 @@
   <div  style="margin-left:10%" *ngIf="show" >
     <br><br>
     <h1  style="text-align: center;color :#216ba4"> Results' filtering by date</h1>
-    <mat-card  style="margin-left:15%"class="datePicker">
+    <mat-card  style="margin-left:12%"class="datePicker">
 
 
         <div class="form-group">
@@ -63,12 +67,12 @@
 
     <div *ngIf="searchView">
 
-      <h1 class="tit"> 1. The numbers of the selected period</h1>
+      <h1 class="tit" style="text-align: center;"> 1. The numbers of the selected period</h1>
       <br><br>
         <div fxLayout="row"  >
           <div fxFlex="57" >
 
-               <mat-card style="position: relative; left: 150px;" class="numbers">
+               <mat-card style="position: relative; left: 220px;" class="numbers">
 
                 <ul class="info">
                   <li >Renter reservations : <a>{{bookingsRicerca}}</a></li>
@@ -126,7 +130,7 @@
       <div class="text" style="padding-bottom: 5px; position: relative; top: -5px;" >
         <h4>Money handled</h4>
 
-        <span class="total" style="font-size: 30px;"> +{{this.incassiFinestra[3]}} $</span>
+        <span class="total" style="font-size: 30px;"> +{{this.incassiFinestra[3]|number:'1.2-2'}} $</span>
 
         <span>
           <mat-icon color="primary" *ngIf="incassiIncrement >= 0"> trending_up</mat-icon>
@@ -247,7 +251,7 @@ style="border: 1px solid rgb(169, 11, 231); border-radius: 30px; "
   [options]="pieOptions3"
 
 ></highcharts-chart>
-<h1 style="position: relative; top: -200px; text-align:center; font-family: sans-serif;" *ngIf="vectorBookedRate.length == 0"> No data in the selected period</h1>
+<h1 style="position: relative; top: -200px; text-align:center; font-family: sans-serif; margin-right:-2%;" *ngIf="vectorBookedRate.length == 0"> No data in the selected period</h1>
 
 
 
@@ -351,7 +355,7 @@ style="border: 1px solid rgb(255, 166, 0); border-radius: 30px; "
       ></highcharts-chart>
     </div>
     <div class="row">
-      <div class="col" style="margin-left: 1%; ">
+      <div class="col " style="margin-left: 1%; ">
         <br>
           <ul >
             <li *ngIf="italiaCount != 0"> Italy : {{this.italiaCount}}</li>
@@ -372,7 +376,7 @@ style="border: 1px solid rgb(255, 166, 0); border-radius: 30px; "
 
           </ul>
       </div>
-      <div class="col" style="margin-left: 1%; ">
+      <div class="col " style="margin-left: 1%; ">
         <br>
         <ul >
             <li *ngIf="italiaCount2 != 0"> Italy : {{this.italiaCount2}}</li>
@@ -398,6 +402,7 @@ style="border: 1px solid rgb(255, 166, 0); border-radius: 30px; "
   </div>
   <br>
   <br>
+  </div>
 
 
 

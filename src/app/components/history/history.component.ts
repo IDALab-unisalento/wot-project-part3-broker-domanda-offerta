@@ -20,16 +20,25 @@ import { AffittuarioPrenotaViaggioRoute } from 'src/app/models/affittuario-preno
 import { AffituarioPrenotaRouteService } from 'src/app/services/affituario-prenota-route.service';
 import { Affittuario } from '../../models/affittuario';
 import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component';
+import { FormControl } from '@angular/forms';
 const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+import 'moment/locale/it';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
 
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
-  styleUrls: ['./history.component.scss']
+  styleUrls: ['./history.component.scss'],
+  providers:[
+    {provide: MAT_DATE_LOCALE, useValue: 'it'}
+  ]
 })
 export class HistoryComponent implements OnInit {
   allViaggioInfo: ViaggioInfo[]=[];
   loggedUser: Affittuario={} as Affittuario;
+  filterDate: any;
+
 
   constructor( private viaggioService: ViaggioService, private routeService: RouteService,
     private viaggioRouteService: ViaggioRouteService,private spinnerService : NgxSpinnerService,
@@ -44,12 +53,40 @@ export class HistoryComponent implements OnInit {
     setTimeout(() => {
       /** spinner ends after 1500 milliseconds */
      this.spinnerService.hide()
-     console.log(this.allViaggioInfo)
-    }, 1200);
+     console.log(this.allViaggioInfo);
+    }, 1500);
+    setTimeout(()=>{
+      this.allViaggioInfo.sort((x, y) =>- +new Date(x.prenotationDate)+  +new Date(y.prenotationDate));
+    },1000)
 
   }
 
-  show=false;
+  applyFilter(){
+    if(this.filterDate==null){this.reset();}
+    else{
+      this.allViaggioInfo=[];
+      this.loadViaggioInfo();
+      this.spinnerService.show();
+      setTimeout(()=>{
+        let filterAllViaggioInfo: ViaggioInfo[]=[];
+      this.allViaggioInfo.forEach(element => {
+        let d1= new Date(element.prenotationDate);
+
+        let d2= new Date(Date.UTC(this.filterDate.getFullYear(), this.filterDate.getMonth(), this.filterDate.getDate(),
+        this.filterDate.getHours(), this.filterDate.getMinutes(), this.filterDate.getSeconds() ))
+
+        if(d1 <d2){
+          filterAllViaggioInfo.push(element);
+        }
+      });
+      this.allViaggioInfo=filterAllViaggioInfo;
+      this.allViaggioInfo.sort((x, y) =>- +new Date(x.prenotationDate)+  +new Date(y.prenotationDate));
+      this.spinnerService.hide()
+
+
+      },1000)
+    }
+  }
 
  dateDiffInDays(dat:any) {
     // Discard the time and time-zone information.
@@ -105,6 +142,7 @@ export class HistoryComponent implements OnInit {
           viaggioInfo.idViaggio_Route=bookingList[i].viaggioRouteId;
           viaggioInfo.bookedCapacity=bookingList[i].bookedCapacity;
           viaggioInfo.bookingId=bookingList[i].id;
+          viaggioInfo.prenotationDate=bookingList[i].prenotationDate;
           this.viaggioRouteService.getById(bookingList[i].viaggioRouteId).toPromise().then(
             viaggioRoutes=>{
               viaggioInfo.avaibleCapacityViaggio=viaggioRoutes.availableCapacity;
@@ -138,7 +176,20 @@ export class HistoryComponent implements OnInit {
           )
        }
       }
+
     )
+  }
+
+  reset(){
+    this.allViaggioInfo=[];
+    this.loadViaggioInfo();
+    this.spinnerService.show();
+    setTimeout(()=>{
+      this.spinnerService.hide()
+
+      this.allViaggioInfo.sort((x, y) =>- +new Date(x.prenotationDate)+  +new Date(y.prenotationDate));
+    },1000)
+    this.filterDate = null;
   }
 
 }

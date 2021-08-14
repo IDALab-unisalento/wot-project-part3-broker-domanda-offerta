@@ -16,5 +16,6 @@ export interface ViaggioInfo {
   bookedCapacity:number;
   bookingId:number;
   maximum_WithDrawl: Date;
+  prenotationDate: Date;
 
 }
