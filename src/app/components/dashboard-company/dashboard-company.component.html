@@ -223,15 +223,15 @@
 <br> <br> <br>
  <div class="container">
 <div class="row" *ngIf="show">
+  <div class="row"  *ngIf="vectorRate.length == 0 &&  vectorLicenseRate.length == 0" >
+    <h1 style=" font-family: sans-serif; margin-left:3%; text-align:center;">No data in the selected period</h1>
+  </div>
   <highcharts-chart  class="col"
   style=" margin-right:2%; border: 1px solid red; border-radius:30px; "
   [Highcharts]="Highcharts"
   [options]="pieOptions"
 
 ></highcharts-chart>
-<h1 style="position: relative; top: -200px; text-align:center; font-family: sans-serif;" *ngIf="vectorRate.length == 0"> No data in the selected period</h1>
-
-
 
 <highcharts-chart class="col"
 style="border: 1px solid rgb(169, 11, 231); border-radius: 30px; "
@@ -240,20 +240,18 @@ style="border: 1px solid rgb(169, 11, 231); border-radius: 30px; "
   [options]="pieOptions2"
 
 ></highcharts-chart>
-<h1 style="position: relative; top: -200px; text-align:center; font-family: sans-serif;" *ngIf="vectorLicenseRate.length == 0"> No data in the selected period</h1>
 
 </div>
 <div class="row"  *ngIf="show" style="margin-top:2%;">
-
+  <div class="row"  *ngIf="vectorBookedRate.length == 0 && vectorLicenseBookedRate.length  == 0" >
+    <h1 style=" font-family: sans-serif; margin-top:3%; margin-left:3%; text-align:center;">No data in the selected period</h1>
+  </div>
   <highcharts-chart  class="col"
   style=" margin-right:2%;  border: 1px solid rgb(30, 255, 0); border-radius: 30px;"
   [Highcharts]="Highcharts"
   [options]="pieOptions3"
 
 ></highcharts-chart>
-<h1 style="position: relative; top: -200px; text-align:center; font-family: sans-serif; margin-right:-2%;" *ngIf="vectorBookedRate.length == 0"> No data in the selected period</h1>
-
-
 
 <highcharts-chart class="col"
 style="border: 1px solid rgb(255, 166, 0); border-radius: 30px; "
@@ -262,9 +260,6 @@ style="border: 1px solid rgb(255, 166, 0); border-radius: 30px; "
   [options]="pieOptions4"
 
 ></highcharts-chart>
-<h1 style="position: relative; top: -200px; text-align:center; font-family: sans-serif;" *ngIf="vectorLicenseBookedRate.length == 0"> No data in the selected period</h1>
-
-
 </div>
 
  </div>
@@ -334,8 +329,8 @@ style="border: 1px solid rgb(255, 166, 0); border-radius: 30px; "
 
   </div>
 </div>
-  <h1  style="margin-top: 2%;" class="tit" *ngIf="show && !searchView">5. GEOGRAPHICAL REPORT</h1>
-  <h1  style="margin-top: 2%;" class="tit" *ngIf="searchView">3. GEOGRAPHICAL REPORT</h1>
+  <h1  style="margin-top: 3%;" class="tit" *ngIf="show && !searchView">5. GEOGRAPHICAL REPORT</h1>
+  <h1  style="margin-top: 3%;" class="tit" *ngIf="searchView">3. GEOGRAPHICAL REPORT</h1>
 
   <br>
 
