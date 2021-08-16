@@ -1310,6 +1310,7 @@ yAxis: {
             this.counters.push(1);
             this.totalVectorsOffer = this.totalVectorsOffer + 1;
 
+
           }
 
 
