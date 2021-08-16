@@ -248,6 +248,12 @@ export class DashboardCompanyComponent implements OnInit {
   KgRicerca : number = 0;
   bookingsRicerca : number = 0;
 
+  end1=false
+  end2=false
+  end3=false
+  end4=false
+  end5=false;
+
 
   constructor( private viaggioService : ViaggioService,
                private viaggioRouteService : ViaggioRouteService,
@@ -258,7 +264,7 @@ export class DashboardCompanyComponent implements OnInit {
 
                ) { }
 
-  async ngOnInit(): Promise<void> {
+   ngOnInit() {
     this.counters = [];
     this.totalVectorsOffer = 0;
     this.myVectors = [];
@@ -272,8 +278,7 @@ export class DashboardCompanyComponent implements OnInit {
     this.countersBooked = [];
     this.myVectorsBooked2 = [];
     this.countersBooked2 = [];
-    this.spinnerService.show();
-    setTimeout(()=>{this.spinnerService.hide();},3000)
+
     this.loggedUser = JSON.parse(String(localStorage.getItem("loggedUser")));
     var now = new Date();
     this.entireActualMonth = this.switcherEntireMonth(now.getMonth())
@@ -284,6 +289,7 @@ export class DashboardCompanyComponent implements OnInit {
     this.getIncassiPerGiorno();
     this.getAllCities();
     this.getBookingsCities();
+
 
 
 
@@ -345,6 +351,8 @@ export class DashboardCompanyComponent implements OnInit {
     });
 
     });
+    console.log("all cities")
+    this.end1=true;
     resolve();
   });
 
@@ -414,6 +422,8 @@ export class DashboardCompanyComponent implements OnInit {
       }
 
     });
+    console.log(" GET booking cities")
+    this.end2=true;
     resolve();
     })
   })
@@ -481,7 +491,8 @@ export class DashboardCompanyComponent implements OnInit {
                this.kgIncrement = 100;
 
         });
-
+        console.log("incassi per giorno")
+        this.end3=true
         resolve();
       });
     });
@@ -1348,6 +1359,8 @@ yAxis: {
 
     });
     });
+    console.log("ofoerta pubblicate")
+    this.end5=true;
     resolve()
   });
   }
@@ -1446,6 +1459,8 @@ yAxis: {
 
       }
   });
+  console.log("get booking")
+  this.end4=true;
       resolve();
   });
 });

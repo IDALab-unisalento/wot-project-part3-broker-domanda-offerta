@@ -14,7 +14,9 @@
               <h4 class="title"><a href="#">Company Statistics</a></h4>
               <p class="description">On this page, you company, can view the statistics regarding the data of your transactions.
                 This data is sensitive, so please confirm if you want to see.  </p>
-              <button class="btn btn-warning " style="border-radius: 1.5rem;" (click)="show2()"> Confirm</button>
+              <button class="btn btn-warning " style="border-radius: 1.5rem;"
+                *ngIf="end1 && end2 && end3 && end4 && end5"
+              (click)="show2()"> Confirm</button>
 
             </div>
       </div> <!-- end card -->
