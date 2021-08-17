@@ -1272,7 +1272,7 @@ yAxis: {
 
         await new Promise<void> ((resolve, reject) => {
         this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(viaggioRouteList=>{
-
+          console.log(viaggioRouteList)
           var date : Date = new Date(viaggioRouteList[0].startDate);
           var month : number = date.getMonth();
           this.getMese(month);
@@ -2723,6 +2723,7 @@ search(){
 
       }]
   }
+  console.log(this.vectorRate)
   this.pieOptions2 = {
     chart: {
         type: 'pie',
