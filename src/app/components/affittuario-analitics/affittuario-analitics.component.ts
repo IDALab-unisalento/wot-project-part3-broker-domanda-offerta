@@ -233,7 +233,7 @@ export class AffittuarioAnaliticsComponent implements OnInit {
   }, new Map).values()];
       console.log(this.resultVector);
       for(let i=0; i< this.resultVector.length;i++){
-        this.doughnutChartLabelsVector[i]=this.resultVector[i].name;
+        this.doughnutChartLabelsVector[i]=this.resultVector[i].name+" "+this.resultVector[i].licensePlate;
         this.doughnutChartDataVector[i]=this.resultVector[i].count
         this.donutColorsVector[0].backgroundColor[i]=this.getRandomColor();
       }

@@ -26,6 +26,8 @@
     <!--  vehicle name  -->
     <div class="input-group" style="padding-top: 3%;">
       <span class="input-group-addon">
+        <i class="fas fa-truck" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'tir'"></i>
+        <i class="fas fa-ship" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'nave'"></i>
         <i class="fas fa-truck"  *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'fiorino'"></i>
         <i class="fa fa-bus-alt" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'bus'"></i>
         <i class="fa fa-train" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'treno' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'train'"></i>

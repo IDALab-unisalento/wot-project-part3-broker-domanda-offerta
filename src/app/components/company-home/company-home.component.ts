@@ -812,9 +812,30 @@ async deleteViaggio(offer : Offer){
   var result = confirm('Are you sure you want to delete this trip?');
   if(result){
   this.spinnerService.show();
+// qui inizia il pezzo "pericoloso"
+console.log("cancello booking")
 
 await new Promise<void> ((resolve, reject) => {
 this.viaggioRouteService.getByViaggioId(offer.viaggioId).subscribe(async viaggioRoutes =>{
+
+  await new Promise<void>( (resolve,reject)=>{
+   viaggioRoutes.forEach( async viaggioRoute=>{
+     await this.bookingService.getByViaggioRouteId(viaggioRoute.id).toPromise().then(
+       booking=>{
+         booking.forEach(element => {
+           this.bookingService.deleteBooking(element.id).toPromise().then(data=>{})
+         });
+       }
+     )
+   })
+   resolve();
+  })
+// qui finiscel il pezzo "pericoloso", se qualcosa non va cancella questo pezzo di sopra e torni tutto ok
+
+
+
+
+  console.log("cancello viaggio-route")
 
   await new Promise<void> ((resolve, reject) => {
   viaggioRoutes.forEach(viaggioRoute => {
@@ -829,6 +850,7 @@ this.viaggioRouteService.getByViaggioId(offer.viaggioId).subscribe(async viaggio
 
   });
 
+  console.log("cancello viaggio")
 
     await new Promise<void> ((resolve, reject) => {
     this.viaggioService.delete(offer.viaggioId).subscribe(()=>{

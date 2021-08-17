@@ -41,11 +41,17 @@ export class AffittuarioHomeComponent implements OnInit {
       this.filterViaggioInfoLoader(filter);
       setTimeout(()=>{this.loadViaggioInfo(filter);},1200)
       console.log(this.filterViaggioInfo)
+      console.log("prima del cambio")
       console.log(this.allViaggioInfo)
+
+       console.log(this.allViaggioInfo)
 
       setTimeout(() => {
         /** spinner ends after 1500 milliseconds */
+        this.allViaggioInfo.sort((x:ViaggioInfo, y:ViaggioInfo) =>- +new Date(x.startDateViaggio)+
+        +new Date(y.startDateViaggio));
        this.spinnerService.hide()
+
       }, 1500);
 
 
@@ -349,12 +355,13 @@ export class AffittuarioHomeComponent implements OnInit {
             )
             this.allViaggioInfo.push(viaggioInfo)
             }
-
           }
         )
 
      }
      localStorage.removeItem('filter')
+     this.allViaggioInfo.sort((x:ViaggioInfo, y:ViaggioInfo) =>- +new Date(x.startDateViaggio)+
+        +new Date(y.startDateViaggio));
     }
     //quando il filtro non c'è mostrali tutti
     else {
@@ -410,7 +417,10 @@ export class AffittuarioHomeComponent implements OnInit {
             )
 
          }
+         this.allViaggioInfo.sort((x:ViaggioInfo, y:ViaggioInfo) =>- +new Date(x.startDateViaggio)+
+        +new Date(y.startDateViaggio));
         }
+
       )
     }
 

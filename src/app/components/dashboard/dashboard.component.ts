@@ -2560,8 +2560,7 @@ aggiornaConteggio( nation : string) {
     this.pieOptions = {
       chart: {
           type: 'pie',
-          width : 450,
-          heigth : 300,
+
           options3d: {
               enabled: true,
               alpha: 45,
@@ -2598,7 +2597,7 @@ aggiornaConteggio( nation : string) {
       }],
 
     }
-  },600);
+  },2000);
 }
 
 recharge(){
