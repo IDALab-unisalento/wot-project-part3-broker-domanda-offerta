@@ -64,7 +64,7 @@ class="btn-info" (click)="recharge()">Back to the general view </button>
   <h1 class="tit"> 1. The numbers of the selected period</h1>
   <br><br>
     <div fxLayout="row"  >
-      <div fxFlex="57" >
+      <div fxFlex="50" >
 
            <mat-card style="position: relative; left: 350px;" class="numbers">
 
@@ -242,14 +242,18 @@ class="btn-info" (click)="recharge()">Back to the general view </button>
   ></highcharts-chart>
 </mat-card>
   </div>
-  <div fxFlex="42"  >
+
+  <div fxFlex="42"
+  style="position: relative;"
+  [ngStyle]="{'left' : searchView ? '440px' : '0'}">
     <mat-card style="width: 500px; height : 430px">
     <highcharts-chart
-  style="width: 100%; height: 400px; position: relative;"
+  style="width: 100%; height: 400px;"
   [Highcharts]="pie"
   [options]="pieOptions"
 
 ></highcharts-chart>
+<h1 style="position: relative; top: -200px; left: 65px; font-family: sans-serif;" *ngIf="percentuali.length == 0"> No data in the selected period</h1>
 </mat-card>
   </div>
 

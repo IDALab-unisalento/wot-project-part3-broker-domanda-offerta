@@ -401,9 +401,9 @@ async addNewOffer(){
           this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
 
           viaggioRoute.startDate =  this.newOffer.startDate ;
-          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
+          viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
           if(this.newOffer.enableCancelation)
-            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
+            viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
 
            //end date
            this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
@@ -471,9 +471,9 @@ async addNewOffer(){
 
 
           viaggioRoute.startDate = this.newOffer.startDate ;
-          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+          viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate)
           if(this.newOffer.enableCancelation)
-            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
+            viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
 
            //end date
            this.newOffer.endDate.setHours(Number(String(this.newOffer.endTime).substring(0,2)));
@@ -544,9 +544,9 @@ async addNewOffer(){
           this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
 
           viaggioRoute.startDate = this.newOffer.startDate ;
-          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+          viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate)
           if(this.newOffer.enableCancelation)
-            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
+            viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
 
           //end date
             this.endDates[0].setHours(Number(String(this.endTimes[0]).substring(0,2)));
@@ -577,9 +577,9 @@ async addNewOffer(){
 
 
           viaggioRoute.startDate = this.startDates[i - 1];
-          viaggioRoute.maximumWithdrawal = this.convertDate(this.startDates[i - 1])
+          viaggioRoute.maximumBookingDate = this.convertBookingDate(this.startDates[i - 1])
           if(this.newOffer.enableCancelation)
-            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
+            viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
 
 
           if(i != this.treatsCity.length){
@@ -681,9 +681,9 @@ async addNewOffer(){
           this.newOffer.startDate.setMinutes(Number(String(this.newOffer.startTime).substring(3,5)));
 
           viaggioRoute.startDate = this.newOffer.startDate ;
-          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate)
+          viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate)
           if(this.newOffer.enableCancelation)
-            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
+            viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
 
 
           //end date
@@ -714,9 +714,9 @@ async addNewOffer(){
           this.startDates[i - 1].setMinutes(Number(String(this.startTimes[i - 1]).substring(3,5)));
 
           viaggioRoute.startDate = this.startDates[i - 1] ;
-          viaggioRoute.maximumWithdrawal = this.convertDate(this.startDates[i - 1]);
+          viaggioRoute.maximumBookingDate = this.convertBookingDate(this.startDates[i - 1]);
           if(this.newOffer.enableCancelation)
-            viaggioRoute.maximumBookingDate = this.convertBookingDate(this.newOffer.startDate);
+            viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
 
 
           if(i != this.treatsCity.length){
@@ -816,12 +816,20 @@ async deleteViaggio(offer : Offer){
 await new Promise<void> ((resolve, reject) => {
 this.viaggioRouteService.getByViaggioId(offer.viaggioId).subscribe(async viaggioRoutes =>{
 
-  await new Promise<void> ((resolve, reject) => {
-  viaggioRoutes.forEach(viaggioRoute => {
-    this.viaggioRouteService.delete(viaggioRoute).subscribe(()=>{
-      resolve();
+  await new Promise<void> (async (resolve, reject) => {
+    for (const viaggioRoute of viaggioRoutes) {
+    await new Promise<void> ((resolve, reject) => {
+    this.bookingService.getByViaggioRouteId(viaggioRoute.id).subscribe(async list => {
+
+      await new Promise<void> ((resolve, reject) => {
+      this.viaggioRouteService.delete(viaggioRoute).subscribe(()=>{
+        resolve();
+          });
         });
-      });
+      resolve();
+    });
+  });
+  }
     });
 
   resolve();
@@ -977,4 +985,5 @@ convertBookingDate(date : Date ) : Date{
 customTrackBy(index: number, obj: any): any {
   return index;
 }
+
 }

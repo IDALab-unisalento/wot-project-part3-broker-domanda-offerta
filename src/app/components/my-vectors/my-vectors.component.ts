@@ -105,10 +105,15 @@ addNewVector(){
     this.openModal();
   },error =>{
 
-    this.vectorService.save(this.newVector).subscribe(vector => {
+    this.vectorService.save(this.newVector).subscribe(async vector => {
+
+      await new Promise<void> ((resolve, reject) => {
 
       this.companyVectorService.save(this.me.id, vector.id).subscribe(data => {console.log(data)});
-      this.myVectorsList.push(this.newVector)
+      resolve();
+    });
+      this.myVectorsList.push(this.newVector);
+      this.newVector = {} as Vector;
     })
   });
   this.x2 = true;
