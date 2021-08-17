@@ -199,48 +199,45 @@ export class AffittuarioHomeComponent implements OnInit {
     }
     /** <<< possiedo solo start City ed end City  */
     if(start !='Start City' &&  end!='End City' && capacity=='Capacity Kg'){
-      this.routeService.getByEndCity(end).toPromise().then(
-        routes=>{
-          routes.forEach(route => {
-            this.viaggioRouteService.getByRouteId(route.id).toPromise().then(
-              viaggioRoutes=>{
+      this.routeService.getByCities(start,end).toPromise().then(
+        route=>{
+          this.viaggioRouteService.getByRouteId(route.id).toPromise().then(
+            viaggioRoutes=>{
 
-                viaggioRoutes.forEach(viaggioRoute => {
-                  let d1=new Date(viaggioRoute.startDate);
-                let d2=new Date();
-                if(d1 > d2 ){
+              viaggioRoutes.forEach(viaggioRoute => {
+                let d1=new Date(viaggioRoute.startDate);
+              let d2=new Date();
+              if(d1 > d2 ){
 
-                    //ok inserisci tutto in info viaggio
-                    this.viaggioService.getById(viaggioRoute.viaggioId).toPromise().then(
-                      travel=>{
-                        this.vectorService.getById(travel.vectorId).toPromise().then(
-                          vector=>{
-                            if(productType == 'Bio Medical'){
-                              if(vector.biomedicalProducts){
-                                this.filterViaggioInfo.push(travel)
-                              }
-                            }
-                            if(productType == 'Frozen'){
-                              if(vector.frozenProduct){
-                                this.filterViaggioInfo.push(travel)
-                              }
-                            }
-                            if(productType== 'Product type' || productType== 'All'){
-                              this.filterViaggioInfo.push(travel);
+                  //ok inserisci tutto in info viaggio
+                  this.viaggioService.getById(viaggioRoute.viaggioId).toPromise().then(
+                    travel=>{
+                      this.vectorService.getById(travel.vectorId).toPromise().then(
+                        vector=>{
+                          if(productType == 'Bio Medical'){
+                            if(vector.biomedicalProducts){
+                              this.filterViaggioInfo.push(travel)
                             }
                           }
-                        )
-                      }
-                    )
-
-                }
-                });
+                          if(productType == 'Frozen'){
+                            if(vector.frozenProduct){
+                              this.filterViaggioInfo.push(travel)
+                            }
+                          }
+                          if(productType== 'Product type' || productType== 'All'){
+                            this.filterViaggioInfo.push(travel);
+                          }
+                        }
+                      )
+                    }
+                  )
 
               }
-            )
-          });
+              });
         }
       )
+    }
+    )
     }
     /** <<solo product type>>> */
     if(start =='Start City' &&  end=='End City' && capacity=='Capacity Kg'){
@@ -308,7 +305,6 @@ export class AffittuarioHomeComponent implements OnInit {
         }
       )
     }
-
    }
 
   loadViaggioInfo(filter:any){
