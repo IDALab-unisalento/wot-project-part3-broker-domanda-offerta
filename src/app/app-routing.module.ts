@@ -1,4 +1,6 @@
 import { AffittuarioAnaliticsComponent } from './components/affittuario-analitics/affittuario-analitics.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ViaggioRouteProgressBarComponent } from './components/viaggio-route-progress-bar/viaggio-route-progress-bar.component';
 import { PendingRegistrationComponent } from './components/pending-registrations/pending-registrations.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -9,12 +11,13 @@ import { MyVectorsComponent } from './components/my-vectors/my-vectors.component
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { SummaryModalComponent } from './components/summary-modal/summary-modal.component';
 import { AffittuarioHomeComponent } from './components/affittuario-home/affittuario-home.component';
-import { ViaggioRouteProgressBarComponent } from './components/viaggio-route-progress-bar/viaggio-route-progress-bar.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
 import { HistoryComponent } from './components/history/history.component';
+<<<<<<< HEAD
+import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
+=======
 import { AboutComponent } from './components/about/about.component';
+>>>>>>> develop
 
 const routes: Routes = [
   {path: '',component:AboutComponent},

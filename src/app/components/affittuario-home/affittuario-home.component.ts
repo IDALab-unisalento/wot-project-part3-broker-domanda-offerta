@@ -209,6 +209,7 @@ export class AffittuarioHomeComponent implements OnInit {
         route=>{
           this.viaggioRouteService.getByRouteId(route.id).toPromise().then(
             viaggioRoutes=>{
+
               viaggioRoutes.forEach(viaggioRoute => {
                 let d1=new Date(viaggioRoute.startDate);
               let d2=new Date();

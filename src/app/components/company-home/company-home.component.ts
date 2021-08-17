@@ -818,31 +818,20 @@ console.log("cancello booking")
 await new Promise<void> ((resolve, reject) => {
 this.viaggioRouteService.getByViaggioId(offer.viaggioId).subscribe(async viaggioRoutes =>{
 
-  await new Promise<void>( (resolve,reject)=>{
-   viaggioRoutes.forEach( async viaggioRoute=>{
-     await this.bookingService.getByViaggioRouteId(viaggioRoute.id).toPromise().then(
-       booking=>{
-         booking.forEach(element => {
-           this.bookingService.deleteBooking(element.id).toPromise().then(data=>{})
-         });
-       }
-     )
-   })
-   resolve();
-  })
-// qui finiscel il pezzo "pericoloso", se qualcosa non va cancella questo pezzo di sopra e torni tutto ok
+  await new Promise<void> (async (resolve, reject) => {
+    for (const viaggioRoute of viaggioRoutes) {
+    await new Promise<void> ((resolve, reject) => {
+    this.bookingService.getByViaggioRouteId(viaggioRoute.id).subscribe(async list => {
 
-
-
-
-  console.log("cancello viaggio-route")
-
-  await new Promise<void> ((resolve, reject) => {
-  viaggioRoutes.forEach(viaggioRoute => {
-    this.viaggioRouteService.delete(viaggioRoute).subscribe(()=>{
-      resolve();
+      await new Promise<void> ((resolve, reject) => {
+      this.viaggioRouteService.delete(viaggioRoute).subscribe(()=>{
+        resolve();
+          });
         });
-      });
+      resolve();
+    });
+  });
+  }
     });
 
   resolve();
@@ -999,4 +988,5 @@ convertBookingDate(date : Date ) : Date{
 customTrackBy(index: number, obj: any): any {
   return index;
 }
+
 }

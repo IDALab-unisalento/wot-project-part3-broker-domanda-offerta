@@ -116,6 +116,14 @@ addNewVector(){
 
 
 
+
+      await new Promise<void> ((resolve, reject) => {
+
+      this.companyVectorService.save(this.me.id, vector.id).subscribe(data => {console.log(data)});
+      resolve();
+    });
+      this.myVectorsList.push(this.newVector);
+      this.newVector = {} as Vector;
     })
   });
   this.x2 = true;
