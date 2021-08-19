@@ -25,6 +25,7 @@ import * as polyline from "@mapbox/polyline"
 
 
 export class ScheduleComponent implements OnInit {
+  mapboxKey : string =  'pk.eyJ1IjoiYW5kcmVhcGFuaWNvMTAiLCJhIjoiY2tyNmh2aTJuM2Y3MjJ6cWFjZmRldDFwOCJ9.jWTClD21Yr5Jjc6zH1OFsw'
 
   viaggioId : number = 0;
   viaggioRouteList : ViaggioRoute[] = [] as ViaggioRoute[];
@@ -177,7 +178,7 @@ export class ScheduleComponent implements OnInit {
       if(this.totalDistance< 4000 && this.totalDistance >= 2000)
         zoom = 2.2;
 
-      (Mapbloxgl as any).accessToken = environment.mapboxKey;
+      (Mapbloxgl as any).accessToken = this.mapboxKey;
       this.map = new Mapbloxgl.Map({
         container:'mapa-mapbox',
         style: 'mapbox://styles/mapbox/streets-v11',
