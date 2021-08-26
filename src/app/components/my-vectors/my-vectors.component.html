@@ -1,297 +1,296 @@
 
-<div style="height:250vh;" class="sf"  >
+<body>
   <app-nav-bar></app-nav-bar>
 
-  <!-- tutto il contenuto-->
+<!-- tutto il contenuto-->
 
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-  <div class="container" >
-  <div class="row">
-      <div class="col-lg-12"  >
-          <div class="wrapper wrapper-content animated fadeInRight" >
-            <br>
-              <div class="ibox-content m-b-sm border-bottom"style="border-radius: 1.5rem;" >
-                  <div class="p-xs">
-                      <div class="pull-left m-r-md">
-                          <i class="fa fa-globe text-navy mid-icon"></i>
-                      </div>
-                      <h2> &nbsp; {{me.name}}'s Vectors</h2>
-                      <span>&nbsp; This is a list of vectors that {{me.name}} own or have used</span>
-                  </div>
-              </div>
-
-
-          </div>
-      </div>
-  </div>
-  </div>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+<div class="row">
+    <div class="col-lg-12"  >
+        <div class="wrapper wrapper-content animated fadeInRight" >
+          <br>
+            <div class="ibox-content m-b-sm border-bottom"style="border-radius: 1.5rem;" >
+                <div class="p-xs">
+                    <div class="pull-left m-r-md">
+                        <i class="fa fa-globe text-navy mid-icon"></i>
+                    </div>
+                    <h2> &nbsp; {{me.name}}'s Vectors</h2>
+                    <span>&nbsp; This is a list of vectors that {{me.name}} own or have used</span>
+                </div>
+            </div>
 
 
+        </div>
+    </div>
+</div>
+</div>
 
-  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-  <div class="container bootstrap snippets bootdey"   >
-      <div class="row">
-          <div class="col-lg-12">
-              <div class="main-box no-header clearfix" style="border-radius: 1.5rem;">
-                  <div class="main-box-body clearfix">
-                      <div class="table-responsive">
-                          <table class="table user-list">
-                              <thead>
-                                  <tr>
-                                  <th style="width: 150px;"><span></span></th>
-                                  <th ><span>Name</span></th>
-                                  <th class="text-center"><span>Brand</span></th>
-                                  <th class="text-center"><span>License Plate</span></th>
-                                  <th class="text-center"><span>Capacity [Kg]</span></th>
-                                  <th class="text-center" style="width: 50px;"><span>Frozen products</span></th>
-                                  <th class="text-center" style="width: 50px;"><span>Biomedical products</span></th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr *ngFor="let vector of myVectorsList">
-                                      <td class="text-center">
-                                        <div class="forum-icon">
-                                          <i class="fas fa-truck" *ngIf="vector.name.toLocaleLowerCase() == 'tir'"></i>
-                                          <i class="fas fa-ship" *ngIf="vector.name.toLocaleLowerCase() == 'nave'"></i>
-                                          <i class="fas fa-truck" *ngIf="vector.name.toLocaleLowerCase() == 'fiorino'"></i>
-                                          <i class="fa fa-bus-alt" *ngIf="vector.name.toLocaleLowerCase() == 'bus'"></i>
-                                          <i class="fa fa-train" *ngIf="vector.name.toLocaleLowerCase() == 'treno' || vector.name.toLocaleLowerCase() == 'train'"></i>
-                                          <i class="fa fa-car" *ngIf="vector.name.toLocaleLowerCase() == 'car' || vector.name.toLocaleLowerCase() == 'auto' || vector.name.toLocaleLowerCase() == 'automobile' "></i>
-                                          <i class="fa fa-plane" *ngIf="vector.name.toLocaleLowerCase() == 'plane' || vector.name.toLocaleLowerCase() == 'aereo' ||  vector.name.toLocaleLowerCase() == 'aereoplano'  "></i>
-                                          <i class="fas fa-truck-moving" *ngIf="vector.name.toLocaleLowerCase() == 'truck' || vector.name.toLocaleLowerCase() == 'camion'"></i>
 
-                                      </div>
-                                      </td>
-                                      <td >
-                                        <span class="label label-default" style="font-size: 14px; font-weight: bold;">{{vector.name | uppercase}}</span>
-                                      </td>
-                                      <td class="text-center">
-                                          <span class="label label-default">{{vector.brand}}</span>
-                                      </td>
-                                      <td class="text-center">
-                                        <span class="label label-default">{{vector.licensePlate}}</span>
-                                      </td>
-                                      <td class="text-center">
-                                        <span class="label label-default">{{vector.capacity}}</span>
-                                      </td>
-                                      <td class="text-center">
-                                        <span class="label label-default" >
-                                          <mat-icon *ngIf="vector.frozenProduct" style="color:rgb(53, 172, 105);">done</mat-icon>
-                                          <mat-icon *ngIf="!vector.frozenProduct" style="color:rgb(210, 6, 6);">close</mat-icon>
 
-                                        </span>
-                                      </td>
-                                      <td class="text-center">
-                                        <span class="label label-default">
-                                          <mat-icon *ngIf="vector.biomedicalProducts" style="color:rgb(53, 172, 105);">done</mat-icon>
-                                          <mat-icon *ngIf="!vector.biomedicalProducts" style="color:rgb(210, 6, 6);">close</mat-icon>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<div class="container bootstrap snippets bootdey"  >
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box no-header clearfix" style="border-radius: 1.5rem;">
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                <th style="width: 150px;"><span></span></th>
+                                <th ><span>Name</span></th>
+                                <th class="text-center"><span>Brand</span></th>
+                                <th class="text-center"><span>License Plate</span></th>
+                                <th class="text-center"><span>Capacity [Kg]</span></th>
+                                <th class="text-center" style="width: 50px;"><span>Frozen products</span></th>
+                                <th class="text-center" style="width: 50px;"><span>Biomedical products</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let vector of myVectorsList">
+                                    <td class="text-center">
+                                      <div class="forum-icon">
+                                        <i class="fas fa-truck" *ngIf="vector.name.toLocaleLowerCase() == 'fiorino'"></i>
+                                        <i class="fa fa-bus-alt" *ngIf="vector.name.toLocaleLowerCase() == 'bus'"></i>
+                                        <i class="fa fa-train" *ngIf="vector.name.toLocaleLowerCase() == 'treno' || vector.name.toLocaleLowerCase() == 'train'"></i>
+                                        <i class="fa fa-car" *ngIf="vector.name.toLocaleLowerCase() == 'car' || vector.name.toLocaleLowerCase() == 'auto' || vector.name.toLocaleLowerCase() == 'automobile' "></i>
+                                        <i class="fa fa-plane" *ngIf="vector.name.toLocaleLowerCase() == 'plane' || vector.name.toLocaleLowerCase() == 'aereo' ||  vector.name.toLocaleLowerCase() == 'aereoplano'  "></i>
+                                        <i class="fas fa-truck-moving" *ngIf="vector.name.toLocaleLowerCase() == 'truck' || vector.name.toLocaleLowerCase() == 'camion'"></i>
 
-                                        </span>
-                                      </td>
-                              </tbody>
-                          </table>
-                          <div  style="position: absolute;right: 45px;">
-                            <br>
-                            <button class="btn btn-danger " style="border-radius: 1.5rem;" type="button" (click)="addMenu = !addMenu"
-                            >
-                            <i class="fas fa-plus-circle" ></i>
-                            Add new Vector</button>
-                          </div>
+                                    </div>
+                                    </td>
+                                    <td >
+                                      <span class="label label-default" style="font-size: 14px; font-weight: bold;">{{vector.name | uppercase}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="label label-default">{{vector.brand}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                      <span class="label label-default">{{vector.licensePlate}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                      <span class="label label-default">{{vector.capacity}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                      <span class="label label-default" >
+                                        <mat-icon *ngIf="vector.frozenProduct" style="color:rgb(53, 172, 105);">done</mat-icon>
+                                        <mat-icon *ngIf="!vector.frozenProduct" style="color:rgb(210, 6, 6);">close</mat-icon>
 
-                      </div>
-                  </div>
-              </div>
-              <div *ngIf="addMenu">
-                <br><br>
-                <div class="container" >
+                                      </span>
+                                    </td>
+                                    <td class="text-center">
+                                      <span class="label label-default">
+                                        <mat-icon *ngIf="vector.biomedicalProducts" style="color:rgb(53, 172, 105);">done</mat-icon>
+                                        <mat-icon *ngIf="!vector.biomedicalProducts" style="color:rgb(210, 6, 6);">close</mat-icon>
 
-                <div class="container bootstrap snippets bootdey" >
-                  <h1 class="text-primary"><span class="glyphicon glyphicon-user"></span>New Vector Form</h1>
-                    <hr>
-                <div class="row" >
-
-                    <!-- edit form column -->
-                    <div class="col-md-9 personal-info" >
-                      <div class="alert alert-info alert-dismissable" *ngIf="x" style="border-radius: 1.5rem;">
-                        <a class="panel-close close" data-dismiss="alert" (click)="x = !x">×</a>
-                        <i class="fa fa-coffee"></i>
-                        Please, insert vector's <strong>information</strong>
-                      </div>
-
-                      <div class="card" style="background-color: #ceeefc;border-radius: 1.5rem;" >
-                        <br>
-                        <h1 class="text-primary" style="margin-left: 200px;"><span class="glyphicon glyphicon-user"></span><u>Vector's info</u></h1>
-
-                      <form #vectorForm="ngForm" (ngSubmit)="addNewVector()" class="form-horizontal" role="form" >
-                        <div class="form-group">
-                          <label class="col-lg-3 control-label text-primary">NAME:</label>
-                          <div class="col-lg-8">
-
-                            <input class="form-control inputa" [matAutocomplete]="auto" required type="text" placeholder="car"
-                              #name = 'ngModel'
-                              name="name"
-                              [ngClass]="{'is-invalid': !name.valid && name.touched}"
-                              [ngClass]="{'is-valid': name.valid}"
-                              [(ngModel)]="newVector.name"
-                              >
-
-                            <div class="invalid-feedback">
-                              <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
-
-                              Name is required
-                            </div>
-                            <div class="valid-feedback">
-                              <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
-
-                              Ok!
-                            </div>
-                              <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option *ngFor="let name of allVectorsName" [value]="name">
-                                  {{name}}
-                                </mat-option>
-
-                              </mat-autocomplete>
-                          </div>
+                                      </span>
+                                    </td>
+                            </tbody>
+                        </table>
+                        <div  style="position: absolute;right: 45px;">
+                          <br>
+                          <button class="btn btn-danger " style="border-radius: 1.5rem;" type="button" (click)="addMenu = !addMenu"
+                          >
+                          <i class="fas fa-plus-circle" ></i>
+                          Add new Vector</button>
                         </div>
 
-                        <div class="form-group">
-                          <label class="col-lg-3 control-label text-primary">BRAND:</label>
-                          <div class="col-lg-8">
+                    </div>
+                </div>
+            </div>
 
-                            <input class="form-control inputa" [matAutocomplete]="brand2" required type="text" placeholder="ferrari"
-                            #brand = 'ngModel'
-                            name="brand"
-                            [ngClass]="{'is-invalid': !brand.valid && brand.touched}"
-                            [ngClass]="{'is-valid': brand.valid}"
-                            [(ngModel)]="newVector.brand">
-                            <div class="invalid-feedback">
-                              <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
 
-                              Brand is required
-                            </div>
-                            <div class="valid-feedback">
-                              <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
 
-                              Ok!
-                            </div>
-                            <mat-autocomplete #brand2="matAutocomplete">
-                              <mat-option *ngFor="let brand of allBrands" [value]="brand">
-                                {{brand}}
+            <div *ngIf="addMenu">
+              <br><br>
+              <div class="container" >
+
+              <div class="container bootstrap snippets bootdey" >
+                <h1 class="text-primary"><span class="glyphicon glyphicon-user"></span>New Vector Form</h1>
+                  <hr>
+              <div class="row" >
+
+                  <!-- edit form column -->
+                  <div class="col-md-9 personal-info" >
+                    <div class="alert alert-info alert-dismissable" *ngIf="x" style="border-radius: 1.5rem;">
+                      <a class="panel-close close" data-dismiss="alert" (click)="x = !x">×</a>
+                      <i class="fa fa-coffee"></i>
+                      Please, insert vector's <strong>information</strong>
+                    </div>
+
+                    <div class="card" style="background-color: #ceeefc;border-radius: 1.5rem;" >
+                      <br>
+                      <h1 class="text-primary" style="margin-left: 200px;"><span class="glyphicon glyphicon-user"></span><u>Vector's info</u></h1>
+
+                    <form #vectorForm="ngForm" (ngSubmit)="addNewVector()" class="form-horizontal" role="form" >
+                      <div class="form-group">
+                        <label class="col-lg-3 control-label text-primary">NAME:</label>
+                        <div class="col-lg-8">
+
+                          <input class="form-control inputa" [matAutocomplete]="auto" required type="text" placeholder="car"
+                            #name = 'ngModel'
+                            name="name"
+                            [ngClass]="{'is-invalid': !name.valid && name.touched}"
+                            [ngClass]="{'is-valid': name.valid}"
+                            [(ngModel)]="newVector.name"
+                            >
+
+                          <div class="invalid-feedback">
+                            <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+
+                            Name is required
+                          </div>
+                          <div class="valid-feedback">
+                            <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
+
+                            Ok!
+                          </div>
+                            <mat-autocomplete #auto="matAutocomplete">
+                              <mat-option *ngFor="let name of allVectorsName" [value]="name">
+                                {{name}}
                               </mat-option>
 
                             </mat-autocomplete>
-                          </div>
                         </div>
-                        <div class="form-group">
-                          <label class="col-lg-3 control-label text-primary ">LICENSE PLATE:</label>
-                          <div class="col-lg-8">
-
-                            <input class="form-control inputa" required type="text" placeholder="AB123CD"
-                            #licensePlate = 'ngModel'
-                            name="licensePlate"
-                            [ngClass]="{'is-invalid': !licensePlate.valid && licensePlate.touched}"
-                            [ngClass]="{'is-valid': licensePlate.valid}"
-                            [(ngModel)]="newVector.licensePlate">
-
-                            <div class="invalid-feedback">
-                              <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
-
-                              License Plate is required
-                            </div>
-                            <div class="valid-feedback">
-                              <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
-
-                              Ok!
-                            </div>
-                          </div>
-
-                        </div>
-                        <div class="form-group">
-                          <label class="col-lg-3 control-label text-primary">CAPACITY [Kg]:</label>
-                          <div class="col-lg-8">
-
-
-                            <input class="form-control inputa" type="text" required placeholder="0"
-                            #capacity = 'ngModel'
-                            name="capacity"
-                            pattern="^[0-9]*$"
-                            [ngClass]="{'is-invalid': !capacity.valid && capacity.touched}"
-                            [ngClass]="{'is-valid': capacity.valid}"
-                            [(ngModel)]="newVector.capacity">
-                            <div class="invalid-feedback" [hidden]="!capacity.errors?.required">
-                              <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
-                              Capacity is required
-                            </div>
-                            <div class="invalid-feedback" [hidden]="!capacity.errors?.pattern">
-                              <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
-                              Only number accepted
-                            </div>
-                            <div class="valid-feedback">
-                              <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
-                              Ok!
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="form-group">
-                          <label style="margin-left: 15px;" class=" control-label text-primary">THE VECTOR MAY CARRY SPECIAL CATEGORY GOODS:</label>
-                        <div class="col-lg-4 col-sm-4 col-xs-4">
-                          <div class="checkbox">
-                              <label >
-                                  <input  type="checkbox" class="colored-success"
-                                  #frozenProduct = 'ngModel'
-                                  name="frozenProduct"
-                                  [(ngModel)]="newVector.frozenProduct">
-                                  <span class="text ">Frozen Products</span>
-                              </label>
-                          </div>
                       </div>
 
+                      <div class="form-group">
+                        <label class="col-lg-3 control-label text-primary">BRAND:</label>
+                        <div class="col-lg-8">
+
+                          <input class="form-control inputa" [matAutocomplete]="brand2" required type="text" placeholder="ferrari"
+                          #brand = 'ngModel'
+                          name="brand"
+                          [ngClass]="{'is-invalid': !brand.valid && brand.touched}"
+                          [ngClass]="{'is-valid': brand.valid}"
+                          [(ngModel)]="newVector.brand">
+                          <div class="invalid-feedback">
+                            <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+
+                            Brand is required
+                          </div>
+                          <div class="valid-feedback">
+                            <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
+
+                            Ok!
+                          </div>
+                          <mat-autocomplete #brand2="matAutocomplete">
+                            <mat-option *ngFor="let brand of allBrands" [value]="brand">
+                              {{brand}}
+                            </mat-option>
+
+                          </mat-autocomplete>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-3 control-label text-primary ">LICENSE PLATE:</label>
+                        <div class="col-lg-8">
+
+                          <input class="form-control inputa" required type="text" placeholder="AB123CD"
+                          #licensePlate = 'ngModel'
+                          name="licensePlate"
+                          [ngClass]="{'is-invalid': !licensePlate.valid && licensePlate.touched}"
+                          [ngClass]="{'is-valid': licensePlate.valid}"
+                          [(ngModel)]="newVector.licensePlate">
+
+                          <div class="invalid-feedback">
+                            <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+
+                            License Plate is required
+                          </div>
+                          <div class="valid-feedback">
+                            <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
+
+                            Ok!
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-3 control-label text-primary">CAPACITY [Kg]:</label>
+                        <div class="col-lg-8">
+
+
+                          <input class="form-control inputa" type="text" required placeholder="0"
+                          #capacity = 'ngModel'
+                          name="capacity"
+                          pattern="^[0-9]*$"
+                          [ngClass]="{'is-invalid': !capacity.valid && capacity.touched}"
+                          [ngClass]="{'is-valid': capacity.valid}"
+                          [(ngModel)]="newVector.capacity">
+                          <div class="invalid-feedback" [hidden]="!capacity.errors?.required">
+                            <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+                            Capacity is required
+                          </div>
+                          <div class="invalid-feedback" [hidden]="!capacity.errors?.pattern">
+                            <i class="fas fa-exclamation-circle" style="color: rgb(210, 6, 6);"></i>
+                            Only number accepted
+                          </div>
+                          <div class="valid-feedback">
+                            <i class="fas fa-check" style="color: rgb(34, 201, 34);"></i>
+                            Ok!
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label style="margin-left: 15px;" class=" control-label text-primary">THE VECTOR MAY CARRY SPECIAL CATEGORY GOODS:</label>
                       <div class="col-lg-4 col-sm-4 col-xs-4">
-                        <div class="checkbox" >
+                        <div class="checkbox">
                             <label >
                                 <input  type="checkbox" class="colored-success"
-                                [(ngModel)]="newVector.biomedicalProducts"
-                                #biomedicalProduct = 'ngModel'
-                                  name="biomedicalProduct">
-
-                                <span class="text ">Biomedical Products</span>
+                                #frozenProduct = 'ngModel'
+                                name="frozenProduct"
+                                [(ngModel)]="newVector.frozenProduct">
+                                <span class="text ">Frozen Products</span>
                             </label>
                         </div>
                     </div>
-                    </div>
-                        <div class="d-grid gap-2"  >
 
-                          <br>
-                          <button class="btn btn-primary" style="position: relative; left: 180px; width: 200px; border-radius: 1.5rem;" type="button" [disabled]="!vectorForm.form.valid" (click)="addNewVector()">Submit</button>
-                        </div>
-                        <br>
-                      </form>
-                    </div>
+                    <div class="col-lg-4 col-sm-4 col-xs-4">
+                      <div class="checkbox" >
+                          <label >
+                              <input  type="checkbox" class="colored-success"
+                              [(ngModel)]="newVector.biomedicalProducts"
+                              #biomedicalProduct = 'ngModel'
+                                name="biomedicalProduct">
 
-
-                    </div>
-                </div>
-              </div>
-              <hr>
-              </div>
-              <div *ngIf="showToast && x2" class="noty_bar noty_type__success noty_theme__unify--v1 g-mb-25" style="border-radius: 1.5rem;">
-                <div class="noty_body">
-                   <div class="g-mr-20">
-                      <div class="noty_body__icon">
-                         <i class="hs-admin-check"></i>
+                              <span class="text ">Biomedical Products</span>
+                          </label>
                       </div>
-                   </div>
-                   <div>Vector correctly added.
-                    <a class="panel-close close" data-dismiss="alert" style="position: absolute;right: 100px;" (click)="x2 = !x2">×</a>
+                  </div>
+                  </div>
+                      <div class="d-grid gap-2"  >
 
-                   </div>
-                </div>
-             </div>
-          </div>
-      </div>
-  </div>
-  </div>
+                        <br>
+                        <button class="btn btn-primary" style="position: relative; left: 180px; width: 200px; border-radius: 1.5rem;" type="button" [disabled]="!vectorForm.form.valid" (click)="addNewVector()">Submit</button>
+                      </div>
+                      <br>
+                    </form>
+                  </div>
 
 
+                  </div>
+              </div>
+            </div>
+            <hr>
+            </div>
+            <div *ngIf="showToast && x2" class="noty_bar noty_type__success noty_theme__unify--v1 g-mb-25" style="border-radius: 1.5rem;">
+              <div class="noty_body">
+                 <div class="g-mr-20">
+                    <div class="noty_body__icon">
+                       <i class="hs-admin-check"></i>
+                    </div>
+                 </div>
+                 <div>Vector correctly added.
+                  <a class="panel-close close" data-dismiss="alert" style="position: absolute;right: 100px;" (click)="x2 = !x2">×</a>
+
+                 </div>
+              </div>
+           </div>
+        </div>
+    </div>
 </div>
+</div>
+</body>
