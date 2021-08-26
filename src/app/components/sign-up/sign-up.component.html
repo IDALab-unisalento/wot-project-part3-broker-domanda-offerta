@@ -346,7 +346,7 @@
                                         name="confirmPassword"
                                         [ngClass]="{'is-invalid': (!UserconfirmPassword.valid && UserconfirmPassword.touched) || !match()}"
                                         [ngClass]="{'is-valid': UserconfirmPassword.valid && match()}"
-                                        [(ngModel)]="newAffittuario.confirmPassword"/>
+                                        [(ngModel)]="newAffittuario.confirmPassword">
                                         <div class="invalid-feedback" [hidden]="!UserconfirmPassword.errors?.required">
                                           <mat-icon style="color: rgb(210, 6, 6); font-size: 15px; position: relative; left: 8px;top: 3px;">error_outline</mat-icon>
                                            Password Confirmation is required

@@ -14,18 +14,20 @@
         </div>
         <!-- stat city   end-city route selected -->
         <div class="input-group" style="padding-top: 3%;">
-          <span class="input-group-addon"><i class="bi bi-flag" aria-hidden="true"></i></span>
-        <input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{routeSelected.startCity}}" readonly  />
+          <span class="input-group-addon"><i class="far fa-flag" aria-hidden="true"></i></span>
+        <input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{routeSelected.startCity}}    {{startRoute|date:  'dd/MM/yyyy HH:mm': '+0000'}}" readonly  />
         </div>
         <!-- end city -->
         <div class="input-group" style="padding-top: 3%;">
-          <span class="input-group-addon"><i class="bi bi-flag-fill" aria-hidden="true"></i></span>
-        <input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{routeSelected.endCity}}" readonly  />
+          <span class="input-group-addon"><i class="fas fa-flag-checkered " aria-hidden="true"></i></span>
+        <input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{routeSelected.endCity}}    {{endRoute|date:  'dd/MM/yyyy HH:mm': '+0000'}}" readonly  />
         </div>
 
     <!--  vehicle name  -->
     <div class="input-group" style="padding-top: 3%;">
       <span class="input-group-addon">
+        <i class="fas fa-truck" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'tir'"></i>
+        <i class="fas fa-ship" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'nave'"></i>
         <i class="fas fa-truck"  *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'fiorino'"></i>
         <i class="fa fa-bus-alt" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'bus'"></i>
         <i class="fa fa-train" *ngIf="travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'treno' || travelSelected.vectorOwnerViaggio.name.toLocaleLowerCase() == 'train'"></i>
@@ -41,16 +43,18 @@
     <span class="input-group-addon"><i class="bi bi-building" aria-hidden="true"></i></span>
   <input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{travelSelected.companyOwnerViaggio.name}}" readonly  />
 </div>
+
+
 <!-- maximum with drawl and booking date -->
-<div class="input-group" style="padding-top: 3%;" *ngIf="travelSelected.viaggioRouteInfo[0].maximumBookingDate!= null">
+<div class="input-group" style="padding-top: 3%;" *ngIf="bookingPrenotationDate!= null">
   <span class="input-group-addon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
-<input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{travelSelected.viaggioRouteInfo[0].maximumBookingDate |date:  'dd/MM/yyyy HH:mm': '+0000' }}" readonly  />
+<input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{bookingPrenotationDate |date:  'dd/MM/yyyy HH:mm': '+0000' }}" readonly  />
 </div>
-<div class="input-group" style="padding-top: 3%;" *ngIf="travelSelected.viaggioRouteInfo[0].maximumWithdrawal != null">
+<div class="input-group" style="padding-top: 3%;" *ngIf="cancellPrenotationDate != null">
   <span class="input-group-addon"><i class="bi bi-calendar-x" aria-hidden="true" ></i></span>
-<input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{travelSelected.viaggioRouteInfo[0].maximumWithdrawal |date:  'dd/MM/yyyy HH:mm': '+0000' }}" readonly  />
+<input type="text" class="form-control" style="margin-right: 20%"  placeholder="{{cancellPrenotationDate |date:  'dd/MM/yyyy HH:mm': '+0000' }}" readonly  />
 </div>
-<div class="input-group" style="padding-top: 3%;" *ngIf="travelSelected.viaggioRouteInfo[0].maximumWithdrawal == null">
+<div class="input-group" style="padding-top: 3%;" *ngIf="cancellPrenotationDate == null">
   <span class="input-group-addon"><i class="bi bi-calendar-x" aria-hidden="true"></i></span>
 <input type="text" class="form-control" style="margin-right: 20%"  placeholder="Booking will not be deleted once done" readonly  />
 </div>
