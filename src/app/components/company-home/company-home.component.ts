@@ -44,13 +44,13 @@ export class CompanyHomeComponent implements OnInit {
   loggedUser : User = {} as User;
   vectorsOfCompany : CompanyVector[] = [] as CompanyVector[];
   vectors : Vector[] = [] as Vector[];
-  offers : Offer[] = [] as Offer[];
+  offers : Offer[] = [] as Offer[];
   availableSum : number = 0;
   //devo tenere traccia della distanza totale
   totalDistance : number = 0;
   addMenu : boolean = false;
 
-  newOffer : Offer = {} as Offer;
+  newOffer : Offer = {} as Offer;
   cities : string[] = [] as string[];
   treatsCity : string[] = [] as string[];
   query : string = "";
@@ -140,7 +140,7 @@ export class CompanyHomeComponent implements OnInit {
             viaggiList.forEach(viaggio => {
 
 
-              var offer : Offer = {} as Offer;
+              var offer : Offer = {} as Offer;
 
             this.viaggioRouteService.getByViaggioId(viaggio.id).subscribe(async viaggi => {
 
@@ -314,7 +314,7 @@ onChange(ev : any){
 
 removeVector(){
   this.newOffer.vector = {}  as Vector;
-  this.selectedVector = {} as Vector;
+  this.selectedVector = {} as Vector;
 }
 
 addTreats(){
@@ -390,7 +390,7 @@ async addNewOffer(){
 
       this.routeService.getByCities(route.startCity, route.endCity).subscribe(async route =>{
 
-        var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
+        var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
 
         //gestione del carico libero
         //prima lo setto alla capacità iniziale
@@ -459,7 +459,7 @@ async addNewOffer(){
 
        this.routeService.save(route).subscribe(route=>{
 
-        var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
+        var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
 
         //gestione del carico libero
         //prima lo setto alla capacità iniziale
@@ -525,7 +525,7 @@ async addNewOffer(){
         this.routeService.getByCities(route.startCity, route.endCity).subscribe(async route =>{
 
           console.log(route,' già esistente');
-          var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
+          var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
           //gestione del carico libero
           //prima lo setto alla capacità iniziale
           viaggioRoute.availableCapacity = viaggio.initialFreeCapacity;
@@ -536,7 +536,7 @@ async addNewOffer(){
           }
 
 
-                    //prima rotta,abbiamo l'informazione della starting Date
+          //prima rotta,abbiamo l'informazione della starting Date
         if(i == 0){
 
           //start date
@@ -579,8 +579,13 @@ async addNewOffer(){
           viaggioRoute.startDate = this.startDates[i - 1];
           viaggioRoute.maximumBookingDate = this.convertBookingDate(this.startDates[i - 1])
           if(this.newOffer.enableCancelation)
-            viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
-
+ /////////////////////////////// pericolo !!!!!!   this.stardDates[i-1]
+          // riga precedente  da sostituire a questa se qualcos non va
+          /*
+          viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
+          */
+            viaggioRoute.maximumWithdrawal = this.convertDate(this.startDates[i-1]);
+////////////////////////////////////////////
 
           if(i != this.treatsCity.length){
             //end date
@@ -663,7 +668,7 @@ async addNewOffer(){
           await new Promise<void> ((resolve, reject) => {
         this.routeService.save(route).subscribe(async route=>{
 
-          var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
+          var viaggioRoute : ViaggioRoute = {} as ViaggioRoute;
 
           //gestione del carico libero
           //prima lo setto alla capacità iniziale
@@ -716,7 +721,7 @@ async addNewOffer(){
           viaggioRoute.startDate = this.startDates[i - 1] ;
           viaggioRoute.maximumBookingDate = this.convertBookingDate(this.startDates[i - 1]);
           if(this.newOffer.enableCancelation)
-            viaggioRoute.maximumWithdrawal = this.convertDate(this.newOffer.startDate);
+            viaggioRoute.maximumWithdrawal = this.convertDate(this.startDates[i-1]);
 
 
           if(i != this.treatsCity.length){
@@ -812,24 +817,37 @@ async deleteViaggio(offer : Offer){
   var result = confirm('Are you sure you want to delete this trip?');
   if(result){
   this.spinnerService.show();
+// qui inizia il pezzo "pericoloso"
+console.log("cancello booking")
 
 await new Promise<void> ((resolve, reject) => {
 this.viaggioRouteService.getByViaggioId(offer.viaggioId).subscribe(async viaggioRoutes =>{
 
-  await new Promise<void> (async (resolve, reject) => {
-    for (const viaggioRoute of viaggioRoutes) {
-    await new Promise<void> ((resolve, reject) => {
-    this.bookingService.getByViaggioRouteId(viaggioRoute.id).subscribe(async list => {
+  await new Promise<void>( (resolve,reject)=>{
+   viaggioRoutes.forEach( async viaggioRoute=>{
+     await this.bookingService.getByViaggioRouteId(viaggioRoute.id).toPromise().then(
+       booking=>{
+         booking.forEach(element => {
+           this.bookingService.deleteBooking(element.id).toPromise().then(data=>{})
+         });
+       }
+     )
+   })
+   resolve();
+  })
+// qui finiscel il pezzo "pericoloso", se qualcosa non va cancella questo pezzo di sopra e torni tutto ok
 
-      await new Promise<void> ((resolve, reject) => {
-      this.viaggioRouteService.delete(viaggioRoute).subscribe(()=>{
-        resolve();
-          });
-        });
+
+
+
+  console.log("cancello viaggio-route")
+
+  await new Promise<void> ((resolve, reject) => {
+  viaggioRoutes.forEach(viaggioRoute => {
+    this.viaggioRouteService.delete(viaggioRoute).subscribe(()=>{
       resolve();
-    });
-  });
-  }
+        });
+      });
     });
 
   resolve();
@@ -837,6 +855,7 @@ this.viaggioRouteService.getByViaggioId(offer.viaggioId).subscribe(async viaggio
 
   });
 
+  console.log("cancello viaggio")
 
     await new Promise<void> ((resolve, reject) => {
     this.viaggioService.delete(offer.viaggioId).subscribe(()=>{
@@ -877,7 +896,6 @@ selectNext(){
 convertDate(date : Date ) : Date{
 
   var newDate : Date = new Date();
-  console.log("qui")
   if(this.newOffer.maximumWithdrawal == '1 hour'){
 
     newDate.setTime(date.getTime() - (60*60*1000));
@@ -985,5 +1003,4 @@ convertBookingDate(date : Date ) : Date{
 customTrackBy(index: number, obj: any): any {
   return index;
 }
-
 }

@@ -12,10 +12,13 @@ const httpOptions = {
 };
 
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class RouteService {
+  mapboxKey : string =  'pk.eyJ1IjoiYW5kcmVhcGFuaWNvMTAiLCJhIjoiY2tyNmh2aTJuM2Y3MjJ6cWFjZmRldDFwOCJ9.jWTClD21Yr5Jjc6zH1OFsw'
+
 
   constructor(private http:HttpClient, private router: Router) { }
 
@@ -58,12 +61,12 @@ getByCities(startCity : string, endCity : string): Observable<Route>{
 }
 
 getCoordinates(cityName : string){
-  return this.http.get("https://api.mapbox.com/geocoding/v5/mapbox.places/"+cityName+".json?access_token="+environment.mapboxKey);
+  return this.http.get("https://api.mapbox.com/geocoding/v5/mapbox.places/"+cityName+".json?access_token="+this.mapboxKey);
 
 }
 
 getPath(lat1 : number, lon1 : number, lat2 : number, lon2 : number ){
-  return this.http.get("https://api.mapbox.com/directions/v5/mapbox/driving-traffic/"+lat1+ ',' + lon1 + ';' + lat2 + ',' + lon2 + "?access_token="+environment.mapboxKey);
+  return this.http.get("https://api.mapbox.com/directions/v5/mapbox/driving-traffic/"+lat1+ ',' + lon1 + ';' + lat2 + ',' + lon2 + "?access_token="+this.mapboxKey);
 
 }
 }

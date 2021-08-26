@@ -107,6 +107,7 @@ import { AboutComponent } from './components/about/about.component';
     ],
 
   imports: [
+    MatIconModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
@@ -114,6 +115,7 @@ import { AboutComponent } from './components/about/about.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
     MatToolbarModule,
