@@ -1,8 +1,12 @@
+<div style="background-color: rgba(255, 255, 255, 0.87);">
+
+
 <app-nav-bar></app-nav-bar>
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" >
+  Loading... </p></ngx-spinner>
 
 
-<div class="col-md-4 col-sm-6 content-card" style="margin-left: 300px; margin-top: 200px; "*ngIf="!show">
+<div class="col-md-4 col-sm-6 content-card" style="margin-left:15%"*ngIf="!show">
   <div class="card-big-shadow" style="width: 1000px;">
       <div class="card card-just-text" data-background="color" data-color="blue" data-radius="none" style="border-radius: 1.5rem;">
           <div class="content">
@@ -10,7 +14,9 @@
               <h4 class="title"><a href="#">Company Statistics</a></h4>
               <p class="description">On this page, you company, can view the statistics regarding the data of your transactions.
                 This data is sensitive, so please confirm if you want to see.  </p>
-              <button class="btn btn-warning " style="border-radius: 1.5rem;" (click)="show2()"> Confirm</button>
+              <button class="btn btn-warning " style="border-radius: 1.5rem;"
+                *ngIf="end1 && end2 && end3 && end4 && end5"
+              (click)="show2()"> Confirm</button>
 
             </div>
       </div> <!-- end card -->
@@ -20,10 +26,10 @@
   <br>
 
 
-  <div style="margin-left: 420px;margin-right: 350px;" *ngIf="show" >
+  <div  style="margin-left:10%" *ngIf="show" >
     <br><br>
     <h1  style="text-align: center;color :#216ba4"> Results' filtering by date</h1>
-    <mat-card class="datePicker">
+    <mat-card  style="margin-left:12%"class="datePicker">
 
 
         <div class="form-group">
@@ -53,21 +59,22 @@
       <button
       [disabled]="!ricerca.dateStart || !ricerca.dateEnd"
       class="btn-danger search-button" (click)="search()">SEARCH </button>
+
     </mat-card>
     <br>
     <button
-    style="border-radius: 1.5rem;height: 40px; margin-left: 320px;"
-    class="btn-info" (click)="recharge()">Back to the general view </button>
-    <br><br><br>
+    style="border-radius: 30px; margin-left:40%;"
+    class="btn btn-info" (click)="recharge()">Back to the general view </button>
+    <br><br><br><br>
 
     <div *ngIf="searchView">
 
-      <h1 class="tit"> 1. The numbers of the selected period</h1>
+      <h1 class="tit" style="text-align: center;"> 1. The numbers of the selected period</h1>
       <br><br>
         <div fxLayout="row"  >
           <div fxFlex="57" >
 
-               <mat-card style="position: relative; left: 150px;" class="numbers">
+               <mat-card style="position: relative; left: 220px;" class="numbers">
 
                 <ul class="info">
                   <li >Renter reservations : <a>{{bookingsRicerca}}</a></li>
@@ -85,8 +92,8 @@
 <div *ngIf="show && !searchView">
     <h1 class="tit"> 1. MONTHLY TREND</h1>
     <br>
-<mat-card style="border-radius : 1.5rem; background: rgb(191, 215, 255);">
-  <h1 class="font-weight-bold text-center justify-content-center " >{{entireActualMonth}} Trend *</h1>
+<mat-card style="border-radius :30px; margin: auto; background: rgb(191, 215, 255); margin-right:7%">
+  <h1 class="font-weight-bold text-center  " >{{entireActualMonth}} Trend *</h1>
 </mat-card>
 </div>
   </div>
@@ -125,7 +132,7 @@
       <div class="text" style="padding-bottom: 5px; position: relative; top: -5px;" >
         <h4>Money handled</h4>
 
-        <span class="total" style="font-size: 30px;"> +{{this.incassiFinestra[3]}} $</span>
+        <span class="total" style="font-size: 30px;"> +{{this.incassiFinestra[3]|number:'1.2-2'}} $</span>
 
         <span>
           <mat-icon color="primary" *ngIf="incassiIncrement >= 0"> trending_up</mat-icon>
@@ -179,95 +186,94 @@
 
   <h1 class="tit" *ngIf="show"> 2. COMPANY NUMBERS</h1>
   <br><br>
-    <div fxLayout="row" style="margin-left: 150px;" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show" >
-      <div fxFlex="57" >
+<div  *ngIf="show" >
+<div class="container">
+  <div class="row">
+    <highcharts-chart class="col"
+    style=" margin-left:2%; margin-right:2%; border: 1px solid rgb(0, 255, 255); border-radius:30px;
+    width:fit-content "
 
-    <mat-card>
-<highcharts-chart
-  style="width: 100%; height: 400px;" *ngIf="show"
+     *ngIf="show"
 
-  [Highcharts]="Highcharts"
-  [options]="chartOptions"
+    [Highcharts]="Highcharts"
+    [options]="chartOptions"
 
-></highcharts-chart>
-</mat-card>
-      </div>
+  ></highcharts-chart>
 
-<div fxFlex="25" style="position: relative; left: -200px;">
 
-  <mat-card *ngIf="show" style="width: 450px;" >
-    <highcharts-chart
-      style="width: 100%; height: 300px;"
+      <highcharts-chart  *ngIf="show"
+        class="col"
+        style=" border: 1px solid rgb(251, 255, 0); border-radius:30px;  width: fit-content;"
 
-      [Highcharts]="Highcharts"
-      [options]="allStatsChartOptions"
+        [Highcharts]="Highcharts"
+        [options]="allStatsChartOptions"
 
-    ></highcharts-chart>
-    </mat-card>
-    </div>
+      ></highcharts-chart>
+  </div>
+</div>
+
+
+
+
 
 </div>
 </div>
-<div class="row"  *ngIf="show" style="margin-top: 50px; position: relative; left: -15px;">
+<br>
+<div class="row"  *ngIf="show" style="margin-top: 50px;">
   <h1 class="tit" *ngIf="!searchView"> 3. VECTOR STATS</h1>
   <h1 class="tit" *ngIf="searchView"> 2. VECTOR STATS</h1>
-<br>
-  <div class="col"  style="width: 300px;height: 300px; margin-left: 85px; ">
-    <mat-card style="width: 550px;">
-      <highcharts-chart
-      [Highcharts]="Highcharts"
-      [options]="pieOptions"
-
-    ></highcharts-chart>
-    <h1 style="position: relative; top: -200px; left: 85px; font-family: sans-serif;" *ngIf="vectorRate.length == 0"> No data in the selected period</h1>
-
-  </mat-card>
+<br> <br> <br>
+ <div class="container">
+<div class="row" *ngIf="show">
+  <div class="row"  *ngIf="vectorRate.length == 0 &&  vectorLicenseRate.length == 0" >
+    <h1 style=" font-family: sans-serif; margin-left:3%; text-align:center;">No data in the selected period</h1>
   </div>
-  <div class="col"       style="width: 300px;height: 300px; "
-  >
-  <mat-card style="width: 650px; position: relative; left: -70px">
-    <highcharts-chart
+  <highcharts-chart  class="col"
+  style=" margin-right:2%; border: 1px solid red; border-radius:30px; "
+  [Highcharts]="Highcharts"
+  [options]="pieOptions"
 
-      [Highcharts]="Highcharts"
-      [options]="pieOptions2"
+></highcharts-chart>
 
-    ></highcharts-chart>
-    <h1 style="position: relative; top: -200px; left: 135px; font-family: sans-serif;" *ngIf="vectorLicenseRate.length == 0"> No data in the selected period</h1>
+<highcharts-chart class="col"
+style="border: 1px solid rgb(169, 11, 231); border-radius: 30px; "
 
-  </mat-card>
+  [Highcharts]="Highcharts"
+  [options]="pieOptions2"
+
+></highcharts-chart>
+
+</div>
+<div class="row"  *ngIf="show" style="margin-top:2%;">
+  <div class="row"  *ngIf="vectorBookedRate.length == 0 && vectorLicenseBookedRate.length  == 0" >
+    <h1 style=" font-family: sans-serif; margin-top:3%; margin-left:3%; text-align:center;">No data in the selected period</h1>
   </div>
+  <highcharts-chart  class="col"
+  style=" margin-right:2%;  border: 1px solid rgb(30, 255, 0); border-radius: 30px;"
+  [Highcharts]="Highcharts"
+  [options]="pieOptions3"
+
+></highcharts-chart>
+
+<highcharts-chart class="col"
+style="border: 1px solid rgb(255, 166, 0); border-radius: 30px; "
+
+  [Highcharts]="Highcharts"
+  [options]="pieOptions4"
+
+></highcharts-chart>
 </div>
 
-<div class="row"  *ngIf="show" style="margin-top: 150px; position: relative; left: -15px;">
-  <div class="col"  style="width: 300px;height: 300px;  margin-left: 85px;">
-    <mat-card style="width: 550px;">
-      <highcharts-chart
-      [Highcharts]="Highcharts"
-      [options]="pieOptions3"
-
-    ></highcharts-chart>
-    <h1 style="position: relative; top: -200px; left: 85px; font-family: sans-serif;" *ngIf="vectorBookedRate.length == 0"> No data in the selected period</h1>
-
-  </mat-card>
-  </div>
-  <div class="col"       style="width: 300px;height: 300px; "
-  >
-  <mat-card style="width: 600px; position: relative; left: -80px;">
-    <highcharts-chart
-
-      [Highcharts]="Highcharts"
-      [options]="pieOptions4"
-
-    ></highcharts-chart>
-    <h1 style="position: relative; top: -200px; left: 115px; font-family: sans-serif;" *ngIf="vectorLicenseBookedRate.length == 0"> No data in the selected period</h1>
-
-  </mat-card>
-  </div>
+ </div>
 </div>
+
+
+
+
 
 <br>
 <div *ngIf="show && !searchView">
-<h1 class="tit" *ngIf="show" style=" padding-top: 170px" >4. DAILY REPORT</h1>
+<h1 class="tit" *ngIf="show" style="margin-top:2%" >4. DAILY REPORT</h1>
 
 <div style=" padding-top: 20px; display: flex; justify-content: center; " *ngIf="show">
 
@@ -325,58 +331,49 @@
 
   </div>
 </div>
-  <h1  style="margin-top: 200px;" class="tit" *ngIf="show && !searchView">5. GEOGRAPHICAL REPORT</h1>
-  <h1  style="margin-top: 200px;" class="tit" *ngIf="searchView">3. GEOGRAPHICAL REPORT</h1>
+  <h1  style="margin-top: 3%;" class="tit" *ngIf="show && !searchView">5. GEOGRAPHICAL REPORT</h1>
+  <h1  style="margin-top: 3%;" class="tit" *ngIf="searchView">3. GEOGRAPHICAL REPORT</h1>
 
   <br>
-  <div fxLayout="row" style="margin-left: 80px;" fxLayoutAlign="space-between center" *ngIf="show">
 
-    <mat-card class="mapcard">
-      <div class='col'>
-        <div class="row">
-      <highcharts-chart
 
+  <div class="container" *ngIf="show">
+    <div class="row">
+        <highcharts-chart class="col" style="margin-left:2%; margin-right:2%;
+        border: 1px solid red; border-radius:30px "
         [Highcharts]="Highcharts"
         [options]="mapOptions1"
 
       ></highcharts-chart>
+        <highcharts-chart  class="col" style="border:1px solid rgb(7, 63, 109); border-radius: 30px;"
+        [Highcharts]="Highcharts"
+        [options]="mapOptions2"
+
+      ></highcharts-chart>
     </div>
-    <div class="row te" style="margin-left: 50px;">
-      <br>
-        <ul >
-          <li *ngIf="italiaCount != 0"> Italy : {{this.italiaCount}}</li>
-          <li  *ngIf="russiaCount != 0"> Russia : {{this.russiaCount}}</li>
-          <li  *ngIf="franciaCount != 0"> France : {{this.franciaCount}}</li>
-          <li  *ngIf="usaCount != 0"> USA : {{this.usaCount}}</li>
-          <li  *ngIf="regnoUnitoCount != 0"> United Kingdom : {{this.regnoUnitoCount}}</li>
-          <li  *ngIf="spagnaCount != 0"> Spain : {{this.spagnaCount}}</li>
-          <li  *ngIf="indiaCount != 0"> India : {{this.indiaCount}}</li>
-          <li  *ngIf="canadaCount != 0"> Canada : {{this.canadaCount}}</li>
-          <li  *ngIf="cinaCount != 0"> China : {{this.cinaCount}}</li>
-          <li  *ngIf="giapponeCount != 0"> Japan : {{this.giapponeCount}}</li>
-          <li  *ngIf="greciaCount != 0"> Greece : {{this.greciaCount}}</li>
-          <li  *ngIf="svizzeraCount != 0"> Switzerland : {{this.svizzeraCount}}</li>
-          <li  *ngIf="germaniaCount != 0"> Germany : {{this.germaniaCount}}</li>
-          <li  *ngIf="portogalloCount != 0"> Portugal : {{this.portogalloCount}}</li>
+    <div class="row">
+      <div class="col " style="margin-left: 1%; ">
+        <br>
+          <ul >
+            <li *ngIf="italiaCount != 0"> Italy : {{this.italiaCount}}</li>
+            <li  *ngIf="russiaCount != 0"> Russia : {{this.russiaCount}}</li>
+            <li  *ngIf="franciaCount != 0"> France : {{this.franciaCount}}</li>
+            <li  *ngIf="usaCount != 0"> USA : {{this.usaCount}}</li>
+            <li  *ngIf="regnoUnitoCount != 0"> United Kingdom : {{this.regnoUnitoCount}}</li>
+            <li  *ngIf="spagnaCount != 0"> Spain : {{this.spagnaCount}}</li>
+            <li  *ngIf="indiaCount != 0"> India : {{this.indiaCount}}</li>
+            <li  *ngIf="canadaCount != 0"> Canada : {{this.canadaCount}}</li>
+            <li  *ngIf="cinaCount != 0"> China : {{this.cinaCount}}</li>
+            <li  *ngIf="giapponeCount != 0"> Japan : {{this.giapponeCount}}</li>
+            <li  *ngIf="greciaCount != 0"> Greece : {{this.greciaCount}}</li>
+            <li  *ngIf="svizzeraCount != 0"> Switzerland : {{this.svizzeraCount}}</li>
+            <li  *ngIf="germaniaCount != 0"> Germany : {{this.germaniaCount}}</li>
+            <li  *ngIf="portogalloCount != 0"> Portugal : {{this.portogalloCount}}</li>
 
 
-        </ul>
-    </div>
-    </div>
-
-      </mat-card>
-
-      <mat-card style="position: relative; left: -50px" class="mapcard">
-        <div class='col'>
-          <div class="row te">
-        <highcharts-chart
-
-          [Highcharts]="Highcharts"
-          [options]="mapOptions2"
-
-        ></highcharts-chart>
+          </ul>
       </div>
-      <div class="row te" style="margin-left: 50px;">
+      <div class="col " style="margin-left: 1%; ">
         <br>
         <ul >
             <li *ngIf="italiaCount2 != 0"> Italy : {{this.italiaCount2}}</li>
@@ -397,11 +394,23 @@
 
           </ul>
       </div>
-      </div>
-        </mat-card>
+    </div>
 
-      </div>
-      <br><br>
+  </div>
+  <br>
+  <br>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

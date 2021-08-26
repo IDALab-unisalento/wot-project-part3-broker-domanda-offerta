@@ -838,8 +838,6 @@ show2(){
 
 this.chartOptions2 = {
   chart: {
-    width : 700,
-    heigth : 500,
 
   },
   title: {
@@ -939,8 +937,7 @@ if(this.newUserMiniChartData[3] < this.newUserMiniChartData[2])
 this.pieOptions = {
   chart: {
       type: 'pie',
-      width : 450,
-      heigth : 300,
+
       options3d: {
           enabled: true,
           alpha: 45,
@@ -1310,8 +1307,7 @@ this.allStatsChartOptions = {
 
   chart: {
       type: 'solidgauge',
-      height: 400,
-      width : 400
+
 
   },
 
@@ -2564,8 +2560,7 @@ aggiornaConteggio( nation : string) {
     this.pieOptions = {
       chart: {
           type: 'pie',
-          width : 450,
-          heigth : 300,
+
           options3d: {
               enabled: true,
               alpha: 45,
@@ -2602,7 +2597,7 @@ aggiornaConteggio( nation : string) {
       }],
 
     }
-  },600);
+  },2000);
 }
 
 recharge(){

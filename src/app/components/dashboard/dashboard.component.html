@@ -4,7 +4,7 @@
 
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 
-<div class="col-md-4 col-sm-6 content-card" style="margin-left: 300px; margin-top: 200px;"*ngIf="!show">
+<div class="col-md-4 col-sm-6 content-card" style="margin-left: 15%; margin-top: 100px;"*ngIf="!show">
   <div class="card-big-shadow" style="width: 1000px;">
       <div class="card card-just-text" data-background="color" data-color="blue" data-radius="none" style="border-radius: 1.5rem;">
           <div class="content">
@@ -19,10 +19,10 @@
   </div>
 </div>
 
-<div>
+<div style="margin-top:2%;">
 
   <h1  style="text-align: center;color :#216ba4" *ngIf="show"> Results' filtering by date</h1>
-  <mat-card class="datePicker" style="margin-left: 400px;"  *ngIf="show">
+  <mat-card class="datePicker" style="margin-left: 25%;"  *ngIf="show">
 
 
       <div class="form-group">
@@ -55,10 +55,9 @@
   </mat-card>
   <br>
   <button *ngIf="show"
-style="border-radius: 1.5rem;height: 40px; margin-left: 620px;"
-class="btn-info" (click)="recharge()">Back to the general view </button>
-<br><br>
-<br>
+  style="border-radius: 30px; margin-left:40%;"
+  class="btn btn-info" (click)="recharge()">Back to the general view </button>
+  <br><br>
 <div *ngIf="searchView">
 
   <h1 class="tit"> 1. The numbers of the selected period</h1>
@@ -81,7 +80,7 @@ class="btn-info" (click)="recharge()">Back to the general view </button>
           </div>
         </div>
       </div>
-  <div style="margin-left: 220px; padding-top: 50px;">
+  <div style="margin-left:13%; padding-top: 50px;">
 <mat-card *ngIf="show && !searchView" style="width: 1050px;">
 
   <h1 class="tit"> 1. SIGN-UP TREND</h1>
@@ -228,36 +227,40 @@ class="btn-info" (click)="recharge()">Back to the general view </button>
 <h1 class="tit" *ngIf="show && searchView" > 2. STATISTICS</h1>
 
 <br><br>
+<div class="container">
+  <div class="row"  *ngIf="show">
 
-<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show">
 
-  <div fxFlex="50" style="padding-left: 60px;" *ngIf="show && !searchView">
-  <mat-card style="width: 720px;
-  ">
-    <highcharts-chart
-    style="width: 100%; height: 500px;"
-    [Highcharts]="Highcharts2"
-    [options]="chartOptions2"
+
+      <highcharts-chart style="
+      margin-left:2%; margin-right: 2%;
+      border: 1px solid red; border-radius: 30px;" class="col"  *ngIf="show && !searchView"
+      [Highcharts]="Highcharts2"
+      [options]="chartOptions2"
+
+    ></highcharts-chart>
+
+
+
+
+      <highcharts-chart *ngIf="show && !searchView"  class="col" style="border: 1px solid rgb(4, 0, 255); border-radius: 30px;"
+    [Highcharts]="pie"
+    [options]="pieOptions"
 
   ></highcharts-chart>
-</mat-card>
+
+  <highcharts-chart  *ngIf="searchView" style="border: 1px solid rgb(4, 0, 255); border-radius: 30px;"
+    [Highcharts]="pie"
+    [options]="pieOptions"
+
+  ></highcharts-chart>
+
+  <h1 style="position: relative; top: -200px; text-align:center; font-family: sans-serif;" *ngIf="percentuali.length == 0"> No data in the selected period</h1>
+    </div>
+
   </div>
-
-  <div fxFlex="42"
-  style="position: relative;"
-  [ngStyle]="{'left' : searchView ? '440px' : '0'}">
-    <mat-card style="width: 500px; height : 430px">
-    <highcharts-chart
-  style="width: 100%; height: 400px;"
-  [Highcharts]="pie"
-  [options]="pieOptions"
-
-></highcharts-chart>
-<h1 style="position: relative; top: -200px; left: 65px; font-family: sans-serif;" *ngIf="percentuali.length == 0"> No data in the selected period</h1>
-</mat-card>
-  </div>
-
 </div>
+
 <br>
 
 <div style=" padding-top: 50px; display: flex; justify-content: center; padding-bottom: 60px;" *ngIf="show && !searchView">
@@ -315,34 +318,32 @@ class="btn-info" (click)="recharge()">Back to the general view </button>
 
 </div>
 
+<div class="container" *ngIf="show && !searchView">
 
-<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show && !searchView">
-  <div fxFlex="50" style="padding-left: 120px;">
+<div class="row" >
 
-  <mat-card *ngIf="show" style="width: 650px;" >
-    <highcharts-chart
-      style="width: 100%; height: 500px;"
 
-      [Highcharts]="Highcharts"
-      [options]="bubbleChart"
+  <highcharts-chart class="col" *ngIf="show"
+    style=" margin-left:2%;border:1px solid rgb(0, 255, 255); border-radius:30px; margin-right:2%;"
 
-    ></highcharts-chart>
-    </mat-card>
-    </div>
+    [Highcharts]="Highcharts"
+    [options]="bubbleChart"
 
-    <div fxFlex="30" style="position: relative; left: -160px;">
+  ></highcharts-chart>
 
-      <mat-card *ngIf="show" style="width: 450px;" >
-        <highcharts-chart
-          style="width: 100%; height: 300px;"
 
-          [Highcharts]="Highcharts"
-          [options]="allStatsChartOptions"
 
-        ></highcharts-chart>
-        </mat-card>
-        </div>
-    </div>
+
+
+      <highcharts-chart  class="col" *ngIf="show" style="border:1px solid green;
+       border-radius: 30px"
+        [Highcharts]="Highcharts"
+        [options]="allStatsChartOptions"
+
+      ></highcharts-chart>
+
+</div>
+</div>
     <br><br>
 
 
@@ -350,7 +351,7 @@ class="btn-info" (click)="recharge()">Back to the general view </button>
     <h1 class="tit" *ngIf="show && searchView" > 3. GEOGRAPHICAL TREND</h1>
 
     <br>
-<div fxLayout="row" style="margin-left: 400px;" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show">
+<div fxLayout="row" style="margin-left: 22%" fxLayoutAlign="space-between center" fxLayoutGap="20px" *ngIf="show">
 
   <mat-card>
     <div class="row">
@@ -389,6 +390,5 @@ class="btn-info" (click)="recharge()">Back to the general view </button>
     </div>
     <br><br><br>
 
-</div>
 
 </body>

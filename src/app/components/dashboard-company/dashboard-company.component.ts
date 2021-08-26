@@ -7,6 +7,8 @@ import { User } from 'src/app/models/user';
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { VectorRate } from 'src/app/models/vector-rate';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 import { Vector } from 'src/app/models/vector';
 import HC_exporting from 'highcharts/modules/exporting'
 import HC3D from 'highcharts/highcharts-3d'
@@ -246,16 +248,23 @@ export class DashboardCompanyComponent implements OnInit {
   KgRicerca : number = 0;
   bookingsRicerca : number = 0;
 
+  end1=false
+  end2=false
+  end3=false
+  end4=false
+  end5=false;
+
 
   constructor( private viaggioService : ViaggioService,
                private viaggioRouteService : ViaggioRouteService,
                private vectorService  :VectorService,
                private bookingService: AffituarioPrenotaRouteService,
-               private routeService : RouteService
+               private routeService : RouteService,
+               private spinnerService : NgxSpinnerService
 
                ) { }
 
-  ngOnInit(): void {
+   ngOnInit() {
     this.counters = [];
     this.totalVectorsOffer = 0;
     this.myVectors = [];
@@ -269,6 +278,7 @@ export class DashboardCompanyComponent implements OnInit {
     this.countersBooked = [];
     this.myVectorsBooked2 = [];
     this.countersBooked2 = [];
+
     this.loggedUser = JSON.parse(String(localStorage.getItem("loggedUser")));
     var now = new Date();
     this.entireActualMonth = this.switcherEntireMonth(now.getMonth())
@@ -279,6 +289,9 @@ export class DashboardCompanyComponent implements OnInit {
     this.getIncassiPerGiorno();
     this.getAllCities();
     this.getBookingsCities();
+
+
+
 
   }
 
@@ -338,6 +351,8 @@ export class DashboardCompanyComponent implements OnInit {
     });
 
     });
+    console.log("all cities")
+    this.end1=true;
     resolve();
   });
 
@@ -407,6 +422,8 @@ export class DashboardCompanyComponent implements OnInit {
       }
 
     });
+    console.log(" GET booking cities")
+    this.end2=true;
     resolve();
     })
   })
@@ -474,22 +491,22 @@ export class DashboardCompanyComponent implements OnInit {
                this.kgIncrement = 100;
 
         });
-
+        console.log("incassi per giorno")
+        this.end3=true
         resolve();
       });
     });
   }
 
-
   show2(){
+
   this.nMyBookings = this.JanBook + this.FebBook + this.MarBook + this.AprBook + this.MayBook + this.JunBook + this.JulBook + this.AugBook + this.SepBook + this.OctBook + this.NovBook + this.DecBook;
   this.show = !this.show;
   this.chartOptions =  {
 
     chart: {
         type: 'column',
-        width : 700,
-        heigth : 400
+
     },
     title: {
       text:  this.loggedUser.name +'\'s offers rec-up '
@@ -548,8 +565,8 @@ export class DashboardCompanyComponent implements OnInit {
 HC3D(Highcharts)
 this.pieOptions= {
     chart: {
-        width : 500,
-        type: 'pie',
+
+      type: 'pie',
         options3d: {
             enabled: true,
             alpha: 45,
@@ -629,7 +646,6 @@ this.pieOptions2 = {
 
 this.pieOptions3= {
   chart: {
-       width : 500,
       type: 'pie',
       options3d: {
           enabled: true,
@@ -670,7 +686,6 @@ this.pieOptions3= {
 
 this.pieOptions4 = {
   chart: {
-    width : 550,
       type: 'pie',
       options3d: {
           enabled: true,
@@ -720,8 +735,7 @@ this.allStatsChartOptions = {
 
   chart: {
       type: 'solidgauge',
-      height: 400,
-      width : 400
+
 
   },
 
@@ -1073,8 +1087,7 @@ this.miniChartOptions4 = {
 this.mapOptions1 = {
   chart: {
     map: worldMap,
-    heigth : 700,
-    width: 600
+
     },
   title: {
     text: 'TRIPS OFFERED'
@@ -1146,8 +1159,7 @@ yAxis: {
 this.mapOptions2 = {
   chart: {
     map: worldMap,
-    heigth : 700,
-    width: 600
+
     },
   title: {
     text: 'USER\'s BOOKINGS'
@@ -1298,6 +1310,7 @@ yAxis: {
             this.counters.push(1);
             this.totalVectorsOffer = this.totalVectorsOffer + 1;
 
+
           }
 
 
@@ -1347,6 +1360,8 @@ yAxis: {
 
     });
     });
+    console.log("ofoerta pubblicate")
+    this.end5=true;
     resolve()
   });
   }
@@ -1445,6 +1460,8 @@ yAxis: {
 
       }
   });
+  console.log("get booking")
+  this.end4=true;
       resolve();
   });
 });
@@ -2305,9 +2322,10 @@ aggiornaConteggio2( nation : string) {
 
 }
 
-search(){
+ search(){
   this.aggiornaPie();
   this.getNumeri();
+  setTimeout(()=>{},2000)
 }
 
   async aggiornaPie(){
@@ -2364,7 +2382,7 @@ search(){
     this.germaniaCount2  = 0;
     this.portogalloCount2  = 0;
 
-    await new Promise<void> ((resolve, reject) => {
+  await new Promise<void> ((resolve, reject) => {
 
     this.viaggioService.getByCompanyId(this.loggedUser.id).subscribe(async viaggi =>{
 
@@ -2376,6 +2394,7 @@ search(){
           var date : Date = new Date(viaggioRoute[viaggioRoute.length - 1].endDate)
           if(date  >= this.ricerca.dateStart && date <= this.ricerca.dateEnd ){
             await new Promise<void> ((resolve, reject) => {
+
               this.vectorService.getById(viaggio.vectorId).subscribe(vector=>{
 
                 var toAdd : boolean = true;
@@ -2415,8 +2434,6 @@ search(){
                 resolve();
               });
             });
-
-
           }
           resolve();
         })
@@ -2680,12 +2697,11 @@ search(){
     })
   })
 
-
-
+  this.spinnerService.show();
   setTimeout(()=>{
-    this.pieOptions= {
+
+  this.pieOptions= {
       chart: {
-          width : 500,
           type: 'pie',
           options3d: {
               enabled: true,
@@ -2764,10 +2780,9 @@ search(){
     }]
   }
 
-
   this.pieOptions3= {
     chart: {
-         width : 500,
+
         type: 'pie',
         options3d: {
             enabled: true,
@@ -2808,7 +2823,6 @@ search(){
 
   this.pieOptions4 = {
     chart: {
-      width : 550,
         type: 'pie',
         options3d: {
             enabled: true,
@@ -2849,12 +2863,10 @@ search(){
   ]
   }
 
-
-this.mapOptions1 = {
+  this.mapOptions1 = {
   chart: {
     map: worldMap,
-    heigth : 700,
-    width: 600
+
     },
   title: {
     text: 'TRIPS OFFERED'
@@ -2926,8 +2938,7 @@ yAxis: {
 this.mapOptions2 = {
   chart: {
     map: worldMap,
-    heigth : 700,
-    width: 600
+
     },
   title: {
     text: 'USER\'s BOOKINGS'
@@ -2995,7 +3006,8 @@ yAxis: {
     }
   ]
 };
-  },800);
+this.spinnerService.hide();
+},2000);
 
 }
 

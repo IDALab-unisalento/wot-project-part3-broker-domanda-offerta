@@ -106,6 +106,16 @@ addNewVector(){
   },error =>{
 
     this.vectorService.save(this.newVector).subscribe(async vector => {
+      await new Promise<void>((resolve,reject)=>{
+        this.companyVectorService.save(this.me.id, vector.id).subscribe(data => {console.log(data)});
+        resolve();
+      })
+      this.myVectorsList.push(this.newVector)
+      this.newVector={} as Vector
+      this.addMenu=false;
+
+
+
 
       await new Promise<void> ((resolve, reject) => {
 
@@ -118,7 +128,7 @@ addNewVector(){
   });
   this.x2 = true;
   this.showToast = true;
-    }
+   }
 
     openModal() {
       const dialogConfig = new MatDialogConfig();

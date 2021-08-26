@@ -65,12 +65,9 @@ import { HighchartsChartModule } from 'highcharts-angular';
 
 import { HistoryComponent } from './components/history/history.component';
 import { ChartsModule } from 'ng2-charts';
-<<<<<<< HEAD
 import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
-=======
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AboutComponent } from './components/about/about.component';
->>>>>>> develop
 @NgModule({
   declarations: [
 

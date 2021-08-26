@@ -1,8 +1,9 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<div class="register">
+
+<div class="register" style="overflow-y: scroll;" >
   <div class="banner">
     <div class="navbar">
-      <ul style="position: absolute; right: 0px; top: -5px">
+      <ul style="position: absolute; right: 0px; top: 50px">
         <li routerLink="/about"> <a>Home</a></li>
         <li routerLink="/signup"> <a>Sign Up</a></li>
         <li routerLink="/login"> <a>Login</a></li>
@@ -36,7 +37,7 @@
                         <div class="tab-content" id="myTabContent" >
 
                           <!-- company -->
-                            <form #companyForm="ngForm" (ngSubmit)="register()" class="form"  class="tab-pane fade show"
+                            <form  #companyForm="ngForm" (ngSubmit)="register()" class="form"  class="tab-pane fade show"
                             [ngClass]="{'active': companyVersion}"
                             id="home" role="tabpanel" aria-labelledby="home-tab" *ngIf="companyVersion">
                                 <h1 class="register-heading">Sign up as a Company
@@ -251,7 +252,6 @@
                                           Ok!
                                         </div>
                                     </div>
-
                                     <button class="btn btn-primary btnRegister" type="submit" [disabled]="!companyForm.form.valid || !match() ">Register</button>
                                   </div>
                                 </div>
@@ -456,5 +456,5 @@
                     </div>
                 </div>
 
-            </div>
+</div>
 </div>

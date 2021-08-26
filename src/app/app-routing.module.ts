@@ -13,11 +13,8 @@ import { SummaryModalComponent } from './components/summary-modal/summary-modal.
 import { AffittuarioHomeComponent } from './components/affittuario-home/affittuario-home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HistoryComponent } from './components/history/history.component';
-<<<<<<< HEAD
 import { DashboardCompanyComponent } from './components/dashboard-company/dashboard-company.component';
-=======
 import { AboutComponent } from './components/about/about.component';
->>>>>>> develop
 
 const routes: Routes = [
   {path: '',component:AboutComponent},

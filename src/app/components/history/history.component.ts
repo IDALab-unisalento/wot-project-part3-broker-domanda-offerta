@@ -22,11 +22,17 @@ import { Affittuario } from '../../models/affittuario';
 import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component';
 import { FormControl } from '@angular/forms';
 const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+import 'moment/locale/it';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
 
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
-  styleUrls: ['./history.component.scss']
+  styleUrls: ['./history.component.scss'],
+  providers:[
+    {provide: MAT_DATE_LOCALE, useValue: 'it'}
+  ]
 })
 export class HistoryComponent implements OnInit {
   allViaggioInfo: ViaggioInfo[]=[];

@@ -9,14 +9,37 @@
 
 
 
-<div style=" margin-left:30%; margin-right:30%;
-text-align: center; margin-top:2%">
-  <h1 style=" border-radius: 30px;">
+<div style=" margin-left:30%; margin-right:30%; border: 2px solid rgb(255, 255, 255);
+border-radius: 30px; color:rgb(0, 0, 0);
+text-align: center; margin-top:0.5%">
+  <h1 style=" font-size:30px; padding-top:2%;">
 <strong> Manage your booking</strong>
 </h1>  </div>
 
-  <div class="row" style="padding-right: 7%;">
-    <div class="col-lg-12" style=" padding-left: 100px;">
+
+
+
+<div class="container" style="width: fit-content;">
+
+  <div class="row" style="margin-top:1.5%">
+    <div class="col-lg-12">
+     <mat-form-field appearance="outline" style=" margin-left:80.3%; width:220px; margin-bottom:-15px;  border-radius: 30px;  ">
+    <mat-label style="font-size: 17px; color:rgb(0, 0, 0) ;" >Find booking by Date</mat-label>
+    <input  matInput [matDatepicker]="datepicker"  style=" font-size:20px; padding-top:1%;color:rgb(0, 0, 0) "
+    name="filterDate" [(ngModel)]="filterDate" disabled >
+    <mat-datepicker-toggle matSuffix [for]="datepicker" style="color:rgb(0, 0, 0)"  ></mat-datepicker-toggle>
+    <mat-datepicker #datepicker disabled="false" >
+      <mat-datepicker-actions>
+        <button mat-button matDatepickerCancel (click)="reset(); ">Reset</button>
+        <button mat-raised-button color="primary" matDatepickerApply (click)="applyFilter()"  >Apply</button>
+      </mat-datepicker-actions>
+    </mat-datepicker>
+  </mat-form-field>
+    </div>
+
+  </div>
+  <div class="row" >
+    <div class="col-lg-12">
         <div class="main-box no-header clearfix">
             <div class="main-box-body clearfix">
                 <div class="table-responsive">
@@ -32,8 +55,11 @@ text-align: center; margin-top:2%">
                             <th class="taext-center"><span>Route End date</span></th>
                             <th class="text-center"><span>Booked Capacity KG</span></th>
                             <th class="text-center"><span>$/Km</span></th>
+                            <th class="text-center"><span>Prenotation Date</span></th>
+                            <th class="text-center"><span>Maximum Withdrawl Date</span></th>
                             <th>&nbsp;</th>
                             <th>&nbsp;</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -50,14 +76,18 @@ text-align: center; margin-top:2%">
                               </td>
 
                               <td class="text-center">{{item.costoKm}}</td>
+                              <td class="text-center">{{item.prenotationDate| date :"dd/MM/YYYY HH:mm" : '+0000' }}</td>
+                              <td class="text-center" *ngIf="item.maximum_WithDrawl!=null">{{item.maximum_WithDrawl | date :"dd/MM/YYYY HH:mm" : '+0000' }}</td>
+                              <td class="text-center"  style="font-size:30px; color:red" *ngIf="item.maximum_WithDrawl==null">
+                                <i class="bi bi-x"></i>
+                           </td>
 
                                 <td class="text-center"  >
-                                  <button type="button" *ngIf="dateDiffInDays(item.maximum_WithDrawl)"  (click)="deleteBooking( item)"  class=" btn btn-outline-danger">Delete Booking
+                                  <button type="button" *ngIf="dateDiffInDays(item.maximum_WithDrawl)"  (click)="deleteBooking( item)"  class=" btn btn-outline-danger">
                                     <i  style="padding-left:3%"class="fa fa-trash"></i>
                                   </button>
-                                  <button type="button" disabled=true *ngIf="!dateDiffInDays(item.maximum_WithDrawl)"  class="btn btn-success" readonly>
-                                    Undeletable
-                                    <i  style="padding-left:3%"class="fa fa-check"></i>
+                                  <button type="button" disabled=true *ngIf="!dateDiffInDays(item.maximum_WithDrawl)"  class="btn btn-danger" readonly>
+                                    <i  style="padding-left:3%"class="fa fa-ban" ></i>
                                   </button>
 
 
@@ -71,4 +101,6 @@ text-align: center; margin-top:2%">
         </div>
     </div>
   </div>
+</div>
+
 </div>
